@@ -13,9 +13,20 @@ abstract class User {
 
     }
 
+    // For loading from DB
     public User(int id, String username, String password, String firstName, String lastName, Role role) {
         this.id = id;
         this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
+
+    // for user creation
+    public User(String username, String password, String firstName, String lastName, Role role) {
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;

@@ -11,10 +11,30 @@ package edu.university.facultyloading.model;
  */
 public class Admin extends User {
 
+    private int adminId;
+
     public Admin() {
     }
 
-    public Admin(int id, String username, String password, String firstName, String lastName, Role role) {
-        super(id, username, password, firstName, lastName, role);
+    public Admin(String username, String password, String firstName, String lastName) {
+        super(username, password, firstName, lastName, Role.ADMIN);
     }
+
+    public Admin(int id, String username, String password, String firstName, String lastName) {
+        super(id, username, password, firstName, lastName, Role.ADMIN);
+    }
+
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" + "adminId=" + adminId + '}';
+    }
+
 }
