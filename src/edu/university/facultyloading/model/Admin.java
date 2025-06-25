@@ -16,12 +16,12 @@ public class Admin extends User {
     public Admin() {
     }
 
-    public Admin(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, Role.ADMIN);
+    public Admin(int id, String username, String password, String firstName, String lastName) {
+        super(id, username, password, firstName, lastName, 3);
     }
 
-    public Admin(int id, String username, String password, String firstName, String lastName) {
-        super(id, username, password, firstName, lastName, Role.ADMIN);
+    public Admin(String username, String password, String firstName, String lastName) {
+        super(username, password, firstName, lastName, 3);
     }
 
     public int getAdminId() {

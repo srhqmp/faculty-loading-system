@@ -5,33 +5,36 @@ import java.util.List;
 public class Faculty extends User {
 
     private int facultyId;
+    private int loadId;
 
     private String major;
     private int yearsOfExperience;
-    private boolean isAvailable;
-    private List<Training> trainings;
-    private List<Subject> preferredSubjects;
-    private List<Subject> taughtSubjects;
     private double studentFeedbackScore;
-    private Load load;
-    private Admin approvedBy;
+    private int isAvailable;
 
     public Faculty() {
     }
 
-    public Faculty(int facultyId, int userId, String username, String password, String firstName, String lastName,
-            String major, int yearsOfExperience,
-            double studentFeedbackScore, boolean isAvailable) {
-        super(userId, username, password, firstName, lastName, Role.FACULTY);
+    public Faculty(int id, int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
+            int isAvailable, String username, String password, String firstName, String lastName, int role) {
+        super(id, username, password, firstName, lastName, role);
         this.facultyId = facultyId;
+        this.loadId = loadId;
         this.major = major;
         this.yearsOfExperience = yearsOfExperience;
         this.studentFeedbackScore = studentFeedbackScore;
         this.isAvailable = isAvailable;
     }
 
-    public Faculty(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, Role.FACULTY);
+    public Faculty(int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
+            int isAvailable, String username, String password, String firstName, String lastName, int role) {
+        super(username, password, firstName, lastName, role);
+        this.facultyId = facultyId;
+        this.loadId = loadId;
+        this.major = major;
+        this.yearsOfExperience = yearsOfExperience;
+        this.studentFeedbackScore = studentFeedbackScore;
+        this.isAvailable = isAvailable;
     }
 
     public int getFacultyId() {
@@ -40,6 +43,14 @@ public class Faculty extends User {
 
     public void setFacultyId(int facultyId) {
         this.facultyId = facultyId;
+    }
+
+    public int getLoadId() {
+        return loadId;
+    }
+
+    public void setLoadId(int loadId) {
+        this.loadId = loadId;
     }
 
     public String getMajor() {
@@ -66,57 +77,16 @@ public class Faculty extends User {
         this.studentFeedbackScore = studentFeedbackScore;
     }
 
-    public boolean isIsAvailable() {
+    public int isIsAvailable() {
         return isAvailable;
     }
 
-    public void setIsAvailable(boolean isAvailable) {
+    public void setIsAvailable(int isAvailable) {
         this.isAvailable = isAvailable;
-    }
-
-    public List<Training> getTrainings() {
-        return trainings;
-    }
-
-    public void setTrainings(List<Training> trainings) {
-        this.trainings = trainings;
-    }
-
-    public List<Subject> getPreferredSubjects() {
-        return preferredSubjects;
-    }
-
-    public void setPreferredSubjects(List<Subject> preferredSubjects) {
-        this.preferredSubjects = preferredSubjects;
-    }
-
-    public Load getLoad() {
-        return load;
-    }
-
-    public void setLoad(Load load) {
-        this.load = load;
-    }
-
-    public List<Subject> getTaughtSubjects() {
-        return taughtSubjects;
-    }
-
-    public void setTaughtSubjects(List<Subject> taughtSubjects) {
-        this.taughtSubjects = taughtSubjects;
-    }
-
-    public Admin getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(Admin approvedBy) {
-        this.approvedBy = approvedBy;
     }
 
     @Override
     public String toString() {
-        return "Faculty{" + "facultyId=" + facultyId + ", major=" + major + ", yearsOfExperience=" + yearsOfExperience + ", isAvailable=" + isAvailable + ", trainings=" + trainings + ", preferredSubjects=" + preferredSubjects + ", taughtSubjects=" + taughtSubjects + ", studentFeedbackScore=" + studentFeedbackScore + ", load=" + load + ", approvedBy=" + approvedBy + '}';
+        return "Faculty{" + "facultyId=" + facultyId + ", loadId=" + loadId + ", major=" + major + ", yearsOfExperience=" + yearsOfExperience + ", studentFeedbackScore=" + studentFeedbackScore + ", isAvailable=" + isAvailable + '}';
     }
-
 }

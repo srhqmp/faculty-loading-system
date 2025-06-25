@@ -14,9 +14,17 @@ import java.util.List;
  */
 public interface AdminRepo {
 
-    public int fetchID();
+    public Admin fetchAdmin(int adminId);
 
     public List<Admin> fetchAdmins();
-    
-    public Admin fetchAdmin();
+
+    public boolean createAdmin(int adminId, String username, String password, String firstName, String lastName);
+
+    public boolean updateAdminProfile(int adminId, String firstName, String lastName);
+
+    public boolean archiveAdmin(int adminId);
+
+    public boolean restoreAdmin(int adminId);
+
+    public boolean deleteAdmin(int adminId);
 }

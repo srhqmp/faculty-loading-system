@@ -13,13 +13,15 @@ public class Registrar extends User {
 
     private int registrarId;
 
-    public Registrar(int registrarId, int userId, String username, String password, String firstName, String lastName) {
-        super(userId, username, password, firstName, lastName, Role.REGISTRAR);
-        this.registrarId = registrarId;
+    public Registrar() {
+    }
+
+    public Registrar(int id, String username, String password, String firstName, String lastName) {
+        super(id, username, password, firstName, lastName, 2);
     }
 
     public Registrar(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, Role.REGISTRAR);
+        super(username, password, firstName, lastName, 2);
     }
 
     public int getRegistrarId() {
@@ -34,4 +36,5 @@ public class Registrar extends User {
     public String toString() {
         return "Registrar{" + "registrarId=" + registrarId + '}';
     }
+
 }

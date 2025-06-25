@@ -7,14 +7,13 @@ abstract class User {
     private String password;
     private String firstName;
     private String lastName;
-    private Role role;
+    private int role;
 
     public User() {
 
     }
 
-    // For loading from DB
-    public User(int id, String username, String password, String firstName, String lastName, Role role) {
+    public User(int id, String username, String password, String firstName, String lastName, int role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -23,8 +22,7 @@ abstract class User {
         this.role = role;
     }
 
-    // for user creation
-    public User(String username, String password, String firstName, String lastName, Role role) {
+    public User(String username, String password, String firstName, String lastName, int role) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -72,12 +70,17 @@ abstract class User {
         this.lastName = lastName;
     }
 
-    public Role getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(int role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", role=" + role + '}';
     }
 
 }
