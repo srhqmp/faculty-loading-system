@@ -1,14 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.university.facultyloading.repo;
 
-/**
- *
- * @author user
- */
-public class LoadRepo {
-    
+import edu.university.facultyloading.model.Load;
+import java.util.List;
+
+public interface LoadRepo {
+
+    public Load fetchLoad(int id);
+
+    public List<Load> fetchLoads();
+
+    public boolean createLoad(int facultyId);
+
+    public boolean approveLoad(int id, int registrarId);
+
+    public boolean archiveLoad(int id);
+
+    public boolean restoreLoad(int id);
+
+    public boolean deleteLoad(int id);
 }
