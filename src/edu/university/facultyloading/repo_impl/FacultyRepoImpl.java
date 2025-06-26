@@ -143,7 +143,7 @@ public class FacultyRepoImpl implements FacultyRepo {
                 if (result.next()) {
                     try (PreparedStatement prepFaculty = connnection.prepareStatement(queryFaculty);) {
                         int userId = result.getInt(1);
-                        System.out.println("user id: " + userId);
+                        
                         prepFaculty.setInt(1, userId);
                         isSuccess = prepFaculty.executeUpdate() > 0;
                     } catch (SQLException e) {

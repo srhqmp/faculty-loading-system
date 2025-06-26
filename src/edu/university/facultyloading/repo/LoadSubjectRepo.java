@@ -3,7 +3,7 @@ package edu.university.facultyloading.repo;
 import edu.university.facultyloading.model.Subject;
 import java.util.List;
 
-public interface LoadSubject {
+public interface LoadSubjectRepo {
 
     public List<Subject> fetchLoadSubjects(int loadId);
 

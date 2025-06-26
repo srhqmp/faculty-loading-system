@@ -1,7 +1,7 @@
 package edu.university.facultyloading.repo_impl;
 
-import edu.university.facultyloading.model.Admin;
-import edu.university.facultyloading.repo.AdminRepo;
+import edu.university.facultyloading.model.Registrar;
+import edu.university.facultyloading.repo.RegistrarRepo;
 import edu.university.facultyloading.util.DbConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,28 +11,28 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminRepoImpl implements AdminRepo {
+public class RegistrarRepoImpl implements RegistrarRepo {
 
     private final DbConnection dbConnection;
 
-    public AdminRepoImpl(DbConnection dbConnection) {
+    public RegistrarRepoImpl(DbConnection dbConnection) {
         this.dbConnection = dbConnection;
     }
 
     @Override
-    public Admin fetchAdmin(int adminId) {
-        String query = "SELECT * FROM tbladmins "
+    public Registrar fetchRegistrar(int registrarId) {
+        String query = "SELECT * FROM tblregistrars "
                 + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
-                + "WHERE admin_id = ? "
+                + "ON tblregistrars.user_id = tblusers.user_id "
+                + "WHERE registrar_id = ? "
                 + "AND is_archived = 0";
 
-        Admin admin = new Admin();
+        Registrar registrar = new Registrar();
 
         try (Connection connnection = dbConnection.connect();
                 PreparedStatement preparedState = connnection.prepareStatement(query);) {
 
-            preparedState.setInt(1, adminId);
+            preparedState.setInt(1, registrarId);
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
@@ -42,28 +42,28 @@ public class AdminRepoImpl implements AdminRepo {
                 String lastName = result.getString("last_name");
                 String password = result.getString("password");
 
-                admin.setId(id);
-                admin.setAdminId(adminId);
-                admin.setUsername(username);
-                admin.setFirstName(firstName);
-                admin.setLastName(lastName);
-                admin.setPassword(password);
+                registrar.setId(id);
+                registrar.setRegistrarId(registrarId);
+                registrar.setUsername(username);
+                registrar.setFirstName(firstName);
+                registrar.setLastName(lastName);
+                registrar.setPassword(password);
             }
         } catch (SQLException e) {
-            System.out.println("Admin Repo - fetchAdmin(): " + e.getMessage());
+            System.out.println("Registrar Repo - fetchRegistrar(): " + e.getMessage());
         }
 
-        return admin;
+        return registrar;
     }
 
     @Override
-    public List<Admin> fetchAdmins() {
-        String query = "SELECT * FROM tbladmins "
+    public List<Registrar> fetchRegistrars() {
+        String query = "SELECT * FROM tblregistrars "
                 + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
+                + "ON tblregistrars.user_id = tblusers.user_id "
                 + "WHERE is_archived = 0";
 
-        List<Admin> admins = new ArrayList<>();
+        List<Registrar> registrars = new ArrayList<>();
 
         try (Connection connnection = dbConnection.connect();
                 Statement state = connnection.createStatement();
@@ -71,36 +71,36 @@ public class AdminRepoImpl implements AdminRepo {
 
             while (result.next()) {
                 int id = result.getInt("user_id");
-                int adminId = result.getInt("admin_id");
+                int registrarId = result.getInt("registrar_id");
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
                 String password = result.getString("password");
 
-                Admin admin = new Admin();
+                Registrar registrar = new Registrar();
 
-                admin.setId(id);
-                admin.setAdminId(adminId);
-                admin.setUsername(username);
-                admin.setFirstName(firstName);
-                admin.setLastName(lastName);
-                admin.setPassword(password);
+                registrar.setId(id);
+                registrar.setRegistrarId(registrarId);
+                registrar.setUsername(username);
+                registrar.setFirstName(firstName);
+                registrar.setLastName(lastName);
+                registrar.setPassword(password);
 
-                admins.add(admin);
+                registrars.add(registrar);
             }
         } catch (SQLException e) {
-            System.out.println("Admin Repo - fetchAdmins(): " + e.getMessage());
+            System.out.println("Registrar Repo - fetchRegistrars(): " + e.getMessage());
         }
 
-        return admins;
+        return registrars;
     }
 
     @Override
-    public boolean createAdmin(String username, String password, String firstName, String lastName) {
+    public boolean createRegistrar(String username, String password, String firstName, String lastName) {
         // insert to user
         String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) "
                 + "VALUES (?,?,?,?,3)";
-        String queryAdmin = "INSERT INTO tbladmins (user_id) VALUES (?)";
+        String queryRegistrar = "INSERT INTO tblregistrars (user_id) VALUES (?)";
         boolean isSuccess = false;
 
         try (Connection connnection = dbConnection.connect();) {
@@ -116,20 +116,20 @@ public class AdminRepoImpl implements AdminRepo {
                 ResultSet result = prepUser.getGeneratedKeys();
 
                 if (result.next()) {
-                    try (PreparedStatement prepAdmin = connnection.prepareStatement(queryAdmin);) {
+                    try (PreparedStatement prepRegistrar = connnection.prepareStatement(queryRegistrar);) {
                         int userId = result.getInt(1);
 
-                        prepAdmin.setInt(1, userId);
-                        isSuccess = prepAdmin.executeUpdate() > 0;
+                        prepRegistrar.setInt(1, userId);
+                        isSuccess = prepRegistrar.executeUpdate() > 0;
                     } catch (SQLException e) {
-                        System.out.println("Admin Repo - createAdmin() - Prep Admin: " + e.getMessage());
+                        System.out.println("Registrar Repo - createRegistrar() - Prep Registrar: " + e.getMessage());
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("Admin Repo - createAdmin() - Prep User: " + e.getMessage());
+                System.out.println("Registrar Repo - createRegistrar() - Prep User: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Admin Repo - createAdmin() - Connection: " + e.getMessage());
+            System.out.println("Registrar Repo - createRegistrar() - Connection: " + e.getMessage());
         }
 
         return isSuccess;
@@ -152,14 +152,14 @@ public class AdminRepoImpl implements AdminRepo {
 
             isSuccess = prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Admin Repo - updateUserProfile(): " + e.getMessage());
+            System.out.println("Registrar Repo - updateUserProfile(): " + e.getMessage());
         }
         return isSuccess;
     }
 
     @Override
-    public boolean archiveAdmin(int id) {
-        String query = "UPDATE tbladmins SET is_archived = 1 WHERE user_id = ?";
+    public boolean archiveRegistrar(int id) {
+        String query = "UPDATE tblregistrars SET is_archived = 1 WHERE user_id = ?";
         boolean isSuccess = false;
 
         try (Connection connection = dbConnection.connect();
@@ -168,14 +168,14 @@ public class AdminRepoImpl implements AdminRepo {
 
             isSuccess = prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Admin Repo - archiveAdmin(): " + e.getMessage());
+            System.out.println("Registrar Repo - archiveRegistrar(): " + e.getMessage());
         }
         return isSuccess;
     }
 
     @Override
-    public boolean restoreAdmin(int id) {
-        String query = "UPDATE tbladmins SET is_archived = 0 WHERE user_id = ?";
+    public boolean restoreRegistrar(int id) {
+        String query = "UPDATE tblregistrars SET is_archived = 0 WHERE user_id = ?";
         boolean isSuccess = false;
 
         try (Connection connection = dbConnection.connect();
@@ -184,22 +184,22 @@ public class AdminRepoImpl implements AdminRepo {
 
             isSuccess = prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Admin Repo - restoreAdmin(): " + e.getMessage());
+            System.out.println("Registrar Repo - restoreRegistrar(): " + e.getMessage());
         }
         return isSuccess;
     }
 
     @Override
-    public boolean deleteAdmin(int id, int adminId) {
+    public boolean deleteRegistrar(int id, int registrarId) {
         String queryUser = "DELETE FROM tblusers WHERE user_id = ?";
-        String queryAdmin = "DELETE FROM tbladmins WHERE admin_id = ?";
+        String queryRegistrar = "DELETE FROM tblregistrars WHERE registrar_id = ?";
         boolean isSuccess = false;
 
         try (Connection connection = dbConnection.connect();) {
-            // Delete admin
-            try (PreparedStatement prepAdmin = connection.prepareStatement(queryAdmin);) {
-                prepAdmin.setInt(1, adminId);
-                prepAdmin.executeUpdate();
+            // Delete registrar
+            try (PreparedStatement prepRegistrar = connection.prepareStatement(queryRegistrar);) {
+                prepRegistrar.setInt(1, registrarId);
+                prepRegistrar.executeUpdate();
 
                 // Delete user
                 try (PreparedStatement prepUser = connection.prepareStatement(queryUser);) {
@@ -208,10 +208,10 @@ public class AdminRepoImpl implements AdminRepo {
                     isSuccess = true;
                 }
             } catch (SQLException e) {
-                System.out.println("Admin Repo - deleteAdmin() - Admin Prep: " + e.getMessage());
+                System.out.println("Registrar Repo - deleteRegistrar() - Registrar Prep: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Admin Repo - deleteAdmin() - Connection: " + e.getMessage());
+            System.out.println("Registrar Repo - deleteRegistrar() - Connection: " + e.getMessage());
         }
         return isSuccess;
     }
