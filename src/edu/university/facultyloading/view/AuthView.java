@@ -30,12 +30,16 @@ public class AuthView {
         switch (choice) {
             case 1:
                 loginAsAdmin();
+                break;
             case 2:
                 loginAsFaculty();
+                break;
             case 3:
                 loginAsRegistrar();
+                break;
             case 4:
                 registerUser();
+                break;
             case 5: {
                 System.out.println("Exiting...");
                 return;
