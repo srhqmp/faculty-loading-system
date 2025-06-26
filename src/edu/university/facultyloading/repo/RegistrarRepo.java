@@ -1,27 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.university.facultyloading.repo;
 
 import edu.university.facultyloading.model.Registrar;
+import java.util.List;
 
-/**
- *
- * @author user
- */
 public interface RegistrarRepo {
 
     public Registrar fetchRegistrar(int registrarId);
 
-    public boolean createRegistrar(int registrarId, String username, String password, String firstName, String lastName);
+    public List<Registrar> fetchRegistrars();
 
-    public boolean updateRegistrarProfile(int registrarId, String firstName, String lastName);
+    public boolean createRegistrar(String username, String password, String firstName, String lastName);
 
-    public boolean archiveRegistrar(int registrarId);
+    public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
 
-    public boolean restoreRegistrar(int registrarId);
+    public boolean archiveRegistrar(int id);
 
-    public boolean deleteRegistrar(int registrarId);
+    public boolean restoreRegistrar(int id);
+
+    public boolean deleteRegistrar(int id, int registrarId);
 }

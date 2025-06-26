@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/repo/RegistrarRepo.java</file>
             <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/model/Admin.java</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/model/Faculty.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/model/Registrar.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/repo/FacultyRepo.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/main/Main.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/model/User.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/repo/AdminRepo.java</file>
+            <file>file:/C:/Users/user/Documents/NetBeansProjects/FacultyLoadingSystem/src/edu/university/facultyloading/repo_impl/FacultyRepoImpl.java</file>
         </group>
     </open-files>
 </project-private>

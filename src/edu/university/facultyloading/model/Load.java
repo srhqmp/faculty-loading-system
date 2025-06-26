@@ -1,22 +1,20 @@
 package edu.university.facultyloading.model;
 
-import java.util.List;
-
 public class Load {
 
     private int id;
     private int approvedByRegistrarId;
-    private boolean isApproved;
-    private List<Subject> subjects;
+    private int facultyId;
+    private int isApproved;
 
     public Load() {
     }
 
-    public Load(int id, int approvedByRegistrarId, boolean isApproved, List<Subject> subjects) {
+    public Load(int id, int approvedByRegistrarId, int facultyId, int isApproved) {
         this.id = id;
         this.approvedByRegistrarId = approvedByRegistrarId;
+        this.facultyId = facultyId;
         this.isApproved = isApproved;
-        this.subjects = subjects;
     }
 
     public int getId() {
@@ -35,25 +33,25 @@ public class Load {
         this.approvedByRegistrarId = approvedByRegistrarId;
     }
 
-    public boolean isIsApproved() {
+    public int getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
+    }
+
+    public int getIsApproved() {
         return isApproved;
     }
 
-    public void setIsApproved(boolean isApproved) {
+    public void setIsApproved(int isApproved) {
         this.isApproved = isApproved;
-    }
-
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
     }
 
     @Override
     public String toString() {
-        return "Load{" + "id=" + id + ", approvedByRegistrarId=" + approvedByRegistrarId + ", isApproved=" + isApproved + ", subjects=" + subjects + '}';
+        return "Load{" + "id=" + id + ", approvedByRegistrarId=" + approvedByRegistrarId + ", facultyId=" + facultyId + ", isApproved=" + isApproved + '}';
     }
 
 }
