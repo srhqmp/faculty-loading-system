@@ -21,14 +21,15 @@ public class AdminRepoImpl implements AdminRepo {
 
     @Override
     public Admin fetchAdmin(int adminId) {
-        String query = "SELECT * FROM tbladmins "
+        String query = "SELECT admin_id, tbladmins.user_id AS user_id, username, first_name, last_name "
+                + "FROM tbladmins "
                 + "INNER JOIN tblusers "
                 + "ON tbladmins.user_id = tblusers.user_id "
                 + "WHERE admin_id = ? "
                 + "AND is_archived = 0";
 
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement preparedState = connection.prepareStatement(query)) {
 
             preparedState.setInt(1, adminId);
             ResultSet result = preparedState.executeQuery();
@@ -97,34 +98,30 @@ public class AdminRepoImpl implements AdminRepo {
 
     @Override
     public List<Admin> fetchAdmins() {
-        String query = "SELECT * FROM tbladmins "
+        String query = "SELECT admin_id, tbladmins.user_id AS user_id, username, first_name, last_name "
+                + "FROM tbladmins "
                 + "INNER JOIN tblusers "
                 + "ON tbladmins.user_id = tblusers.user_id "
                 + "WHERE is_archived = 0";
 
         List<Admin> admins = new ArrayList<>();
 
-        try (Connection connnection = dbConnection.connect();
-                Statement state = connnection.createStatement();
-                ResultSet result = state.executeQuery(query);) {
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                int id = result.getInt("user_id");
-                int adminId = result.getInt("admin_id");
-                String username = result.getString("username");
-                String firstName = result.getString("first_name");
-                String lastName = result.getString("last_name");
-
                 Admin admin = new Admin();
 
-                admin.setId(id);
-                admin.setAdminId(adminId);
-                admin.setUsername(username);
-                admin.setFirstName(firstName);
-                admin.setLastName(lastName);
+                admin.setAdminId(result.getInt("admin_id"));
+                admin.setId(result.getInt("user_id"));
+                admin.setUsername(result.getString("username"));
+                admin.setFirstName(result.getString("first_name"));
+                admin.setLastName(result.getString("last_name"));
 
                 admins.add(admin);
             }
+
         } catch (SQLException e) {
             System.out.println("Admin Repo - fetchAdmins(): " + e.getMessage());
         }
@@ -135,13 +132,12 @@ public class AdminRepoImpl implements AdminRepo {
     @Override
     public boolean createAdmin(String username, String password, String firstName, String lastName) {
         // insert to user
-        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) "
-                + "VALUES (?,?,?,?,3)";
+        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 3)";
         String queryAdmin = "INSERT INTO tbladmins (user_id) VALUES (?)";
         boolean isSuccess = false;
 
-        try (Connection connnection = dbConnection.connect();) {
-            try (PreparedStatement prepUser = connnection.prepareStatement(queryUser,
+        try (Connection connection = dbConnection.connect();) {
+            try (PreparedStatement prepUser = connection.prepareStatement(queryUser,
                     Statement.RETURN_GENERATED_KEYS);) {
                 prepUser.setString(1, username);
                 prepUser.setString(2, password);
@@ -153,7 +149,7 @@ public class AdminRepoImpl implements AdminRepo {
                 ResultSet result = prepUser.getGeneratedKeys();
 
                 if (result.next()) {
-                    try (PreparedStatement prepAdmin = connnection.prepareStatement(queryAdmin);) {
+                    try (PreparedStatement prepAdmin = connection.prepareStatement(queryAdmin);) {
                         int userId = result.getInt(1);
 
                         prepAdmin.setInt(1, userId);

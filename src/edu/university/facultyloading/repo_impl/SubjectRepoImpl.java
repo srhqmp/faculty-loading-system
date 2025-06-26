@@ -1,7 +1,6 @@
 package edu.university.facultyloading.repo_impl;
 
 import edu.university.facultyloading.model.Subject;
-import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.util.DbConnection;
 import java.sql.Connection;
