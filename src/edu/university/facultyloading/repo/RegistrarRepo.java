@@ -7,6 +7,8 @@ public interface RegistrarRepo {
 
     public Registrar fetchRegistrar(int registrarId);
 
+    public Registrar fetchRegistrar(String username, String password);
+
     public List<Registrar> fetchRegistrars();
 
     public boolean createRegistrar(String username, String password, String firstName, String lastName);

@@ -27,8 +27,6 @@ public class RegistrarRepoImpl implements RegistrarRepo {
                 + "WHERE registrar_id = ? "
                 + "AND is_archived = 0";
 
-        Registrar registrar = new Registrar();
-
         try (Connection connnection = dbConnection.connect();
                 PreparedStatement preparedState = connnection.prepareStatement(query);) {
 
@@ -36,24 +34,67 @@ public class RegistrarRepoImpl implements RegistrarRepo {
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
+                Registrar registrar = new Registrar();
+
                 int id = result.getInt("user_id");
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
-                String password = result.getString("password");
 
                 registrar.setId(id);
                 registrar.setRegistrarId(registrarId);
                 registrar.setUsername(username);
                 registrar.setFirstName(firstName);
                 registrar.setLastName(lastName);
-                registrar.setPassword(password);
+
+                return registrar;
             }
         } catch (SQLException e) {
             System.out.println("Registrar Repo - fetchRegistrar(): " + e.getMessage());
         }
 
-        return registrar;
+        return null;
+    }
+
+    @Override
+    public Registrar fetchRegistrar(String username, String password) {
+        String query = "SELECT registrar_id, tblusers.user_id, String first_name, String last_lame "
+                + "FROM tblregistrars "
+                + "INNER JOIN tblusers "
+                + "ON tbladmins.user_id = tblusers.user_id "
+                + "WHERE username = ? "
+                + "AND password = ? "
+                + "AND role = 2 "
+                + "AND is_archived = 0";
+
+        try (Connection connnection = dbConnection.connect();
+                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+
+            preparedState.setString(1, username);
+            preparedState.setString(2, password);
+            ResultSet result = preparedState.executeQuery();
+
+            if (result.next()) {
+                Registrar registrar = new Registrar();
+
+                int id = result.getInt("user_id");
+                int adminId = result.getInt("registrar_id");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+
+                registrar.setId(id);
+                registrar.setRegistrarId(adminId);
+                registrar.setUsername(username);
+                registrar.setFirstName(firstName);
+                registrar.setLastName(lastName);
+
+                return registrar;
+            }
+        } catch (SQLException e) {
+            System.out.println("Registar Repo - fetchRegistrar(): " + e.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -75,7 +116,6 @@ public class RegistrarRepoImpl implements RegistrarRepo {
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
-                String password = result.getString("password");
 
                 Registrar registrar = new Registrar();
 
@@ -84,7 +124,6 @@ public class RegistrarRepoImpl implements RegistrarRepo {
                 registrar.setUsername(username);
                 registrar.setFirstName(firstName);
                 registrar.setLastName(lastName);
-                registrar.setPassword(password);
 
                 registrars.add(registrar);
             }

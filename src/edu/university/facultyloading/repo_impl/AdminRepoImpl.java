@@ -27,8 +27,6 @@ public class AdminRepoImpl implements AdminRepo {
                 + "WHERE admin_id = ? "
                 + "AND is_archived = 0";
 
-        Admin admin = new Admin();
-
         try (Connection connnection = dbConnection.connect();
                 PreparedStatement preparedState = connnection.prepareStatement(query);) {
 
@@ -36,24 +34,65 @@ public class AdminRepoImpl implements AdminRepo {
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
+                Admin admin = new Admin();
+
                 int id = result.getInt("user_id");
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
-                String password = result.getString("password");
 
                 admin.setId(id);
                 admin.setAdminId(adminId);
                 admin.setUsername(username);
                 admin.setFirstName(firstName);
                 admin.setLastName(lastName);
-                admin.setPassword(password);
+
+                return admin;
             }
         } catch (SQLException e) {
             System.out.println("Admin Repo - fetchAdmin(): " + e.getMessage());
         }
+        return null;
+    }
 
-        return admin;
+    @Override
+    public Admin fetchAdmin(String username, String password) {
+        String query = "SELECT admin_id, tblusers.user_id, String first_name, String last_name "
+                + "FROM tbladmins "
+                + "INNER JOIN tblusers "
+                + "ON tbladmins.user_id = tblusers.user_id "
+                + "WHERE username = ? "
+                + "AND password = ? "
+                + "AND role = 3 "
+                + "AND is_archived = 0";
+
+        try (Connection connnection = dbConnection.connect();
+                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+
+            preparedState.setString(1, username);
+            preparedState.setString(2, password);
+            ResultSet result = preparedState.executeQuery();
+
+            if (result.next()) {
+                Admin admin = new Admin();
+
+                int id = result.getInt("user_id");
+                int adminId = result.getInt("admin_id");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+
+                admin.setId(id);
+                admin.setAdminId(adminId);
+                admin.setUsername(username);
+                admin.setFirstName(firstName);
+                admin.setLastName(lastName);
+
+                return admin;
+            }
+        } catch (SQLException e) {
+            System.out.println("Admin Repo - fetchAdmin(): " + e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -75,7 +114,6 @@ public class AdminRepoImpl implements AdminRepo {
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
-                String password = result.getString("password");
 
                 Admin admin = new Admin();
 
@@ -84,7 +122,6 @@ public class AdminRepoImpl implements AdminRepo {
                 admin.setUsername(username);
                 admin.setFirstName(firstName);
                 admin.setLastName(lastName);
-                admin.setPassword(password);
 
                 admins.add(admin);
             }

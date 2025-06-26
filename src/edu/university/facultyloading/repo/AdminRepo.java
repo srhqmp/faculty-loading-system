@@ -7,6 +7,8 @@ public interface AdminRepo {
 
     public Admin fetchAdmin(int adminId);
 
+    public Admin fetchAdmin(String username, String password);
+
     public List<Admin> fetchAdmins();
 
     public boolean createAdmin(String username, String password, String firstName, String lastName);

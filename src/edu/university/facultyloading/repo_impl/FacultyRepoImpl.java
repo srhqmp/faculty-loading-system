@@ -28,8 +28,6 @@ public class FacultyRepoImpl implements FacultyRepo {
                 + "WHERE faculty_id = ? "
                 + "AND is_archived = 0";
 
-        Faculty faculty = new Faculty();
-
         try (Connection connnection = dbConnection.connect();
                 PreparedStatement preparedState = connnection.prepareStatement(query);) {
 
@@ -37,11 +35,12 @@ public class FacultyRepoImpl implements FacultyRepo {
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
+                Faculty faculty = new Faculty();
+
                 int id = result.getInt("user_id");
                 String username = result.getString("username");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");
-                String password = result.getString("password");
                 int role = result.getInt("role");
                 // faculty
                 String major = result.getString("major");
@@ -54,18 +53,68 @@ public class FacultyRepoImpl implements FacultyRepo {
                 faculty.setUsername(username);
                 faculty.setFirstName(firstName);
                 faculty.setLastName(lastName);
-                faculty.setPassword(password);
                 faculty.setRole(role);
                 faculty.setMajor(major);
                 faculty.setYearsOfExperience(yearsOfExperience);
                 faculty.setStudentFeedbackScore(studentFeedbackScore);
                 faculty.setIsAvailable(isAvailable);
+
+                return faculty;
             }
         } catch (SQLException e) {
             System.out.println("Admin Repo - fetchFaculty(): " + e.getMessage());
         }
 
-        return faculty;
+        return null;
+    }
+
+    @Override
+    public Faculty fetchFaculty(String username, String password) {
+        String query = "SELECT faculty_id, tblusers.user_id, first_name, last_name, major, years_of_experience, student_feedback_score, is_available "
+                + "FROM tblfaculties "
+                + "INNER JOIN tblusers "
+                + "ON tblfaculties.user_id = tblusers.user_id "
+                + "WHERE username = ? "
+                + "AND password = ? "
+                + "AND role = 1 "
+                + "AND is_archived = 0";
+
+        try (Connection connnection = dbConnection.connect();
+                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+
+            preparedState.setString(1, username);
+            preparedState.setString(2, password);
+            ResultSet result = preparedState.executeQuery();
+
+            if (result.next()) {
+                Faculty faculty = new Faculty();
+
+                int id = result.getInt("user_id");
+                int facultyId = result.getInt("faculty_id");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+                String major = result.getString("major");
+                int yearsOfExperience = result.getInt("years_of_experience");
+                double studentFeedbackScore = result.getDouble("student_feedback_score");
+                int isAvailable = result.getInt("is_available");
+
+                faculty.setFacultyId(facultyId);
+                faculty.setId(id);
+                faculty.setUsername(username);
+                faculty.setFirstName(firstName);
+                faculty.setLastName(lastName);
+                faculty.setMajor(major);
+                faculty.setYearsOfExperience(yearsOfExperience);
+                faculty.setStudentFeedbackScore(studentFeedbackScore);
+                faculty.setIsAvailable(isAvailable);
+
+                return faculty;
+            }
+        } catch (SQLException e) {
+            System.out.println("Faculty Repo - fetchFaculty(): " + e.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -143,7 +192,7 @@ public class FacultyRepoImpl implements FacultyRepo {
                 if (result.next()) {
                     try (PreparedStatement prepFaculty = connnection.prepareStatement(queryFaculty);) {
                         int userId = result.getInt(1);
-                        
+
                         prepFaculty.setInt(1, userId);
                         isSuccess = prepFaculty.executeUpdate() > 0;
                     } catch (SQLException e) {
