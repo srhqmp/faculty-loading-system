@@ -1,16 +1,20 @@
 package edu.university.facultyloading.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Faculty extends User {
 
     private int facultyId;
     private int loadId;
-
+    
     private String major;
     private int yearsOfExperience;
     private double studentFeedbackScore;
     private int isAvailable;
+    private boolean availability;
+    private List<String> trainings;
+    private List<String> subjectsTaught;
 
     public Faculty() {
     }
@@ -35,7 +39,11 @@ public class Faculty extends User {
         this.yearsOfExperience = yearsOfExperience;
         this.studentFeedbackScore = studentFeedbackScore;
         this.isAvailable = isAvailable;
+        this.trainings = new ArrayList<>();
+        this.subjectsTaught = new ArrayList<>();
     }
+
+    
 
     public int getFacultyId() {
         return facultyId;
@@ -73,6 +81,10 @@ public class Faculty extends User {
         return studentFeedbackScore;
     }
 
+    public List<String> getTrainings() {
+        return trainings;
+    }
+
     public void setStudentFeedbackScore(double studentFeedbackScore) {
         this.studentFeedbackScore = studentFeedbackScore;
     }
@@ -81,8 +93,17 @@ public class Faculty extends User {
         return isAvailable;
     }
 
+    
     public void setIsAvailable(int isAvailable) {
         this.isAvailable = isAvailable;
+    }
+
+    public boolean isAvailable() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 
     @Override
