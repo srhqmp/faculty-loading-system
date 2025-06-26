@@ -90,7 +90,7 @@ public class SubjectRepoImpl implements SubjectRepo {
 
             isSuccess = prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Subject Repo - createSubject() - Prep Subject: " + e.getMessage());
+            System.out.println("Subject Repo - createSubject(): " + e.getMessage());
         }
 
         return isSuccess;

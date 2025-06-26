@@ -1,11 +1,10 @@
 package edu.university.facultyloading.repo;
 
-import edu.university.facultyloading.model.Training;
-import java.util.List;
+import edu.university.facultyloading.model.FacultyTraining;
 
 public interface FacultyTrainingRepo {
 
-    public List<Training> fetchFacultyTrainings(int facultyId);
+    public FacultyTraining fetchFacultyTrainings(int facultyId);
 
     public boolean addFacultyTraining(int facultyId, String role, int trainingId);
 

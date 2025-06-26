@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface LoadRepo {
 
-    public Load fetchLoad(int id);
+    public Load fetchLoad(int facultyId);
 
     public List<Load> fetchLoads();
 

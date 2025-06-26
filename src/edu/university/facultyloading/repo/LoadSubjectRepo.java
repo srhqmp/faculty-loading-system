@@ -1,11 +1,10 @@
 package edu.university.facultyloading.repo;
 
-import edu.university.facultyloading.model.Subject;
-import java.util.List;
+import edu.university.facultyloading.model.LoadSubject;
 
 public interface LoadSubjectRepo {
 
-    public List<Subject> fetchLoadSubjects(int loadId);
+    public LoadSubject fetchLoadSubjects(int loadId);
 
     public boolean addLoadSubject(int loadId, int subjectId);
 
