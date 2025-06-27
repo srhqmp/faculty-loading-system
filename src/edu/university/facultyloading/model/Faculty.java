@@ -73,6 +73,10 @@ public class Faculty extends User {
         return yearsOfExperience;
     }
 
+    public String getName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public void setYearsOfExperience(int yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
@@ -85,6 +89,7 @@ public class Faculty extends User {
         return trainings;
     }
 
+    
     public void setStudentFeedbackScore(double studentFeedbackScore) {
         this.studentFeedbackScore = studentFeedbackScore;
     }
