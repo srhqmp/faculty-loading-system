@@ -1,10 +1,17 @@
 package edu.university.facultyloading.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Subject {
 
     private int id;
     private String name;
     private String description;
+    private String recommendedMajor;
+    private List<String> requiredTraining;
+    private List<String> previousTeachers;
+    private int complexityLevel; // Optional: range 1–5
 
     public Subject() {
     }
@@ -13,6 +20,17 @@ public class Subject {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    Subject(int id, String name, String description, int complexityLevel, List<String> previousTeachers,
+            String recommendedMajor, List<String> requiredTraining) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.complexityLevel = 1;
+        this.previousTeachers = new ArrayList<>();
+        this.recommendedMajor = recommendedMajor;
+        this.requiredTraining = new ArrayList<>();
     }
 
     public int getId() {
@@ -25,6 +43,38 @@ public class Subject {
 
     public String getName() {
         return name;
+    }
+
+    public int getComplexityLevel() {
+        return complexityLevel;
+    }
+
+    public List<String> getPreviousTeachers() {
+        return previousTeachers;
+    }
+
+    public String getRecommendedMajor() {
+        return recommendedMajor;
+    }
+
+    public List<String> getRequiredTraining() {
+        return requiredTraining;
+    }
+
+    public void setComplexityLevel(int complexityLevel) {
+        this.complexityLevel = complexityLevel;
+    }
+
+    public void setPreviousTeachers(List<String> previousTeachers) {
+        this.previousTeachers = previousTeachers;
+    }
+
+    public void setRecommendedMajor(String recommendedMajor) {
+        this.recommendedMajor = recommendedMajor;
+    }
+
+    public void setRequiredTraining(List<String> requiredTraining) {
+        this.requiredTraining = requiredTraining;
     }
 
     public void setName(String name) {
