@@ -7,6 +7,8 @@ import java.util.List;
 
 import edu.university.facultyloading.model.Faculty;
 
+//this is main
+
 public class FacultySorter {
     public static List<Faculty> sortByFeedbackScore(List<Faculty> facultyList) {
         List<Faculty> sorted = new ArrayList<>(facultyList); // Create a copy to preserve original
