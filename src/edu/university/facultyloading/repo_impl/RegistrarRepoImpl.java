@@ -58,10 +58,10 @@ public class RegistrarRepoImpl implements RegistrarRepo {
 
     @Override
     public Registrar fetchRegistrar(String username, String password) {
-        String query = "SELECT registrar_id, tblusers.user_id, String first_name, String last_lame "
+        String query = "SELECT registrar_id, tblusers.user_id, first_name, last_name "
                 + "FROM tblregistrars "
                 + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
+                + "ON tblregistrars.user_id = tblusers.user_id "
                 + "WHERE username = ? "
                 + "AND password = ? "
                 + "AND role = 2 "
@@ -138,7 +138,7 @@ public class RegistrarRepoImpl implements RegistrarRepo {
     public boolean createRegistrar(String username, String password, String firstName, String lastName) {
         // insert to user
         String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) "
-                + "VALUES (?,?,?,?,3)";
+                + "VALUES (?,?,?,?,2)";
         String queryRegistrar = "INSERT INTO tblregistrars (user_id) VALUES (?)";
         boolean isSuccess = false;
 
@@ -253,6 +253,26 @@ public class RegistrarRepoImpl implements RegistrarRepo {
             System.out.println("Registrar Repo - deleteRegistrar() - Connection: " + e.getMessage());
         }
         return isSuccess;
+    }
+
+    @Override
+    public boolean isUsernameUnique(String username) {
+        String query = "SELECT COUNT(*) FROM tblusers WHERE username = ?";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement prepState = connection.prepareStatement(query)) {
+            prepState.setString(1, username);
+
+            ResultSet result = prepState.executeQuery();
+            if (result.next()) {
+                int count = result.getInt(1);
+                return count == 0; // true if unique
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Faculty Repo - isUsernameUnique(): " + e.getMessage());
+        }
+        return false;
     }
 
 }

@@ -23,8 +23,6 @@ public class SubjectRepoImpl implements SubjectRepo {
     public Subject fetchSubject(int id) {
         String query = "SELECT * FROM tblsubjects WHERE subject_id = ? AND is_archived = 0";
 
-        Subject subject = new Subject();
-
         try (Connection connnection = dbConnection.connect();
                 PreparedStatement preparedState = connnection.prepareStatement(query);) {
 
@@ -32,18 +30,21 @@ public class SubjectRepoImpl implements SubjectRepo {
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
+                Subject subject = new Subject();
                 String name = result.getString("subject_name");
                 String description = result.getString("subject_description");
 
                 subject.setId(id);
                 subject.setName(name);
                 subject.setDescription(description);
+
+                return subject;
             }
         } catch (SQLException e) {
             System.out.println("Subject Repo - fetchSubject(): " + e.getMessage());
         }
 
-        return subject;
+        return null;
     }
 
     @Override

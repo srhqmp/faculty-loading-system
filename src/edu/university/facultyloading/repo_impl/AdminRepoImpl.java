@@ -58,7 +58,7 @@ public class AdminRepoImpl implements AdminRepo {
 
     @Override
     public Admin fetchAdmin(String username, String password) {
-        String query = "SELECT admin_id, tblusers.user_id, String first_name, String last_name "
+        String query = "SELECT admin_id, tblusers.user_id, first_name, last_name "
                 + "FROM tbladmins "
                 + "INNER JOIN tblusers "
                 + "ON tbladmins.user_id = tblusers.user_id "
@@ -247,6 +247,26 @@ public class AdminRepoImpl implements AdminRepo {
             System.out.println("Admin Repo - deleteAdmin() - Connection: " + e.getMessage());
         }
         return isSuccess;
+    }
+
+    @Override
+    public boolean isUsernameUnique(String username) {
+        String query = "SELECT COUNT(*) FROM tblusers WHERE username = ?";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement prepState = connection.prepareStatement(query)) {
+            prepState.setString(1, username);
+
+            ResultSet result = prepState.executeQuery();
+            if (result.next()) {
+                int count = result.getInt(1);
+                return count == 0; // true if unique
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Faculty Repo - isUsernameUnique(): " + e.getMessage());
+        }
+        return false;
     }
 
 }
