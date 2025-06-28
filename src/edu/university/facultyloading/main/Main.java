@@ -3,17 +3,21 @@ package edu.university.facultyloading.main;
 import edu.university.facultyloading.controller.AdminController;
 import edu.university.facultyloading.controller.FacultyController;
 import edu.university.facultyloading.controller.RegistrarController;
+import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.RegistrarRepo;
+import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.repo_impl.AdminRepoImpl;
 import edu.university.facultyloading.repo_impl.FacultyRepoImpl;
 import edu.university.facultyloading.repo_impl.RegistrarRepoImpl;
+import edu.university.facultyloading.repo_impl.SubjectRepoImpl;
 import edu.university.facultyloading.util.DbConnection;
 import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
+import edu.university.facultyloading.view.SubjectManagementView;
 import java.util.Scanner;
 
 public class Main {
@@ -25,21 +29,29 @@ public class Main {
         DbConnection db = new DbConnection();
         OutputFormatter outputFormatter = new OutputFormatter();
 
-        // repo
+        // Repo
         AdminRepo adminRepo = new AdminRepoImpl(db);
-        AdminController adminController = new AdminController(adminRepo);
         FacultyRepo facultyRepo = new FacultyRepoImpl(db);
-        FacultyController facultyController = new FacultyController(facultyRepo);
         RegistrarRepo registrarRepo = new RegistrarRepoImpl(db);
-        RegistrarController registrarController = new RegistrarController(registrarRepo);
+        SubjectRepo subjectRepo = new SubjectRepoImpl(db);
 
-        // views
-        LoginView loginView = new LoginView(scanner, outputFormatter, adminController, facultyController, registrarController);
-        RegisterUserView registerView = new RegisterUserView(scanner, outputFormatter, adminController, facultyController, registrarController);
-        MainMenuView mainMenuView = new MainMenuView(scanner, outputFormatter, loginView, registerView);
+        // Controller
+        AdminController adminController = new AdminController(adminRepo);
+        FacultyController facultyController = new FacultyController(facultyRepo);
+        RegistrarController registrarController = new RegistrarController(registrarRepo);
+        SubjectController subjectController = new SubjectController(subjectRepo);
+
+        // Views
+        LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController);
+        RegisterUserView registerView = new RegisterUserView(scanner, adminController, facultyController, registrarController);
+        MainMenuView mainMenuView = new MainMenuView(scanner, loginView, registerView);
+        SubjectManagementView subjectView = new SubjectManagementView(scanner, subjectController);
 
         // show main menu
-        mainMenuView.show();
+//        mainMenuView.show();
+        // Manage Subject
+        subjectView.showMenu();
+
     }
 
 }

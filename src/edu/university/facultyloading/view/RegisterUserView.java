@@ -9,14 +9,12 @@ import java.util.Scanner;
 public class RegisterUserView {
 
     private final Scanner scanner;
-    private final OutputFormatter outputFormatter;
     private final AdminController adminController;
     private final FacultyController facultyController;
     private final RegistrarController registrarController;
 
-    public RegisterUserView(Scanner scanner, OutputFormatter outputFormatter, AdminController adminController, FacultyController facultyController, RegistrarController registrarController) {
+    public RegisterUserView(Scanner scanner, AdminController adminController, FacultyController facultyController, RegistrarController registrarController) {
         this.scanner = scanner;
-        this.outputFormatter = outputFormatter;
         this.adminController = adminController;
         this.facultyController = facultyController;
         this.registrarController = registrarController;

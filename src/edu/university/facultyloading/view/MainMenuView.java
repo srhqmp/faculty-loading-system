@@ -6,13 +6,11 @@ import java.util.Scanner;
 public class MainMenuView {
 
     private final Scanner scanner;
-    private final OutputFormatter outputFormatter;
     private final LoginView loginView;
     private final RegisterUserView registerUserView;
 
-    public MainMenuView(Scanner scanner, OutputFormatter outputFormatter, LoginView loginView, RegisterUserView registerUserView) {
+    public MainMenuView(Scanner scanner, LoginView loginView, RegisterUserView registerUserView) {
         this.scanner = scanner;
-        this.outputFormatter = outputFormatter;
         this.loginView = loginView;
         this.registerUserView = registerUserView;
     }
@@ -38,19 +36,19 @@ public class MainMenuView {
 
         switch (choice) {
             case "1":
-                outputFormatter.clearConsole();
+                OutputFormatter.clearConsole();
                 loginView.showLoginPrompt();
                 break;
             case "2":
-                outputFormatter.clearConsole();
+                OutputFormatter.clearConsole();
                 registerUserView.showRegisterPrompt();
                 break;
             case "3":
                 System.out.println("Exiting the program. Goodbye!");
                 return;
             default:
-                outputFormatter.clearConsole();
-                System.out.println("Invalid choice. Please enter 1, 2, or 3.\n");
+                OutputFormatter.clearConsole();
+                System.out.println("Invalid choice. Please try again.\n");
         }
     }
 }
