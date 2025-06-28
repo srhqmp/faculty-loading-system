@@ -13,6 +13,8 @@ public interface RegistrarRepo {
 
     public boolean createRegistrar(String username, String password, String firstName, String lastName);
 
+    public boolean isUsernameUnique(String username);
+
     public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
 
     public boolean archiveRegistrar(int id);

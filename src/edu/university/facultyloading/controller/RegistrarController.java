@@ -1,14 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.university.facultyloading.controller;
 
-/**
- *
- * @author user
- */
+import edu.university.facultyloading.model.Registrar;
+import edu.university.facultyloading.repo.RegistrarRepo;
+
 public class RegistrarController {
-    
+
+    private final RegistrarRepo registrarRepo;
+
+    public RegistrarController(RegistrarRepo registrarRepo) {
+        this.registrarRepo = registrarRepo;
+    }
+
+    public Registrar login(String username, String password) {
+        if (username == null || username.trim().isEmpty()) {
+            return null;
+        }
+        return registrarRepo.fetchRegistrar(username, password);
+    }
+
+    public boolean register(String username, String password, String firstName, String lastName) {
+        // validate user input
+        if (username == null || username.trim().isEmpty()) {
+            return false;
+        } else if (password == null || password.trim().isEmpty()) {
+            return false;
+        } else if (firstName == null || firstName.trim().isEmpty()) {
+            return false;
+        } else if (lastName == null || lastName.trim().isEmpty()) {
+            return false;
+        } else if (!registrarRepo.isUsernameUnique(username)) {
+            return false;
+        } else {
+            return registrarRepo.createRegistrar(username, password, firstName, lastName);
+        }
+    }
+
 }

@@ -13,6 +13,8 @@ public interface AdminRepo {
 
     public boolean createAdmin(String username, String password, String firstName, String lastName);
 
+    public boolean isUsernameUnique(String username);
+
     public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
 
     public boolean archiveAdmin(int id);
@@ -20,4 +22,5 @@ public interface AdminRepo {
     public boolean restoreAdmin(int id);
 
     public boolean deleteAdmin(int id, int adminId);
+
 }

@@ -2,7 +2,7 @@ package edu.university.facultyloading.repo;
 
 import edu.university.facultyloading.model.Faculty;
 import java.util.List;
- 
+
 public interface FacultyRepo {
 
     public Faculty fetchFaculty(int id);
@@ -12,6 +12,8 @@ public interface FacultyRepo {
     public List<Faculty> fetchFaculties();
 
     public boolean createFaculty(String username, String password, String firstName, String lastName);
+
+    public boolean isUsernameUnique(String username);
 
     public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
 

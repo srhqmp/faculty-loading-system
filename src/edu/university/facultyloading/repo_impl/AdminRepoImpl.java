@@ -249,4 +249,23 @@ public class AdminRepoImpl implements AdminRepo {
         return isSuccess;
     }
 
+    @Override
+    public boolean isUsernameUnique(String username) {
+        String query = "SELECT COUNT(*) FROM tblusers WHERE username = ?";
+
+        try (Connection connection = dbConnection.connect();
+                Statement state = connection.createStatement()) {
+
+            ResultSet result = state.executeQuery(query);
+            if (result.next()) {
+                int count = result.getInt(1);
+                return count == 0; // true if unique
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Admin Repo - isUsernameUnique(): " + e.getMessage());
+        }
+        return false;
+    }
+
 }
