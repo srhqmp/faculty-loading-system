@@ -29,7 +29,7 @@ public class FacultyController {
         } else if (lastName == null || lastName.trim().isEmpty()) {
             return false;
         } else if (!facultyRepo.isUsernameUnique(username)) {
-            System.out.println("A user with username " + username + "already exists.");
+            System.out.println("A user with username " + username + " already exists.");
             return false;
         } else {
             return facultyRepo.createFaculty(username, password, firstName, lastName);

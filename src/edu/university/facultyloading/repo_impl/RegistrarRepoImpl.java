@@ -58,10 +58,10 @@ public class RegistrarRepoImpl implements RegistrarRepo {
 
     @Override
     public Registrar fetchRegistrar(String username, String password) {
-        String query = "SELECT registrar_id, tblusers.user_id, String first_name, String last_lame "
+        String query = "SELECT registrar_id, tblusers.user_id, first_name, last_name "
                 + "FROM tblregistrars "
                 + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
+                + "ON tblregistrars.user_id = tblusers.user_id "
                 + "WHERE username = ? "
                 + "AND password = ? "
                 + "AND role = 2 "
@@ -138,7 +138,7 @@ public class RegistrarRepoImpl implements RegistrarRepo {
     public boolean createRegistrar(String username, String password, String firstName, String lastName) {
         // insert to user
         String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) "
-                + "VALUES (?,?,?,?,3)";
+                + "VALUES (?,?,?,?,2)";
         String queryRegistrar = "INSERT INTO tblregistrars (user_id) VALUES (?)";
         boolean isSuccess = false;
 

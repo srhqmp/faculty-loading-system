@@ -41,7 +41,7 @@ public class LoginView {
             if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
                 break; // valid input, proceed
             } else {
-                System.out.println("Invalid user type. Please enter 1, 2, or 3.\n");
+                System.out.println("Invalid input. Please try again.\n");
             }
         }
 

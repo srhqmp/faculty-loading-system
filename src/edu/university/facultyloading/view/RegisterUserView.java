@@ -37,7 +37,7 @@ public class RegisterUserView {
             if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
                 break; // valid choice
             } else {
-                System.out.println("Invalid user type. Please enter 1, 2, or 3.\n");
+                System.out.println("Invalid input. Please enter 1, 2, or 3.\n");
             }
         }
 

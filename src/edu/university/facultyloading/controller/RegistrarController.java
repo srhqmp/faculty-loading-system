@@ -29,7 +29,7 @@ public class RegistrarController {
         } else if (lastName == null || lastName.trim().isEmpty()) {
             return false;
         } else if (!registrarRepo.isUsernameUnique(username)) {
-            System.out.println("A user with username " + username + "already exists.");
+            System.out.println("A user with username " + username + " already exists.");
             return false;
         } else {
             return registrarRepo.createRegistrar(username, password, firstName, lastName);

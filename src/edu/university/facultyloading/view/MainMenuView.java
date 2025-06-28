@@ -18,30 +18,39 @@ public class MainMenuView {
     }
 
     public void show() {
+        System.out.println("\n=== Main Menu ===");
+        String choice;
+
         while (true) {
-            System.out.println("\n=== Main Menu ===");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. Exit");
             System.out.print("Enter choice: ");
-            String choice = scanner.nextLine();
+            choice = scanner.nextLine().trim();
+            System.out.println();
 
-            switch (choice) {
-                case "1":
-                    outputFormatter.clearConsole();
-                    loginView.showLoginPrompt();
-                    break;
-                case "2":
-                    outputFormatter.clearConsole();
-                    registerUserView.showRegisterPrompt();
-                    break;
-                case "3":
-                    System.out.println("Exiting the program. Goodbye!");
-                    return;
-                default:
-                    outputFormatter.clearConsole();
-                    System.out.println("Invalid choice. Please enter 1, 2, or 3.\n");
+            if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+                break; // valid input, proceed
+            } else {
+                System.out.println("Invalid input. Please try again.\n");
             }
+        }
+
+        switch (choice) {
+            case "1":
+                outputFormatter.clearConsole();
+                loginView.showLoginPrompt();
+                break;
+            case "2":
+                outputFormatter.clearConsole();
+                registerUserView.showRegisterPrompt();
+                break;
+            case "3":
+                System.out.println("Exiting the program. Goodbye!");
+                return;
+            default:
+                outputFormatter.clearConsole();
+                System.out.println("Invalid choice. Please enter 1, 2, or 3.\n");
         }
     }
 }
