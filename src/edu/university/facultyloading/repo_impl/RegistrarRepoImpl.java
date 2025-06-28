@@ -260,16 +260,17 @@ public class RegistrarRepoImpl implements RegistrarRepo {
         String query = "SELECT COUNT(*) FROM tblusers WHERE username = ?";
 
         try (Connection connection = dbConnection.connect();
-                Statement state = connection.createStatement()) {
+                PreparedStatement prepState = connection.prepareStatement(query)) {
+            prepState.setString(1, username);
 
-            ResultSet result = state.executeQuery(query);
+            ResultSet result = prepState.executeQuery();
             if (result.next()) {
                 int count = result.getInt(1);
                 return count == 0; // true if unique
             }
 
         } catch (SQLException e) {
-            System.out.println("Registrar Repo - isUsernameUnique(): " + e.getMessage());
+            System.out.println("Faculty Repo - isUsernameUnique(): " + e.getMessage());
         }
         return false;
     }

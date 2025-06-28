@@ -29,6 +29,7 @@ public class AdminController {
         } else if (lastName == null || lastName.trim().isEmpty()) {
             return false;
         } else if (!adminRepo.isUsernameUnique(username)) {
+            System.out.println("A user with username " + username + "already exists.");
             return false;
         } else {
             return adminRepo.createAdmin(username, password, firstName, lastName);

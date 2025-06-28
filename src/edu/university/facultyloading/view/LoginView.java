@@ -6,17 +6,20 @@ import edu.university.facultyloading.controller.RegistrarController;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Registrar;
+import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
 
 public class LoginView {
 
     private final Scanner scanner;
+    private final OutputFormatter outputFormatter;
     private final AdminController adminController;
     private final FacultyController facultyController;
     private final RegistrarController registrarController;
 
-    public LoginView(Scanner scanner, AdminController adminController, FacultyController facultyController, RegistrarController registrarController) {
+    public LoginView(Scanner scanner, OutputFormatter outputFormatter, AdminController adminController, FacultyController facultyController, RegistrarController registrarController) {
         this.scanner = scanner;
+        this.outputFormatter = outputFormatter;
         this.adminController = adminController;
         this.facultyController = facultyController;
         this.registrarController = registrarController;
@@ -24,18 +27,31 @@ public class LoginView {
 
     public void showLoginPrompt() {
         System.out.println("\n=== Login ===");
-        System.out.println("Select user type:");
-        System.out.println("1. Admin");
-        System.out.println("2. Registrar");
-        System.out.println("3. Faculty");
-        System.out.print("Enter choice: ");
-        String choice = scanner.nextLine();
+
+        String choice;
+        while (true) {
+            System.out.println("Select user type:");
+            System.out.println("1. Admin");
+            System.out.println("2. Registrar");
+            System.out.println("3. Faculty");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextLine().trim();
+            System.out.println();
+
+            if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+                break; // valid input, proceed
+            } else {
+                System.out.println("Invalid user type. Please enter 1, 2, or 3.\n");
+            }
+        }
 
         System.out.print("Username: ");
         String username = scanner.nextLine();
 
         System.out.print("Password: ");
         String password = scanner.nextLine();
+
+        System.out.println();
 
         switch (choice) {
             case "1":
@@ -47,8 +63,6 @@ public class LoginView {
             case "3":
                 loginFaculty(username, password);
                 break;
-            default:
-                System.out.println("Invalid user type.");
         }
     }
 
