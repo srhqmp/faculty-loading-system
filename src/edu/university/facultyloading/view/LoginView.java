@@ -8,6 +8,7 @@ import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Registrar;
 import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
+import edu.university.facultyloading.view.MainMenuView;
 
 public class LoginView {
 
@@ -15,28 +16,40 @@ public class LoginView {
     private final AdminController adminController;
     private final FacultyController facultyController;
     private final RegistrarController registrarController;
+    
 
-    public LoginView(Scanner scanner, AdminController adminController, FacultyController facultyController, RegistrarController registrarController) {
+    public LoginView(Scanner scanner, AdminController adminController, FacultyController facultyController,
+            RegistrarController registrarController) {
         this.scanner = scanner;
         this.adminController = adminController;
         this.facultyController = facultyController;
         this.registrarController = registrarController;
+        
+
     }
 
     public void showLoginPrompt() {
-        System.out.println("\n=== Login ===");
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║               LOG IN               ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        System.out.println();
 
         String choice;
         while (true) {
-            System.out.println("Select user type:");
-            System.out.println("1. Admin");
-            System.out.println("2. Registrar");
-            System.out.println("3. Faculty");
-            System.out.print("Enter choice: ");
+            System.out.println(OutputFormatter.centerString("╔══════════════════════════════╗"));
+            System.out.println(OutputFormatter.centerString("║        SELECT USER TYPE      ║"));
+            System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
+            System.out.println(OutputFormatter.centerString("║ 1. Admin                     ║"));
+            System.out.println(OutputFormatter.centerString("║ 2. Registrar                 ║"));
+            System.out.println(OutputFormatter.centerString("║ 3. Faculty                   ║"));
+            System.out.println(OutputFormatter.centerString("║ 0. Return to Main Menu       ║"));
+            System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
+            System.out.print(OutputFormatter.centerString("Enter choice [1-3]: "));
             choice = scanner.nextLine().trim();
             System.out.println();
 
-            if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+            if (choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("0")) {
                 break; // valid input, proceed
             } else {
                 System.out.println("Invalid input. Please try again.\n");
@@ -61,6 +74,10 @@ public class LoginView {
             case "3":
                 loginFaculty(username, password);
                 break;
+            case "0":
+                System.out.println("Return to main menu.");
+                break;
+
         }
     }
 

@@ -51,17 +51,18 @@ public class Main {
         LoadController loadController = new LoadController(loadRepo, loadSubjectRepo, subjectRepo);
 
         // Views
-        LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController);
+        LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController );
         RegisterUserView registerView = new RegisterUserView(scanner, adminController, facultyController, registrarController);
         MainMenuView mainMenuView = new MainMenuView(scanner, loginView, registerView);
         SubjectManagementView subjectView = new SubjectManagementView(scanner, subjectController);
         RegistrarDashboardView registrarView = new RegistrarDashboardView(scanner, loadController);
 
         // show main menu
-        // mainMenuView.show();
+        mainMenuView.show();
         // Manage Subject
        // subjectView.showMenu();
-       registrarView.showMenu();
+       // registrarView.showMenu();
+       
 
     }
 
