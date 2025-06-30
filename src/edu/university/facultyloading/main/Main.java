@@ -48,9 +48,9 @@ public class Main {
         SubjectManagementView subjectView = new SubjectManagementView(scanner, subjectController);
 
         // show main menu
-//        mainMenuView.show();
+        // mainMenuView.show();
         // Manage Subject
-        subjectView.showMenu();
+       subjectView.showMenu();
 
     }
 
