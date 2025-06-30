@@ -39,6 +39,7 @@ public class AppController {
         // set app controller to all views
         this.mainMenuView.setAppController(this);
         this.loginView.setAppController(this);
+        this.registerUserView.setAppController(this);
         // dashboard
         this.adminDashboardView.setAppController(this);
         this.facultyDashboardView.setAppController(this);
@@ -57,6 +58,10 @@ public class AppController {
 
     public void goToLogin() {
         loginView.showLoginPrompt();
+    }
+
+    public void gotToRegisterUser() {
+        registerUserView.showRegisterPrompt();
     }
 
     public void goToAdminDashboard(Admin admin) {

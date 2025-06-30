@@ -1,21 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.university.facultyloading.view;
 
 import java.util.List;
 import java.util.Scanner;
 import edu.university.facultyloading.controller.LoadController;
-import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.util.OutputFormatter;
 
-/**
- *
- * @author user
- */
 public class RegistrarDashboardView {
 
     private final Scanner scanner;

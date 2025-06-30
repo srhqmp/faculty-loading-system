@@ -50,8 +50,7 @@ public class MainMenuView {
                 appController.goToLogin();
                 break;
             case "2":
-                // go to register view using appController
-                // registerUserView.showRegisterPrompt();
+                appController.gotToRegisterUser();
                 break;
             case "3":
                 System.out.println("👋 Exiting the program. Goodbye!");
