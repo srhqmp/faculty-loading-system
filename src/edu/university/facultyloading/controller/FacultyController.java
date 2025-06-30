@@ -38,7 +38,7 @@ public class FacultyController {
         }
     }
 
-    // get all faculties
+    // update faculty
     public boolean updateFaculty(int facultyId, String major, int yearsOfExperience, double studentFeedbackScore,
             int isAvailable) {
         // validate faculty id
@@ -57,6 +57,22 @@ public class FacultyController {
             return false;
         }
         return facultyRepo.updateFacultyProfile(facultyId, major, yearsOfExperience, studentFeedbackScore, isAvailable);
+    }
+
+    // update profile
+    public boolean updateUser(int id, String username, String password, String firstName, String lastName) {
+        // validate id
+        if (id <= 0) {
+            System.out.println("Invalid ID.");
+            return false;
+        }
+        // validate input
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()
+                || firstName.trim().isEmpty() || lastName.trim().isEmpty()) {
+            System.out.println("Fields must not be empty.");
+            return false;
+        }
+        return facultyRepo.updateUserProfile(id, username, password, firstName, lastName);
     }
 
     public boolean deleteFaculty(int id) {
