@@ -19,8 +19,8 @@ public class Faculty extends User {
     }
 
     public Faculty(int id, int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
-            int isAvailable, String username, String password, String firstName, String lastName, int role) {
-        super(id, username, password, firstName, lastName, role);
+            int isAvailable, String username, String password, String firstName, String lastName) {
+        super(id, username, password, firstName, lastName, 1);
         this.facultyId = facultyId;
         this.loadId = loadId;
         this.major = major;
@@ -30,8 +30,8 @@ public class Faculty extends User {
     }
 
     public Faculty(int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
-            int isAvailable, String username, String password, String firstName, String lastName, int role) {
-        super(username, password, firstName, lastName, role);
+            int isAvailable, String username, String password, String firstName, String lastName) {
+        super(username, password, firstName, lastName, 1);
         this.facultyId = facultyId;
         this.loadId = loadId;
         this.major = major;

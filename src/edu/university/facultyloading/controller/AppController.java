@@ -8,7 +8,6 @@ import edu.university.facultyloading.view.FacultyManagementView;
 import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
-import edu.university.facultyloading.view.RegistrarDashboardView;
 import edu.university.facultyloading.view.SubjectManagementView;
 
 public class AppController {
@@ -18,21 +17,19 @@ public class AppController {
     // user dashboards
     private final AdminDashboardView adminDashboardView;
     private final FacultyDashboardView facultyDashboardView;
-    private final RegistrarDashboardView registrarDashboardView;
     // management views
     private final SubjectManagementView subjectManagementView;
     private final FacultyManagementView facultyManagementView;
 
     public AppController(MainMenuView mainMenuView, LoginView loginView, RegisterUserView registerUserView,
             AdminDashboardView adminDashboardView, FacultyDashboardView facultyDashboardView,
-            RegistrarDashboardView registrarDashboardView, SubjectManagementView subjectManagementView,
+            SubjectManagementView subjectManagementView,
             FacultyManagementView facultyManagementView) {
         this.mainMenuView = mainMenuView;
         this.loginView = loginView;
         this.registerUserView = registerUserView;
         this.adminDashboardView = adminDashboardView;
         this.facultyDashboardView = facultyDashboardView;
-        this.registrarDashboardView = registrarDashboardView;
         this.subjectManagementView = subjectManagementView;
         this.facultyManagementView = facultyManagementView;
 

@@ -17,11 +17,11 @@ public class Admin extends User {
     }
 
     public Admin(int id, String username, String password, String firstName, String lastName) {
-        super(id, username, password, firstName, lastName, 3);
+        super(id, username, password, firstName, lastName, 2);
     }
 
     public Admin(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, 3);
+        super(username, password, firstName, lastName, 2);
     }
 
     public int getAdminId() {

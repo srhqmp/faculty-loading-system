@@ -7,7 +7,7 @@ abstract class User {
     private String password;
     private String firstName;
     private String lastName;
-    private int role;
+    private int role; // 1 = faculty, 2 = admin
 
     public User() {
 

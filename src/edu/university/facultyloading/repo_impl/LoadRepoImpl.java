@@ -32,14 +32,10 @@ public class LoadRepoImpl implements LoadRepo {
             ResultSet result = preparedState.executeQuery();
 
             if (result.next()) {
-                int approvedByRegistrarId = result.getInt("approved_by_registrar_id");
-                int isApproved = result.getInt("is_approved");
                 int id = result.getInt("load_id");
 
                 load.setId(id);
-                load.setApprovedByRegistrarId(approvedByRegistrarId);
                 load.setFacultyId(facultyId);
-                load.setIsApproved(isApproved);
             }
         } catch (SQLException e) {
             System.out.println("Load Repo - fetchLoad(): " + e.getMessage());
@@ -60,15 +56,11 @@ public class LoadRepoImpl implements LoadRepo {
 
             while (result.next()) {
                 int id = result.getInt("load_id");
-                int approvedByRegistrarId = result.getInt("approved_by_registrar_id");
-                int isApproved = result.getInt("is_approved");
                 int facultyId = result.getInt("faculty_id");
 
                 Load load = new Load();
 
                 load.setId(id);
-                load.setApprovedByRegistrarId(approvedByRegistrarId);
-                load.setIsApproved(isApproved);
                 load.setFacultyId(facultyId);
                 loads.add(load);
             }
@@ -93,26 +85,6 @@ public class LoadRepoImpl implements LoadRepo {
             System.out.println("Load Repo - createLoad(): " + e.getMessage());
         }
 
-        return isSuccess;
-    }
-
-    @Override
-    public boolean approveLoad(int id, int registrarId) {
-        String query = "UPDATE tblloads SET is_approved = 1, approved_by_registrar_id = ? "
-                + "WHERE load_id = ? "
-                + "AND is_archived = 0";
-
-        boolean isSuccess = false;
-
-        try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, registrarId);
-            prep.setInt(2, id);
-
-            isSuccess = prep.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Load Repo - approveLoad(): " + e.getMessage());
-        }
         return isSuccess;
     }
 

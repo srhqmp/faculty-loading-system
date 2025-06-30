@@ -66,20 +66,6 @@ public class LoadController {
 
     }
 
-    // get all filtered loads
-    public List<Load> getFilteredLoads(int isApproved) {
-        List<Load> loads = loadRepo.fetchLoads();
-        List<Load> filteredLoads = new ArrayList<>();
-
-        for (Load load : loads) {
-            if (load.getIsApproved() == isApproved) {
-                filteredLoads.add(load);
-            }
-        }
-
-        return filteredLoads;
-    }
-
     // get all loads
     public List<Load> getAllLoads() {
         return loadRepo.fetchLoads();
@@ -88,23 +74,6 @@ public class LoadController {
     // view faculty load
     private Load getFacultyLoad(int facultyId) {
         return loadRepo.fetchLoad(facultyId);
-    }
-
-    // approve load
-    public boolean approveFacultyLoad(int facultyId, int registrarId) {
-        // validate id's
-        if (facultyId == 0) {
-            System.out.println("Invalid faculty id. Please try again.");
-        }
-        if (registrarId == 0) {
-            System.out.println("Invalid registrar id. Please try again.");
-        }
-
-        // get load id
-        Load load = getFacultyLoad(facultyId);
-        int loadId = load.getId();
-        // approve load
-        return loadRepo.approveLoad(loadId, registrarId);
     }
 
     // delete load

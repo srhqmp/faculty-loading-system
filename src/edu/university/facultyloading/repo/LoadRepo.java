@@ -11,8 +11,6 @@ public interface LoadRepo {
 
     public boolean createLoad(int facultyId);
 
-    public boolean approveLoad(int id, int registrarId);
-
     public boolean archiveLoad(int id);
 
     public boolean restoreLoad(int id);

@@ -64,7 +64,7 @@ public class AdminRepoImpl implements AdminRepo {
                 + "ON tbladmins.user_id = tblusers.user_id "
                 + "WHERE username = ? "
                 + "AND password = ? "
-                + "AND role = 3 "
+                + "AND role = 2 "
                 + "AND is_archived = 0";
 
         try (Connection connnection = dbConnection.connect();
@@ -133,7 +133,7 @@ public class AdminRepoImpl implements AdminRepo {
     @Override
     public boolean createAdmin(String username, String password, String firstName, String lastName) {
         // insert to user
-        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 3)";
+        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 2)";
         String queryAdmin = "INSERT INTO tbladmins (user_id) VALUES (?)";
         boolean isSuccess = false;
 
