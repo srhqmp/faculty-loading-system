@@ -36,4 +36,10 @@ public class RegistrarController {
         }
     }
 
+    // get all faculty load report
+
+    // get faculty teaching load
+
+    // approve teaching load
+
 }
