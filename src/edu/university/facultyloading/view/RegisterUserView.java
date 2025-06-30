@@ -3,7 +3,6 @@ package edu.university.facultyloading.view;
 import edu.university.facultyloading.controller.AdminController;
 import edu.university.facultyloading.controller.FacultyController;
 import edu.university.facultyloading.controller.RegistrarController;
-import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
 
 public class RegisterUserView {

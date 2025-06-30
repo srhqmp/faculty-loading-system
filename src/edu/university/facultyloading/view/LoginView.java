@@ -1,6 +1,7 @@
 package edu.university.facultyloading.view;
 
 import edu.university.facultyloading.controller.AdminController;
+import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.controller.FacultyController;
 import edu.university.facultyloading.controller.RegistrarController;
 import edu.university.facultyloading.model.Admin;
@@ -8,7 +9,6 @@ import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Registrar;
 import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
-import edu.university.facultyloading.view.MainMenuView;
 
 public class LoginView {
 
@@ -16,7 +16,7 @@ public class LoginView {
     private final AdminController adminController;
     private final FacultyController facultyController;
     private final RegistrarController registrarController;
-    
+    private AppController appController;
 
     public LoginView(Scanner scanner, AdminController adminController, FacultyController facultyController,
             RegistrarController registrarController) {
@@ -24,8 +24,10 @@ public class LoginView {
         this.adminController = adminController;
         this.facultyController = facultyController;
         this.registrarController = registrarController;
-        
+    }
 
+    public void setAppController(AppController appController) {
+        this.appController = appController;
     }
 
     public void showLoginPrompt() {
@@ -56,6 +58,12 @@ public class LoginView {
             }
         }
 
+        // return to main menu if choice is 0
+        if (choice.equals("0")) {
+            appController.goToMainMenu();
+            return;
+        }
+
         System.out.print("Username: ");
         String username = scanner.nextLine();
 
@@ -74,10 +82,8 @@ public class LoginView {
             case "3":
                 loginFaculty(username, password);
                 break;
-            case "0":
-                System.out.println("Return to main menu.");
-                break;
-
+            default:
+                return;
         }
     }
 
@@ -90,6 +96,7 @@ public class LoginView {
         }
 
         System.out.println("Welcome " + admin.getFirstName() + " " + admin.getLastName() + "!");
+        appController.goToAdminDashboard(admin);
     }
 
     private void loginFaculty(String username, String password) {
@@ -101,6 +108,7 @@ public class LoginView {
         }
 
         System.out.println("Welcome " + faculty.getFirstName() + " " + faculty.getLastName() + "!");
+        appController.goToFacultyDashboard(faculty);
     }
 
     private void loginRegistrar(String username, String password) {
@@ -113,5 +121,4 @@ public class LoginView {
 
         System.out.println("Welcome " + registrar.getFirstName() + " " + registrar.getLastName() + "!");
     }
-
 }

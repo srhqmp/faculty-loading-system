@@ -1,6 +1,8 @@
 package edu.university.facultyloading.view;
 
+import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.controller.SubjectController;
+import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.util.OutputFormatter;
 import java.util.List;
@@ -10,13 +12,18 @@ public class SubjectManagementView {
 
     private final SubjectController subjectController;
     private final Scanner scanner;
+    private AppController appController;
 
     public SubjectManagementView(Scanner scanner, SubjectController subjectController) {
         this.subjectController = subjectController;
         this.scanner = scanner;
     }
 
-    public void showMenu() {
+    public void setAppController(AppController appController) {
+        this.appController = appController;
+    }
+
+    public void showMenu(Admin admin) {
         while (true) {
             System.out.println("\n== Subject Management ==");
             System.out.println("1. View All Subjects");
@@ -46,7 +53,8 @@ public class SubjectManagementView {
                     deleteSubject();
                     break;
                 case "0":
-                    return;
+                    appController.goToAdminDashboard(admin);
+                    break;
                 default:
                     System.out.println();
                     System.out.println("Invalid choice. Try again.");

@@ -1,6 +1,7 @@
 package edu.university.facultyloading.main;
 
 import edu.university.facultyloading.controller.AdminController;
+import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.controller.FacultyController;
 import edu.university.facultyloading.controller.LoadController;
 import edu.university.facultyloading.controller.RegistrarController;
@@ -18,12 +19,15 @@ import edu.university.facultyloading.repo_impl.LoadSubjectRepoImpl;
 import edu.university.facultyloading.repo_impl.RegistrarRepoImpl;
 import edu.university.facultyloading.repo_impl.SubjectRepoImpl;
 import edu.university.facultyloading.util.DbConnection;
-import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.view.AdminDashboardView;
+import edu.university.facultyloading.view.FacultyDashboardView;
+import edu.university.facultyloading.view.FacultyManagementView;
 import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
 import edu.university.facultyloading.view.RegistrarDashboardView;
 import edu.university.facultyloading.view.SubjectManagementView;
+
 import java.util.Scanner;
 
 public class Main {
@@ -33,7 +37,6 @@ public class Main {
 
         // utils
         DbConnection db = new DbConnection();
-        OutputFormatter outputFormatter = new OutputFormatter();
 
         // Repo / coordination/functions with DB/ contains SQL
         AdminRepo adminRepo = new AdminRepoImpl(db);
@@ -51,18 +54,22 @@ public class Main {
         LoadController loadController = new LoadController(loadRepo, loadSubjectRepo, subjectRepo);
 
         // Views
-        LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController );
-        RegisterUserView registerView = new RegisterUserView(scanner, adminController, facultyController, registrarController);
-        MainMenuView mainMenuView = new MainMenuView(scanner, loginView, registerView);
-        SubjectManagementView subjectView = new SubjectManagementView(scanner, subjectController);
+        LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController);
+        RegisterUserView registerView = new RegisterUserView(scanner, adminController, facultyController,
+                registrarController);
+        MainMenuView mainMenuView = new MainMenuView(scanner);
         RegistrarDashboardView registrarView = new RegistrarDashboardView(scanner, loadController);
+        AdminDashboardView adminDashboardView = new AdminDashboardView(scanner, adminController);
+        FacultyDashboardView facultyDashboardView = new FacultyDashboardView(scanner);
+        FacultyManagementView facultyManagementView = new FacultyManagementView(scanner, facultyController);
+        SubjectManagementView subjectManagementView = new SubjectManagementView(scanner, subjectController);
 
-        // show main menu
-        mainMenuView.show();
-        // Manage Subject
-       // subjectView.showMenu();
-       // registrarView.showMenu();
-       
+        // Manage navigation
+        AppController viewContoller = new AppController(mainMenuView, loginView, registerView, adminDashboardView,
+                facultyDashboardView, registrarView, subjectManagementView, facultyManagementView);
+
+        // Start the app
+        viewContoller.start();
 
     }
 

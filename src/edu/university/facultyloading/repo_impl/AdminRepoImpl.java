@@ -85,6 +85,7 @@ public class AdminRepoImpl implements AdminRepo {
                 admin.setId(id);
                 admin.setAdminId(adminId);
                 admin.setUsername(username);
+                admin.setPassword(password);
                 admin.setFirstName(firstName);
                 admin.setLastName(lastName);
 

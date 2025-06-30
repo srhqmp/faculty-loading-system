@@ -102,6 +102,7 @@ public class FacultyRepoImpl implements FacultyRepo {
                 faculty.setId(id);
                 faculty.setUsername(username);
                 faculty.setFirstName(firstName);
+                faculty.setPassword(password);
                 faculty.setLastName(lastName);
                 faculty.setMajor(major);
                 faculty.setYearsOfExperience(yearsOfExperience);

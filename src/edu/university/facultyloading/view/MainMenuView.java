@@ -1,22 +1,20 @@
 package edu.university.facultyloading.view;
 
-import edu.university.facultyloading.util.ConsoleColors;
+import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
-import edu.university.facultyloading.util.StringHelper;
 
 public class MainMenuView {
 
     private final Scanner scanner;
-    private final LoginView loginView;
-    private final RegisterUserView registerUserView;
-    // console width for centering
-    private final int CONSOLE_WIDTH = 80;
+    private AppController appController;
 
-    public MainMenuView(Scanner scanner, LoginView loginView, RegisterUserView registerUserView) {
+    public MainMenuView(Scanner scanner) {
         this.scanner = scanner;
-        this.loginView = loginView;
-        this.registerUserView = registerUserView;
+    }
+
+    public void setAppController(AppController appController) {
+        this.appController = appController;
     }
 
     public void show() {
@@ -47,13 +45,13 @@ public class MainMenuView {
             }
         }
 
-
         switch (choice) {
             case "1":
-                loginView.showLoginPrompt();
+                appController.goToLogin();
                 break;
             case "2":
-                registerUserView.showRegisterPrompt();
+                // go to register view using appController
+                // registerUserView.showRegisterPrompt();
                 break;
             case "3":
                 System.out.println("👋 Exiting the program. Goodbye!");

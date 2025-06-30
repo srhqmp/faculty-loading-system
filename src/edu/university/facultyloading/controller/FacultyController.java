@@ -51,7 +51,7 @@ public class FacultyController {
             System.out.println("Major cannot be empty.");
             return false;
         }
-        if (yearsOfExperience <= 0 || studentFeedbackScore <= 0
+        if (yearsOfExperience < 0
                 || (isAvailable > 1 && isAvailable < 0)) {
             System.out.println("Invalid input.");
             return false;
