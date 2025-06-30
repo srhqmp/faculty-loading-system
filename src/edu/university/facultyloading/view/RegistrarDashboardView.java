@@ -19,7 +19,7 @@ import edu.university.facultyloading.util.OutputFormatter;
 public class RegistrarDashboardView {
 
     private final Scanner scanner;
-    private final LoadController loadController; 
+    private final LoadController loadController;
 
     public RegistrarDashboardView(Scanner scanner, LoadController loadController) {
         this.scanner = scanner;
@@ -27,16 +27,18 @@ public class RegistrarDashboardView {
     }
 
     public void showMenu() {
-        System.out.println("\n---- Registrar Dashboard----");
-        System.out.println("1) View Faculty Load Report");
-        System.out.println("2) View Teaching Load");
-        System.out.println("3) Approved Teaching Load");
-        System.out.println("4) Logout");
-
-        System.out.print("Enter you choice: ");
+        System.out.println(OutputFormatter.centerString("╔══════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║     Registrar DashBahoard    ║"));
+        System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
+        System.out.println(OutputFormatter.centerString("║ 1. View Faculty Load Report  ║"));
+        System.out.println(OutputFormatter.centerString("║ 2. View Teaching Load        ║"));
+        System.out.println(OutputFormatter.centerString("║ 3. Approved Teaching Load    ║"));
+        System.out.println(OutputFormatter.centerString("║ 0. Logout                    ║"));
+        System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
+        System.out.print(OutputFormatter.centerString("Enter choice [1-3]: "));
+        System.out.println();
 
         String choice = scanner.nextLine();
-        
 
         switch (choice) {
             case "1":
@@ -65,7 +67,6 @@ public class RegistrarDashboardView {
     private void viewFacultyLoadReport() {
         List<Load> loads = loadController.getAllLoads();
 
-
         OutputFormatter.printHeader("Faculty Load Report");
         // table headers with fixed width
         System.out.printf("%-5s %-25s %-35s%n", "ID", "Name", "Description");
@@ -88,7 +89,5 @@ public class RegistrarDashboardView {
     private void logOut() {
         System.out.println("You have been log out. Thank you!");
     }
-
-
 
 }
