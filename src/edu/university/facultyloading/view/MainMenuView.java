@@ -41,9 +41,11 @@ public class MainMenuView {
             if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
                 break;
             } else {
-                System.out.println(OutputFormatter.centerString("⚠️  Invalid input. Please try again.\n"));
+                System.out.println("⚠️  Invalid input. Please try again.\n");
             }
         }
+
+        
 
         switch (choice) {
             case "1":

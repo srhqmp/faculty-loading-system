@@ -6,6 +6,7 @@ import edu.university.facultyloading.controller.FacultyController;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Faculty;
 
+import edu.university.facultyloading.util.OutputFormatter;
 import java.util.Scanner;
 
 public class RegisterUserView {
@@ -26,30 +27,34 @@ public class RegisterUserView {
     }
 
     public void showRegisterPrompt() {
-        while (true) {
-            System.out.println("\n=== Register New User ===");
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║           Register User            ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        System.out.println();
 
-            String choice;
+        String choice;
+        while (true) {
             while (true) {
-                System.out.println("Select user type:");
-                System.out.println("1. Admin");
-                System.out.println("2. Faculty");
-                System.out.println("0. Return to Main Menu");
-                System.out.print("Enter choice: ");
+                System.out.println(OutputFormatter.centerString("╔══════════════════════════════╗"));
+                System.out.println(OutputFormatter.centerString("║    Select User Type Below    ║"));
+                System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
+                System.out.println(OutputFormatter.centerString("║ 1. Admin                     ║"));
+                System.out.println(OutputFormatter.centerString("║ 2. Faculty                   ║"));
+                System.out.println(OutputFormatter.centerString("║ 0. Return to Main Menu       ║"));
+                System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
+                System.out.print(OutputFormatter.centerString("Enter choice [1-3]: "));
                 choice = scanner.nextLine().trim();
                 System.out.println();
 
                 if (choice.equals("1") || choice.equals("2") || choice.equals("0")) {
-                    break;
+                    break; // valid choice
                 } else {
                     System.out.println("Invalid input. Please try again.\n");
                 }
             }
 
-            if (choice.equals("0")) {
-                appController.goToMainMenu();
-                return;
-            }
+            System.out.println();
 
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
@@ -70,24 +75,26 @@ public class RegisterUserView {
             switch (choice) {
                 case "1":
                     success = adminController.register(username, password, firstName, lastName);
-                    if (success) {
-                        Admin admin = adminController.login(username, password);
-                        appController.goToAdminDashboard(admin);
-                        return;
-                    }
                     break;
                 case "2":
                     success = facultyController.register(username, password, firstName, lastName);
-                    if (success) {
-                        Faculty faculty = facultyController.login(username, password);
-                        appController.goToFacultyDashboard(faculty);
-                        return;
-                    }
+                    break;
+                case "0":
+                    appController.goToMainMenu();
                     break;
             }
 
-            System.out.println("Registration failed. Please try again.\n");
+            if (success) {
+                if (choice == "1") {
+                    Admin admin = adminController.login(username, password);
+                    appController.goToAdminDashboard(admin);
+                } else if (choice == "2") {
+                    Faculty faculty = facultyController.login(username, password);
+                    appController.goToFacultyDashboard(faculty);
+                }
+            } else {
+                System.out.println("Registration failed. Please check your inputs.");
+            }
         }
     }
-
 }
