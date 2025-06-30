@@ -1,7 +1,6 @@
 package edu.university.facultyloading.repo;
 
 import edu.university.facultyloading.model.PreferredSubject;
-import java.util.List;
 
 public interface PreferredSubjectRepo {
 

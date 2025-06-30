@@ -11,7 +11,7 @@ public class FacultyFilter {
         List<Faculty> filtered = new ArrayList<>();
 
         for (Faculty faculty : facultyList) {
-            if (!faculty.isAvailable())
+            if (faculty.getIsAvailable() == 0)
                 continue;
 
             if (!faculty.getMajor().equalsIgnoreCase(subject.getRecommendedMajor()))
@@ -27,7 +27,7 @@ public class FacultyFilter {
         List<Faculty> available = new ArrayList<>();
 
         for (Faculty faculty : facultyList) {
-            if (faculty.isAvailable()) {
+            if (faculty.getIsAvailable() == 1) {
                 available.add(faculty);
             }
         }

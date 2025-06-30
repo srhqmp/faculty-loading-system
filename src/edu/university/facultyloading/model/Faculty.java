@@ -12,7 +12,7 @@ public class Faculty extends User {
     private int yearsOfExperience;
     private double studentFeedbackScore;
     private int isAvailable;
-    private boolean availability;
+    // private boolean availability;
     private List<String> subjectsTaught;
 
     public Faculty() {
@@ -101,13 +101,13 @@ public class Faculty extends User {
         this.isAvailable = isAvailable;
     }
 
-    public boolean isAvailable() {
-        return availability;
-    }
+    // public boolean isAvailable() {
+    //     return availability;
+    // }
 
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
-    }
+    // public void setAvailability(boolean availability) {
+    //     this.availability = availability;
+    // }
 
     @Override
     public String toString() {

@@ -170,32 +170,34 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public boolean createFaculty(String username, String password, String firstName, String lastName
-    ) {
-        // insert to user
-        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) "
-                + "VALUES (?,?,?,?,1)";
+    public int createFaculty(String username, String password, String firstName, String lastName) {
+        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 1)";
         String queryFaculty = "INSERT INTO tblfaculties (user_id) VALUES (?)";
-        boolean isSuccess = false;
+        int facultyId = -1;
 
-        try (Connection connnection = dbConnection.connect();) {
-            try (PreparedStatement prepUser = connnection.prepareStatement(queryUser,
-                    Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection connection = dbConnection.connect()) {
+            // Insert user and get generated user_id
+            try (PreparedStatement prepUser = connection.prepareStatement(queryUser, Statement.RETURN_GENERATED_KEYS)) {
                 prepUser.setString(1, username);
                 prepUser.setString(2, password);
                 prepUser.setString(3, firstName);
                 prepUser.setString(4, lastName);
                 prepUser.executeUpdate();
 
-                // get user_id from created user
-                ResultSet result = prepUser.getGeneratedKeys();
+                ResultSet userResult = prepUser.getGeneratedKeys();
+                if (userResult.next()) {
+                    int userId = userResult.getInt(1);
 
-                if (result.next()) {
-                    try (PreparedStatement prepFaculty = connnection.prepareStatement(queryFaculty);) {
-                        int userId = result.getInt(1);
-
+                    // Insert faculty and get generated faculty_id
+                    try (PreparedStatement prepFaculty = connection.prepareStatement(queryFaculty,
+                            Statement.RETURN_GENERATED_KEYS)) {
                         prepFaculty.setInt(1, userId);
-                        isSuccess = prepFaculty.executeUpdate() > 0;
+                        prepFaculty.executeUpdate();
+
+                        ResultSet facultyResult = prepFaculty.getGeneratedKeys();
+                        if (facultyResult.next()) {
+                            facultyId = facultyResult.getInt(1); // Return the created faculty_id
+                        }
                     } catch (SQLException e) {
                         System.out.println("Admin Repo - createFaculty() - Prep Faculty: " + e.getMessage());
                     }
@@ -207,7 +209,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             System.out.println("Admin Repo - createFaculty() - Connection: " + e.getMessage());
         }
 
-        return isSuccess;
+        return facultyId;
     }
 
     @Override
@@ -234,8 +236,7 @@ public class FacultyRepoImpl implements FacultyRepo {
 
     @Override
     public boolean updateFacultyProfile(int facultyId, String major,
-            int yearsOfExperience, double studentFeedbackScore, int isAvailable
-    ) {
+            int yearsOfExperience, double studentFeedbackScore, int isAvailable) {
         String query = "UPDATE tblfaculties SET major = ?, years_of_experience = ?, "
                 + "student_feedback_score = ?, is_available = ? "
                 + "WHERE faculty_id = ?";
@@ -259,8 +260,7 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public boolean archiveFaculty(int id
-    ) {
+    public boolean archiveFaculty(int id) {
         String query = "UPDATE tblusers SET is_archived = 1 WHERE user_id = ?";
         boolean isSuccess = false;
 
@@ -276,8 +276,7 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public boolean restoreFaculty(int id
-    ) {
+    public boolean restoreFaculty(int id) {
         String query = "UPDATE tblusers SET is_archived = 0 WHERE user_id = ?";
         boolean isSuccess = false;
 
@@ -293,8 +292,7 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public boolean deleteFaculty(int id, int facultyId
-    ) {
+    public boolean deleteFaculty(int id, int facultyId) {
         String queryUser = "DELETE FROM tblusers WHERE user_id = ?";
         String queryFaculty = "DELETE FROM tblfaculties WHERE faculty_id = ?";
         boolean isSuccess = false;
