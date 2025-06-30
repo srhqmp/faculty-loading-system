@@ -9,7 +9,6 @@ public class Subject {
     private String name;
     private String description;
     private String recommendedMajor;
-    private List<String> requiredTraining;
     private List<String> previousTeachers;
     private int complexityLevel; // Optional: range 1–5
 
@@ -23,14 +22,13 @@ public class Subject {
     }
 
     Subject(int id, String name, String description, int complexityLevel, List<String> previousTeachers,
-            String recommendedMajor, List<String> requiredTraining) {
+            String recommendedMajor) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.complexityLevel = 1;
         this.previousTeachers = new ArrayList<>();
         this.recommendedMajor = recommendedMajor;
-        this.requiredTraining = new ArrayList<>();
     }
 
     public int getId() {
@@ -57,10 +55,6 @@ public class Subject {
         return recommendedMajor;
     }
 
-    public List<String> getRequiredTraining() {
-        return requiredTraining;
-    }
-
     public void setComplexityLevel(int complexityLevel) {
         this.complexityLevel = complexityLevel;
     }
@@ -71,10 +65,6 @@ public class Subject {
 
     public void setRecommendedMajor(String recommendedMajor) {
         this.recommendedMajor = recommendedMajor;
-    }
-
-    public void setRequiredTraining(List<String> requiredTraining) {
-        this.requiredTraining = requiredTraining;
     }
 
     public void setName(String name) {

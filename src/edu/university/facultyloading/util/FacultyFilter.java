@@ -17,9 +17,6 @@ public class FacultyFilter {
             if (!faculty.getMajor().equalsIgnoreCase(subject.getRecommendedMajor()))
                 continue;
 
-            if (!faculty.getTrainings().containsAll(subject.getRequiredTraining()))
-                continue;
-
             filtered.add(faculty);
         }
 

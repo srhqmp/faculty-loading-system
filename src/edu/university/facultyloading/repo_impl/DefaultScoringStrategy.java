@@ -22,11 +22,12 @@ public class DefaultScoringStrategy implements ScoringStrategy {
             score += 10;
         }
 
-        for (String training : faculty.getTrainings()) {
-            if (subject.getRequiredTraining().contains(training)) {
-                score += 5;
-            }
-        }
+        // Skipping trainings
+        // for (String training : faculty.getTrainings()) {
+        //     if (subject.getRequiredTraining().contains(training)) {
+        //         score += 5;
+        //     }
+        // }
 
         if (faculty.getSubjectsTaught().contains(subject.getName())) {
             score += 7;

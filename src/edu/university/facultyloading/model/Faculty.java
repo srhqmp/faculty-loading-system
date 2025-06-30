@@ -13,7 +13,6 @@ public class Faculty extends User {
     private double studentFeedbackScore;
     private int isAvailable;
     private boolean availability;
-    private List<String> trainings;
     private List<String> subjectsTaught;
 
     public Faculty() {
@@ -39,7 +38,6 @@ public class Faculty extends User {
         this.yearsOfExperience = yearsOfExperience;
         this.studentFeedbackScore = studentFeedbackScore;
         this.isAvailable = isAvailable;
-        this.trainings = new ArrayList<>();
         this.subjectsTaught = new ArrayList<>();
     }
 
@@ -81,10 +79,6 @@ public class Faculty extends User {
 
     public double getStudentFeedbackScore() {
         return studentFeedbackScore;
-    }
-
-    public List<String> getTrainings() {
-        return trainings;
     }
 
     public List<String> getSubjectsTaught() {
