@@ -95,6 +95,10 @@ public class Faculty extends User {
         this.studentFeedbackScore = studentFeedbackScore;
     }
 
+    public int getIsAvailable() {
+        return isAvailable;
+    }
+
     public int isIsAvailable() {
         return isAvailable;
     }
@@ -113,6 +117,9 @@ public class Faculty extends User {
 
     @Override
     public String toString() {
-        return "Faculty{" + "facultyId=" + facultyId + ", loadId=" + loadId + ", major=" + major + ", yearsOfExperience=" + yearsOfExperience + ", studentFeedbackScore=" + studentFeedbackScore + ", isAvailable=" + isAvailable + '}';
+        return "Faculty{" + "facultyId=" + facultyId + ", loadId=" + loadId + ", major=" + major
+                + ", yearsOfExperience=" + yearsOfExperience + ", studentFeedbackScore=" + studentFeedbackScore
+                + ", isAvailable=" + isAvailable + '}';
     }
+
 }
