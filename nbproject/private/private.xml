@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/acezh/Documents/NewFacultyLoadingSystem/faculty-loading-system/src/edu/university/facultyloading/main/Main.java</file>
+            <file>file:/C:/Users/acezh/Documents/NewFacultyLoadingSystem/faculty-loading-system/src/edu/university/facultyloading/controller/AdminController.java</file>
+            <file>file:/C:/Users/acezh/Documents/NewFacultyLoadingSystem/faculty-loading-system/src/edu/university/facultyloading/view/LoginView.java</file>
+            <file>file:/C:/Users/acezh/Documents/NewFacultyLoadingSystem/faculty-loading-system/src/edu/university/facultyloading/repo_impl/SubjectRepoImpl.java</file>
+        </group>
     </open-files>
 </project-private>
