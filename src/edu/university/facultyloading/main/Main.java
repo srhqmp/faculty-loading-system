@@ -22,6 +22,7 @@ import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
+import edu.university.facultyloading.view.RegistrarDashboardView;
 import edu.university.facultyloading.view.SubjectManagementView;
 import java.util.Scanner;
 
@@ -54,11 +55,13 @@ public class Main {
         RegisterUserView registerView = new RegisterUserView(scanner, adminController, facultyController, registrarController);
         MainMenuView mainMenuView = new MainMenuView(scanner, loginView, registerView);
         SubjectManagementView subjectView = new SubjectManagementView(scanner, subjectController);
+        RegistrarDashboardView registrarView = new RegistrarDashboardView(scanner, loadController);
 
         // show main menu
         // mainMenuView.show();
         // Manage Subject
-        subjectView.showMenu();
+       // subjectView.showMenu();
+       registrarView.showMenu();
 
     }
 
