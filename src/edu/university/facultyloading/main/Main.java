@@ -2,14 +2,19 @@ package edu.university.facultyloading.main;
 
 import edu.university.facultyloading.controller.AdminController;
 import edu.university.facultyloading.controller.FacultyController;
+import edu.university.facultyloading.controller.LoadController;
 import edu.university.facultyloading.controller.RegistrarController;
 import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
+import edu.university.facultyloading.repo.LoadRepo;
+import edu.university.facultyloading.repo.LoadSubjectRepo;
 import edu.university.facultyloading.repo.RegistrarRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.repo_impl.AdminRepoImpl;
 import edu.university.facultyloading.repo_impl.FacultyRepoImpl;
+import edu.university.facultyloading.repo_impl.LoadRepoImpl;
+import edu.university.facultyloading.repo_impl.LoadSubjectRepoImpl;
 import edu.university.facultyloading.repo_impl.RegistrarRepoImpl;
 import edu.university.facultyloading.repo_impl.SubjectRepoImpl;
 import edu.university.facultyloading.util.DbConnection;
@@ -29,17 +34,20 @@ public class Main {
         DbConnection db = new DbConnection();
         OutputFormatter outputFormatter = new OutputFormatter();
 
-        // Repo
+        // Repo / coordination/functions with DB/ contains SQL
         AdminRepo adminRepo = new AdminRepoImpl(db);
         FacultyRepo facultyRepo = new FacultyRepoImpl(db);
         RegistrarRepo registrarRepo = new RegistrarRepoImpl(db);
         SubjectRepo subjectRepo = new SubjectRepoImpl(db);
+        LoadRepo loadRepo = new LoadRepoImpl(db);
+        LoadSubjectRepo loadSubjectRepo = new LoadSubjectRepoImpl(db);
 
-        // Controller
+        // Controller / functions within the system /these always needs the REPO
         AdminController adminController = new AdminController(adminRepo);
         FacultyController facultyController = new FacultyController(facultyRepo);
         RegistrarController registrarController = new RegistrarController(registrarRepo);
         SubjectController subjectController = new SubjectController(subjectRepo);
+        LoadController loadController = new LoadController(loadRepo, loadSubjectRepo, subjectRepo);
 
         // Views
         LoginView loginView = new LoginView(scanner, adminController, facultyController, registrarController);
@@ -50,7 +58,7 @@ public class Main {
         // show main menu
         // mainMenuView.show();
         // Manage Subject
-       subjectView.showMenu();
+        subjectView.showMenu();
 
     }
 
