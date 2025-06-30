@@ -7,7 +7,7 @@ public class Faculty extends User {
 
     private int facultyId;
     private int loadId;
-    
+
     private String major;
     private int yearsOfExperience;
     private double studentFeedbackScore;
@@ -43,8 +43,6 @@ public class Faculty extends User {
         this.subjectsTaught = new ArrayList<>();
     }
 
-    
-
     public int getFacultyId() {
         return facultyId;
     }
@@ -73,6 +71,10 @@ public class Faculty extends User {
         return yearsOfExperience;
     }
 
+    public String getName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public void setYearsOfExperience(int yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
@@ -85,6 +87,10 @@ public class Faculty extends User {
         return trainings;
     }
 
+    public List<String> getSubjectsTaught() {
+        return subjectsTaught;
+    }
+
     public void setStudentFeedbackScore(double studentFeedbackScore) {
         this.studentFeedbackScore = studentFeedbackScore;
     }
@@ -93,7 +99,6 @@ public class Faculty extends User {
         return isAvailable;
     }
 
-    
     public void setIsAvailable(int isAvailable) {
         this.isAvailable = isAvailable;
     }

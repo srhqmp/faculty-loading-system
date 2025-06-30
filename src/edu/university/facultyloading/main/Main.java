@@ -34,7 +34,7 @@ public class Main {
         DbConnection db = new DbConnection();
         OutputFormatter outputFormatter = new OutputFormatter();
 
-        // Repo
+        // Repo / coordination/functions with DB/ contains SQL
         AdminRepo adminRepo = new AdminRepoImpl(db);
         FacultyRepo facultyRepo = new FacultyRepoImpl(db);
         RegistrarRepo registrarRepo = new RegistrarRepoImpl(db);
@@ -42,7 +42,7 @@ public class Main {
         LoadRepo loadRepo = new LoadRepoImpl(db);
         LoadSubjectRepo loadSubjectRepo = new LoadSubjectRepoImpl(db);
 
-        // Controller
+        // Controller / functions within the system /these always needs the REPO
         AdminController adminController = new AdminController(adminRepo);
         FacultyController facultyController = new FacultyController(facultyRepo);
         RegistrarController registrarController = new RegistrarController(registrarRepo);
