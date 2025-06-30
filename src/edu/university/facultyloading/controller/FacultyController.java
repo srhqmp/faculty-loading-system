@@ -1,5 +1,7 @@
 package edu.university.facultyloading.controller;
 
+import java.util.List;
+
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.repo.FacultyRepo;
 
@@ -34,6 +36,63 @@ public class FacultyController {
         } else {
             return facultyRepo.createFaculty(username, password, firstName, lastName);
         }
+    }
+
+    // update faculty
+    public boolean updateFaculty(int facultyId, String major, int yearsOfExperience, double studentFeedbackScore,
+            int isAvailable) {
+        // validate faculty id
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
+        // validate fields
+        if (major == null || major.trim().isEmpty()) {
+            System.out.println("Major cannot be empty.");
+            return false;
+        }
+        if (yearsOfExperience <= 0 || studentFeedbackScore <= 0
+                || (isAvailable > 1 && isAvailable < 0)) {
+            System.out.println("Invalid input.");
+            return false;
+        }
+        return facultyRepo.updateFacultyProfile(facultyId, major, yearsOfExperience, studentFeedbackScore, isAvailable);
+    }
+
+    // update profile
+    public boolean updateUser(int id, String username, String password, String firstName, String lastName) {
+        // validate id
+        if (id <= 0) {
+            System.out.println("Invalid ID.");
+            return false;
+        }
+        // validate input
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()
+                || firstName.trim().isEmpty() || lastName.trim().isEmpty()) {
+            System.out.println("Fields must not be empty.");
+            return false;
+        }
+        return facultyRepo.updateUserProfile(id, username, password, firstName, lastName);
+    }
+
+    public boolean deleteFaculty(int id) {
+        if (id <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
+        return facultyRepo.archiveFaculty(id);
+    }
+
+    public Faculty getFaculty(int id) {
+        if (id <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return null;
+        }
+        return facultyRepo.fetchFaculty(id);
+    }
+
+    public List<Faculty> getAllFaculties() {
+        return facultyRepo.fetchFaculties();
     }
 
 }

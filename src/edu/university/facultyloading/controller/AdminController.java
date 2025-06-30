@@ -36,4 +36,20 @@ public class AdminController {
         }
     }
 
+        // update profile
+    public boolean updateUser(int id, String username, String password, String firstName, String lastName) {
+        // validate id
+        if (id <= 0) {
+            System.out.println("Invalid ID.");
+            return false;
+        }
+        // validate input
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()
+                || firstName.trim().isEmpty() || lastName.trim().isEmpty()) {
+            System.out.println("Fields must not be empty.");
+            return false;
+        }
+        return adminRepo.updateUserProfile(id, username, password, firstName, lastName);
+    }
+
 }
