@@ -32,16 +32,16 @@ public class RegistrarDashboardView {
         String choice = scanner.nextLine();
 
         switch (choice) {
-            case 1:
+            case "1":
                 System.out.println();
                 viewFacultyLoadReport();
-            case 2:
+            case "2":
                 System.out.println();
                 viewTeachingLoad();
-            case 3:
+            case "3":
                 System.out.println();
                 approvedTeachingLoad();
-            case 4:
+            case "4":
                 System.out.println();
                 logOut();
                 break;
@@ -53,7 +53,7 @@ public class RegistrarDashboardView {
     }
 
     private void viewFacultyLoadReport() {
-        
+
 
         OutputFormatter.printHeader("Faculty Load Report");
         // table headers with fixed width
