@@ -170,10 +170,10 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public int createFaculty(String username, String password, String firstName, String lastName) {
+    public boolean createFaculty(String username, String password, String firstName, String lastName) {
         String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 1)";
         String queryFaculty = "INSERT INTO tblfaculties (user_id) VALUES (?)";
-        int facultyId = -1;
+        boolean isSuccess = false;
 
         try (Connection connection = dbConnection.connect()) {
             // Insert user and get generated user_id
@@ -196,7 +196,7 @@ public class FacultyRepoImpl implements FacultyRepo {
 
                         ResultSet facultyResult = prepFaculty.getGeneratedKeys();
                         if (facultyResult.next()) {
-                            facultyId = facultyResult.getInt(1); // Return the created faculty_id
+                            isSuccess = true;
                         }
                     } catch (SQLException e) {
                         System.out.println("Admin Repo - createFaculty() - Prep Faculty: " + e.getMessage());
@@ -209,7 +209,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             System.out.println("Admin Repo - createFaculty() - Connection: " + e.getMessage());
         }
 
-        return facultyId;
+        return isSuccess;
     }
 
     @Override

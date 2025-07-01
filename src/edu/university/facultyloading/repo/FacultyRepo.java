@@ -11,7 +11,7 @@ public interface FacultyRepo {
 
     public List<Faculty> fetchFaculties();
 
-    public int createFaculty(String username, String password, String firstName, String lastName);
+    public boolean createFaculty(String username, String password, String firstName, String lastName);
 
     public boolean isUsernameUnique(String username);
 

@@ -40,7 +40,7 @@ public class Main {
 
         // Controller / functions within the system /these always needs the REPO
         AdminController adminController = new AdminController(adminRepo);
-        FacultyController facultyController = new FacultyController(facultyRepo, loadRepo);
+        FacultyController facultyController = new FacultyController(facultyRepo);
         SubjectController subjectController = new SubjectController(subjectRepo);
         LoadController loadController = new LoadController(loadRepo, subjectRepo);
 
