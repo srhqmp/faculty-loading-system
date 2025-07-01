@@ -18,11 +18,26 @@ public class MainMenuView {
     }
 
     public void show() {
-        System.out.println();
-        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
-        System.out.println(OutputFormatter.centerString("║        FACULTY LOADING SYSTEM      ║"));
-        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
-        System.out.println();
+    String[] header = {
+        "╔════════════════════════════════════════════════════════════════════╗",
+        "║                            WELCOME TO                              ║",
+        "║                                                                    ║",
+        "║    ███████╗ █████╗  ██████╗██╗   ██╗██╗     ████████╗██╗   ██╗     ║",
+        "║    ██╔════╝██╔══██╗██╔════╝██║   ██║██║     ╚══██╔══╝╚██╗ ██╔╝     ║",
+        "║    █████╗  ███████║██║     ██║   ██║██║        ██║    ╚████╔╝      ║",
+        "║    ██╔══╝  ██╔══██║██║     ██║   ██║██║        ██║     ╚██╔╝       ║",
+        "║    ██║     ██║  ██║╚██████╗╚██████╔╝███████╗   ██║      ██║        ║",
+        "║    ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝      ╚═╝        ║",
+        "║                                                                    ║",
+        "║                           LOADING SYSTEM                           ║",
+        "╚════════════════════════════════════════════════════════════════════╝"
+    };
+
+    System.out.println();
+    for (String line : header) {
+        System.out.println(OutputFormatter.centerString(line));
+    }
+    System.out.println();
 
         String choice;
 

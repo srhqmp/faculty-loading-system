@@ -61,10 +61,10 @@ public class Main {
                 facultyDashboardView, subjectManagementView, facultyManagementView);
 
         // Start the app
-        //viewContoller.start();
+        viewContoller.start();
         
         //adminDashboardView.showMenu(null);
-        registerView.showRegisterPrompt();
+        //registerView.showRegisterPrompt();
 
     }
 
