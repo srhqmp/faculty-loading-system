@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS dbfacultyloading;
 CREATE DATABASE dbfacultyloading;
 USE dbfacultyloading;
 
--- USERS table (base for Admin and Faculty)
+-- USERS table
 CREATE TABLE tblusers (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -14,25 +14,25 @@ CREATE TABLE tblusers (
     is_archived TINYINT(1) NOT NULL DEFAULT 0
 );
 
--- ADMINS table (inherits from User)
+-- ADMINS
 CREATE TABLE tbladmins (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES tblusers(user_id) ON DELETE CASCADE
 );
 
--- FACULTIES table (inherits from User)
+-- FACULTIES
 CREATE TABLE tblfaculties (
     faculty_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     major VARCHAR(100),
     years_of_experience INT,
     student_feedback_score DOUBLE,
-    is_available TINYINT(1), -- 0 = no, 1 = yes
+    is_available TINYINT(1),
     FOREIGN KEY (user_id) REFERENCES tblusers(user_id) ON DELETE CASCADE
 );
 
--- SUBJECTS table
+-- SUBJECTS (only 15 subjects)
 CREATE TABLE tblsubjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE tblsubjects (
     is_archived TINYINT(1) NOT NULL DEFAULT 0
 );
 
--- LOADS table (assign subjects to faculty)
+-- LOADS
 CREATE TABLE tblloads (
     load_id INT AUTO_INCREMENT PRIMARY KEY,
     faculty_id INT NOT NULL,
@@ -52,39 +52,30 @@ CREATE TABLE tblloads (
     FOREIGN KEY (subject_id) REFERENCES tblsubjects(subject_id) ON DELETE CASCADE
 );
 
--- SEED DATA
-
--- Users (5 Admins, 10 Faculty)
+-- USERS (Admins + Faculties)
 INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES
-('admin1', 'adminpass1', 'Alice', 'Admin', 2),
-('admin2', 'adminpass2', 'Bob', 'Admin', 2),
-('admin3', 'adminpass3', 'Clara', 'Admin', 2),
-('admin4', 'adminpass4', 'David', 'Admin', 2),
-('admin5', 'adminpass5', 'Eva', 'Admin', 2),
-
+-- Admins
 ('acegutierrez', '123', 'Ace', 'Gutierrez', 2),
 ('jamesvalmeo', '123', 'James', 'Valmeo', 2),
 ('ramonlacandola', '123', 'Ramon', 'Lacandola', 2),
 ('ruffagranale', '123', 'Ruffa', 'Granale', 2),
 ('sarahquimpo', '123', 'Sarah Jane', 'Quimpo', 2),
-
-('faculty1', 'facultypass1', 'Charlie', 'Clark', 1),
-('faculty2', 'facultypass2', 'Dana', 'Doe', 1),
-('faculty3', 'facultypass3', 'Ethan', 'Edwards', 1),
-('faculty4', 'facultypass4', 'Fiona', 'Foster', 1),
-('faculty5', 'facultypass5', 'George', 'Green', 1),
-('faculty6', 'facultypass6', 'Hannah', 'Hill', 1),
-('faculty7', 'facultypass7', 'Ian', 'Irwin', 1),
-('faculty8', 'facultypass8', 'Julia', 'Jones', 1),
-('faculty9', 'facultypass9', 'Kevin', 'King', 1),
-('faculty10', 'facultypass10', 'Laura', 'Lane', 1);
-
--- Admins
-INSERT INTO tbladmins (user_id) VALUES 
-(1), (2), (3), (4), (5), 
-(6), (7), (8), (9), (10);
-
 -- Faculties
+('faculty1', 'facultypass1', 'Aiah', 'Bautista', 1),
+('faculty2', 'facultypass2', 'Colet', 'Vergara', 1),
+('faculty3', 'facultypass3', 'Maloi', 'Tugade', 1),
+('faculty4', 'facultypass4', 'Gwen', 'Apuli', 1),
+('faculty5', 'facultypass5', 'Stacey', 'Delos Santos', 1),
+('faculty6', 'facultypass6', 'Mikha', 'Lim Jimenea', 1),
+('faculty7', 'facultypass7', 'Jhoanna', 'Robles', 1),
+('faculty8', 'facultypass8', 'Sheena', 'Cabral', 1),
+('faculty9', 'facultypass9', 'Zild', 'Benitez', 1),
+('faculty10', 'facultypass10', 'Unique', 'Salonga', 1);
+
+-- ADMINS
+INSERT INTO tbladmins (user_id) VALUES (1), (2), (3), (4), (5);
+
+-- FACULTIES
 INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_score, is_available) VALUES
 (6, 'Computer Science', 5, 4.5, 1),
 (7, 'Mathematics', 3, 4.2, 1),
@@ -97,28 +88,33 @@ INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_
 (14, 'Economics', 5, 4.4, 0),
 (15, 'Political Science', 4, 4.2, 1);
 
--- Subjects
-INSERT INTO tblsubjects (name, description, recommended_major, complexity_level, is_archived) VALUES
-('Data Structures', 'Introduction to data structures', 'Computer Science', 3, 0),
-('Calculus', 'Fundamentals of Calculus', 'Mathematics', 2, 0),
-('Algorithms', 'Study of algorithms', 'Computer Science', 4, 0),
-('Organic Chemistry', 'Basics of organic chemistry', 'Chemistry', 3, 0),
-('Modern Physics', 'Concepts in modern physics', 'Physics', 4, 0),
-('Microbiology', 'Study of microorganisms', 'Biology', 3, 0),
-('English Grammar', 'Rules of English grammar', 'English Literature', 2, 0),
-('Ethics', 'Introduction to ethics', 'Philosophy', 2, 0),
-('Macroeconomics', 'Economics on a large scale', 'Economics', 3, 0),
-('Political Theory', 'Foundations of political science', 'Political Science', 3, 0);
+-- SUBJECTS (Only 15 total)
+INSERT INTO tblsubjects (name, description, recommended_major, complexity_level) VALUES
+('Data Structures', 'Intro to data structures', 'Computer Science', 3),
+('Calculus', 'Calculus I', 'Mathematics', 2),
+('Algorithms', 'Basic algorithms', 'Computer Science', 4),
+('Organic Chemistry', 'Intro to organic chem', 'Chemistry', 3),
+('Modern Physics', 'Modern physics concepts', 'Physics', 4),
+('Microbiology', 'Study of microbes', 'Biology', 3),
+('English Grammar', 'Rules of grammar', 'English Literature', 2),
+('Ethics', 'Moral philosophy', 'Philosophy', 2),
+('Macroeconomics', 'Large-scale economics', 'Economics', 3),
+('Political Theory', 'Political ideologies', 'Political Science', 3),
+('Operating Systems', 'OS fundamentals', 'Computer Science', 4),
+('Linear Algebra', 'Matrix math', 'Mathematics', 3),
+('Thermodynamics', 'Energy systems', 'Physics', 3),
+('Genetics', 'Genetic principles', 'Biology', 3),
+('Sociological Theories', 'Sociology foundations', 'Sociology', 3);
 
--- Load Assignments
-INSERT INTO tblloads (faculty_id, subject_id, is_archived) VALUES
-(1, 1, 0), (1, 3, 0), (1, 2, 0), (1, 4, 0),
-(2, 2, 0), (2, 5, 0), (2, 6, 0),
-(3, 5, 0), (3, 7, 0), (3, 8, 0), (3, 3, 0),
-(4, 4, 0), (4, 9, 0), (4, 10, 0),
-(5, 6, 0), (5, 1, 0), (5, 2, 0), (5, 8, 0), (5, 7, 0),
-(6, 7, 0), (6, 9, 0), (6, 3, 0),
-(7, 8, 0), (7, 10, 0), (7, 1, 0), (7, 2, 0),
-(8, 9, 0), (8, 4, 0), (8, 5, 0), (8, 3, 0),
-(9, 10, 0), (9, 6, 0), (9, 7, 0),
-(10, 1, 0), (10, 2, 0), (10, 3, 0), (10, 4, 0), (10, 5, 0);
+-- FACULTY LOADS (3–5 per faculty)
+INSERT INTO tblloads (faculty_id, subject_id) VALUES
+(1, 1), (1, 3), (1, 11), (1, 2),
+(2, 2), (2, 12), (2, 11),
+(3, 5), (3, 13), (3, 11),
+(4, 4), (4, 1), (4, 12), (4, 8),
+(5, 6), (5, 14), (5, 7),
+(6, 7), (6, 6), (6, 1),
+(7, 8), (7, 7), (7, 9), (7, 15),
+(8, 15), (8, 13), (8, 4),
+(9, 9), (9, 12), (9, 10),
+(10, 10), (10, 8), (10, 15), (10, 14);

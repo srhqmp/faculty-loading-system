@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Subject;
+import edu.university.facultyloading.util.OutputFormatter;
 
 public class SubjectManagementView {
     private final SubjectController subjectController;
@@ -25,7 +26,7 @@ public class SubjectManagementView {
             System.out.println("0. Back to Dashboard");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -55,9 +56,9 @@ public class SubjectManagementView {
         for (Subject s : subjects) {
             System.out.printf("%-5d %-20s %-30s %-20s %-10d%n",
                     s.getSubjectId(),
-                    truncate(s.getName(), 20),
-                    truncate(s.getDescription(), 30),
-                    truncate(s.getRecommendedMajor(), 20),
+                    OutputFormatter.truncate(s.getName(), 20),
+                    OutputFormatter.truncate(s.getDescription(), 30),
+                    OutputFormatter.truncate(s.getRecommendedMajor(), 20),
                     s.getComplexityLevel());
         }
     }
@@ -147,11 +148,5 @@ public class SubjectManagementView {
         } else {
             System.out.println("Delete cancelled.");
         }
-    }
-
-    private String truncate(String text, int maxLength) {
-        if (text == null)
-            return "";
-        return text.length() <= maxLength ? text : text.substring(0, maxLength - 3) + "...";
     }
 }

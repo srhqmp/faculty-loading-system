@@ -16,8 +16,13 @@ public class AssignSubjectView {
         return ScannerHelper.readInt(scanner);
     }
 
-    public int promptSubjectId() {
+    public int promptSubjectIdToAssign() {
         System.out.print("Enter Subject ID to assign: ");
+        return ScannerHelper.readInt(scanner);
+    }
+
+    public int promptSubjectIdToRemove() {
+        System.out.print("Enter Subject ID to remove: ");
         return ScannerHelper.readInt(scanner);
     }
 
@@ -27,5 +32,13 @@ public class AssignSubjectView {
 
     public void showAssignmentFailed() {
         System.out.println("Failed to assign subject. Please try again.");
+    }
+
+    public void showRemoveAssignmentSuccess() {
+        System.out.println("Subject assignment removed successfully.");
+    }
+
+    public void showRemoveAssignmentFailed() {
+        System.out.println("Failed to remove subject assignment. Please try again.");
     }
 }

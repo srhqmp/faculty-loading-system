@@ -187,7 +187,7 @@ public class LoadRepoImpl implements LoadRepo {
 
     @Override
     public List<Subject> getSubjectsByFacultyId(int facultyId) {
-        List<Subject> subjects = new ArrayList<>();
+        List<Subject> subjects = null;
         String query = "SELECT tblsubjects.subject_id, tblsubjects.name, tblsubjects.description, " +
                 "tblsubjects.recommended_major, tblsubjects.complexity_level " +
                 "FROM tblloads " +
@@ -200,7 +200,7 @@ public class LoadRepoImpl implements LoadRepo {
 
             stmt.setInt(1, facultyId);
             ResultSet result = stmt.executeQuery();
-
+            subjects = new ArrayList<>();
             while (result.next()) {
                 Subject subject = new Subject(
                         result.getInt("subject_id"),

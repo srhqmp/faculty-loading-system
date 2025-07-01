@@ -7,7 +7,14 @@ import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
-import edu.university.facultyloading.view.*;
+import edu.university.facultyloading.view.AssignSubjectView;
+import edu.university.facultyloading.view.DashboardView;
+import edu.university.facultyloading.view.FacultyListView;
+import edu.university.facultyloading.view.FacultyLoadView;
+import edu.university.facultyloading.view.LoginView;
+import edu.university.facultyloading.view.RegisterView;
+import edu.university.facultyloading.view.SubjectListView;
+import edu.university.facultyloading.view.SubjectManagementView;
 
 import java.util.List;
 import java.util.Scanner;
@@ -115,8 +122,13 @@ public class MainController {
             adminRepo.create(admin);
 
             System.out.println("Admin registered successfully.");
+            System.out.println();
+            System.out.println();
+
             loggedInAdmin = adminRepo.authenticate(username, password);
+
             if (loggedInAdmin != null) {
+                System.out.println("Welcome " + loggedInAdmin.getFullname() + "!");
                 displayAdminDashboard();
             }
         } else {
@@ -133,8 +145,12 @@ public class MainController {
             facultyRepo.create(faculty);
 
             System.out.println("Faculty registered successfully.");
+            System.out.println();
+            System.out.println();
+
             loggedInFaculty = facultyRepo.authenticate(username, password);
             if (loggedInFaculty != null) {
+                System.out.println("Welcome " + loggedInFaculty.getFullname() + "!");
                 displayFacultyDashboard();
             }
         }
@@ -169,7 +185,7 @@ public class MainController {
                     facultyListView.showFaculties(faculties);
                     int facultyId = assignSubjectView.promptFacultyId();
                     subjectListView.showSubjects(subjects);
-                    int subjectId = assignSubjectView.promptSubjectId();
+                    int subjectId = assignSubjectView.promptSubjectIdToAssign();
                     boolean success = loadRepo.assignSubjectToFaculty(facultyId, subjectId);
                     if (success)
                         assignSubjectView.showAssignmentSuccess();
@@ -177,6 +193,28 @@ public class MainController {
                         assignSubjectView.showAssignmentFailed();
                     break;
                 case 4:
+                    // Remove Assigned Subject from Faculty
+                    facultyListView.showFaculties(faculties);
+                    int facultyIdToRemove = assignSubjectView.promptFacultyId();
+
+                    // Get assigned subjects for the faculty
+                    List<Subject> assignedSubjectsToRemove = loadRepo.getSubjectsByFacultyId(facultyIdToRemove);
+
+                    if (assignedSubjectsToRemove.isEmpty()) {
+                        System.out.println("No subjects assigned to this faculty.");
+                        break;
+                    }
+
+                    subjectListView.showSubjects(assignedSubjectsToRemove);
+                    int subjectIdToRemove = assignSubjectView.promptSubjectIdToRemove();
+
+                    boolean removeSuccess = loadRepo.removeSubjectFromFaculty(facultyIdToRemove, subjectIdToRemove);
+                    if (removeSuccess)
+                        assignSubjectView.showRemoveAssignmentSuccess();
+                    else
+                        assignSubjectView.showRemoveAssignmentFailed();
+                    break;
+                case 5:
                     // View Faculty Loads
                     facultyListView.showFaculties(faculties);
 
