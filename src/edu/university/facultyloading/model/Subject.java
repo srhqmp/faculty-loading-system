@@ -1,70 +1,35 @@
 package edu.university.facultyloading.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Subject {
 
-    private int id;
+    private int subjectId;
     private String name;
     private String description;
     private String recommendedMajor;
-    private List<String> previousTeachers;
-    private int complexityLevel; // Optional: range 1–5
+    private int complexityLevel;
 
     public Subject() {
-    }
 
-    public Subject(int id, String name, String description) {
-        this.id = id;
+    };
+
+    public Subject(int subjectId, String name, String description, String recommendedMajor, int complexityLevel) {
+        this.subjectId = subjectId;
         this.name = name;
         this.description = description;
-    }
-
-    Subject(int id, String name, String description, int complexityLevel, List<String> previousTeachers,
-            String recommendedMajor) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.complexityLevel = 1;
-        this.previousTeachers = new ArrayList<>();
         this.recommendedMajor = recommendedMajor;
+        this.complexityLevel = complexityLevel;
     }
 
-    public int getId() {
-        return id;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getComplexityLevel() {
-        return complexityLevel;
-    }
-
-    public List<String> getPreviousTeachers() {
-        return previousTeachers;
-    }
-
-    public String getRecommendedMajor() {
-        return recommendedMajor;
-    }
-
-    public void setComplexityLevel(int complexityLevel) {
-        this.complexityLevel = complexityLevel;
-    }
-
-    public void setPreviousTeachers(List<String> previousTeachers) {
-        this.previousTeachers = previousTeachers;
-    }
-
-    public void setRecommendedMajor(String recommendedMajor) {
-        this.recommendedMajor = recommendedMajor;
     }
 
     public void setName(String name) {
@@ -79,9 +44,26 @@ public class Subject {
         this.description = description;
     }
 
+    public String getRecommendedMajor() {
+        return recommendedMajor;
+    }
+
+    public void setRecommendedMajor(String recommendedMajor) {
+        this.recommendedMajor = recommendedMajor;
+    }
+
+    public int getComplexityLevel() {
+        return complexityLevel;
+    }
+
+    public void setComplexityLevel(int complexityLevel) {
+        this.complexityLevel = complexityLevel;
+    }
+
     @Override
     public String toString() {
-        return "Subject{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
+        return "Subject [subjectId=" + subjectId + ", name=" + name + ", description=" + description
+                + ", recommendedMajor=" + recommendedMajor + ", complexityLevel=" + complexityLevel + "]";
     }
 
 }

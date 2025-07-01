@@ -4,25 +4,19 @@ import edu.university.facultyloading.model.Faculty;
 import java.util.List;
 
 public interface FacultyRepo {
+    void create(Faculty faculty);
 
-    public Faculty fetchFaculty(int id);
+    Faculty authenticate(String username, String password);
 
-    public Faculty fetchFaculty(String username, String password);
+    Faculty getById(int facultyId);
 
-    public List<Faculty> fetchFaculties();
+    List<Faculty> getAll();
 
-    public boolean createFaculty(String username, String password, String firstName, String lastName);
+    void update(Faculty faculty);
 
-    public boolean isUsernameUnique(String username);
+    void archive(int facultyId);
 
-    public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
+    void restore(int facultyId);
 
-    public boolean updateFacultyProfile(int facultyId, String major,
-            int yearsOfExperience, double studentFeedbackScore, int isAvailable);
-
-    public boolean archiveFaculty(int id);
-
-    public boolean restoreFaculty(int id);
-
-    public boolean deleteFaculty(int id, int facultyId);
+    void delete(int facultyId);
 }

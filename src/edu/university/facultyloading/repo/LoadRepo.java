@@ -1,19 +1,30 @@
 package edu.university.facultyloading.repo;
 
 import edu.university.facultyloading.model.Load;
+import edu.university.facultyloading.model.Subject;
+
 import java.util.List;
 
 public interface LoadRepo {
+    void create(Load load);
 
-    public Load fetchLoad(int facultyId);
+    Load getById(int loadId);
 
-    public List<Load> fetchLoads();
+    List<Load> getAll();
 
-    public boolean createLoad(int facultyId);
+    List<Load> getByFacultyId(int facultyId);
 
-    public boolean archiveLoad(int id);
+    void update(Load load);
 
-    public boolean restoreLoad(int id);
+    void archive(int loadId);
 
-    public boolean deleteLoad(int id);
+    void restore(int loadId);
+
+    void delete(int loadId);
+
+    boolean assignSubjectToFaculty(int facultyId, int subjectId);
+
+    List<Subject> getSubjectsByFacultyId(int facultyId); 
+    
+    boolean removeSubjectFromFaculty(int facultyId, int subjectId);
 }

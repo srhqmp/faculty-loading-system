@@ -1,162 +1,157 @@
 package edu.university.facultyloading.view;
 
-import edu.university.facultyloading.controller.AppController;
-import edu.university.facultyloading.controller.SubjectController;
-import edu.university.facultyloading.model.Admin;
-import edu.university.facultyloading.model.Subject;
-import edu.university.facultyloading.util.OutputFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class SubjectManagementView {
+import edu.university.facultyloading.controller.SubjectController;
+import edu.university.facultyloading.model.Subject;
 
+public class SubjectManagementView {
     private final SubjectController subjectController;
     private final Scanner scanner;
-    private AppController appController;
 
     public SubjectManagementView(Scanner scanner, SubjectController subjectController) {
         this.subjectController = subjectController;
         this.scanner = scanner;
     }
 
-    public void setAppController(AppController appController) {
-        this.appController = appController;
-    }
-
-    public void showMenu(Admin admin) {
+    public void showSubjectManagementMenu() {
         while (true) {
-            System.out.println("\n== Subject Management ==");
+            System.out.println("\n=== Manage Subjects ===");
             System.out.println("1. View All Subjects");
-            System.out.println("2. Add New Subject");
+            System.out.println("2. Add Subject");
             System.out.println("3. Edit Subject");
             System.out.println("4. Delete Subject");
-            System.out.println("0. Back");
+            System.out.println("0. Back to Dashboard");
             System.out.print("Enter choice: ");
-
-            String choice = scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
             switch (choice) {
-                case "1":
-                    System.out.println();
+                case 1:
                     viewAllSubjects();
                     break;
-                case "2":
-                    System.out.println();
+                case 2:
                     addSubject();
                     break;
-                case "3":
-                    System.out.println();
-                    updateSubject();
+                case 3:
+                    editSubject();
                     break;
-                case "4":
-                    System.out.println();
+                case 4:
                     deleteSubject();
                     break;
-                case "0":
-                    appController.goToAdminDashboard(admin);
-                    break;
+                case 0:
+                    return;
                 default:
-                    System.out.println();
-                    System.out.println("Invalid choice. Try again.");
+                    System.out.println("Invalid option. Please try again.");
             }
         }
     }
 
     private void viewAllSubjects() {
         List<Subject> subjects = subjectController.getAllSubjects();
-
-        OutputFormatter.printHeader("Subject List");
-        // table headers with fixed width
-        System.out.printf("%-5s %-25s %-35s%n", "ID", "Name", "Description");
-        OutputFormatter.printDivider();
-
-        for (Subject subject : subjects) {
-            String description = subject.getDescription();
-
-            System.out.printf("%-5d %-25s %-35s%n",
-                    subject.getId(),
-                    subject.getName(),
-                    description);
+        System.out.printf("%-5s %-20s %-30s %-20s %-10s%n",
+                "ID", "Name", "Description", "Recommended Major", "Complexity");
+        for (Subject s : subjects) {
+            System.out.printf("%-5d %-20s %-30s %-20s %-10d%n",
+                    s.getSubjectId(),
+                    truncate(s.getName(), 20),
+                    truncate(s.getDescription(), 30),
+                    truncate(s.getRecommendedMajor(), 20),
+                    s.getComplexityLevel());
         }
-
-        OutputFormatter.printDivider();
     }
 
     private void addSubject() {
         System.out.print("Enter subject name: ");
         String name = scanner.nextLine();
+
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
-        if (subjectController.createSubject(name, description)) {
-            System.out.println("Subject created successfully.");
-        } else {
-            System.out.println("Failed to create subject.");
-        }
+
+        System.out.print("Enter recommended major: ");
+        String recommendedMajor = scanner.nextLine();
+
+        System.out.print("Enter complexity level (integer): ");
+        int complexityLevel = scanner.nextInt();
+        scanner.nextLine();
+
+        Subject subject = new Subject();
+        subject.setName(name);
+        subject.setDescription(description);
+        subject.setRecommendedMajor(recommendedMajor);
+        subject.setComplexityLevel(complexityLevel);
+
+        subjectController.createSubject(subject);
+        System.out.println("Subject added.");
     }
 
-    private void updateSubject() {
+    private void editSubject() {
         viewAllSubjects();
+        System.out.print("Enter subject ID to edit: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.print("Enter subject ID to update: ");
-        int id = readInt();
-
-        // validate if subject exist
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
             System.out.println("Subject not found.");
             return;
         }
 
-        // Show prompt to allow skipping
-        System.out.print("Enter new name [Press ENTER to skip]: ");
-        String nameInput = scanner.nextLine().trim();
-        String newName = nameInput.isEmpty() ? existing.getName() : nameInput;
+        System.out.print("Enter new name [Leave empty to keep \"" + existing.getName() + "\"]: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter new description [Leave empty to keep current]: ");
+        String description = scanner.nextLine();
+        System.out.print(
+                "Enter new recommended major [Leave empty to keep \"" + existing.getRecommendedMajor() + "\"]: ");
+        String recommendedMajor = scanner.nextLine();
+        System.out.print("Enter new complexity level [Leave empty to keep " + existing.getComplexityLevel() + "]: ");
+        String complexityInput = scanner.nextLine();
 
-        System.out.print("Enter new description [Press ENTER to skip]: ");
-        String descInput = scanner.nextLine().trim();
-        String newDescription = descInput.isEmpty() ? existing.getDescription() : descInput;
-
-        // Call the controller's update method
-        if (subjectController.updateSubject(id, newName, newDescription)) {
-            System.out.println("Subject updated successfully.");
-        } else {
-            System.out.println("Failed to update subject.");
+        if (!name.trim().isEmpty())
+            existing.setName(name);
+        if (!description.trim().isEmpty())
+            existing.setDescription(description);
+        if (!recommendedMajor.trim().isEmpty())
+            existing.setRecommendedMajor(recommendedMajor);
+        if (!complexityInput.trim().isEmpty()) {
+            try {
+                int complexityLevel = Integer.parseInt(complexityInput);
+                existing.setComplexityLevel(complexityLevel);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid complexity level input. Keeping previous value.");
+            }
         }
+
+        subjectController.updateSubject(existing);
+        System.out.println("Subject updated.");
     }
 
     private void deleteSubject() {
         viewAllSubjects();
-
         System.out.print("Enter subject ID to delete: ");
-        int id = readInt();
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        // Validate if subject exists before deletion
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
             System.out.println("Subject not found.");
             return;
         }
 
-        // Confirm deletion
         System.out.print("Are you sure you want to delete \"" + existing.getName() + "\"? (y/n): ");
-        String confirm = scanner.nextLine().trim().toLowerCase();
-        if (!confirm.equals("y")) {
-            return;
-        }
-
-        if (subjectController.deleteSubject(id)) {
-            System.out.println("Subject deleted successfully.");
+        String confirm = scanner.nextLine();
+        if (confirm.equalsIgnoreCase("y")) {
+            subjectController.deleteSubject(id);
+            System.out.println("Subject deleted.");
         } else {
-            System.out.println("Failed to delete subject.");
+            System.out.println("Delete cancelled.");
         }
     }
 
-    private int readInt() {
-        try {
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number.");
-            return -1;
-        }
+    private String truncate(String text, int maxLength) {
+        if (text == null)
+            return "";
+        return text.length() <= maxLength ? text : text.substring(0, maxLength - 3) + "...";
     }
 }

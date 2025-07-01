@@ -1,13 +1,13 @@
 package edu.university.facultyloading.repo_impl;
 
 import edu.university.facultyloading.model.Load;
+import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.util.DbConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,138 +20,219 @@ public class LoadRepoImpl implements LoadRepo {
     }
 
     @Override
-    public Load fetchLoad(int facultyId) {
-        String query = "SELECT * FROM tblloads WHERE faculty_id = ? AND is_archived = 0";
+    public void create(Load load) {
+        String query = "INSERT INTO tblloads (faculty_id, subject_id) VALUES (?, ?)";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-        Load load = new Load();
+            stmt.setInt(1, load.getFacultyId());
+            stmt.setInt(2, load.getSubjectId());
+            stmt.executeUpdate();
 
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement preparedState = connnection.prepareStatement(query);) {
-
-            preparedState.setInt(1, facultyId);
-            ResultSet result = preparedState.executeQuery();
-
-            if (result.next()) {
-                int id = result.getInt("load_id");
-
-                load.setId(id);
-                load.setFacultyId(facultyId);
-            }
         } catch (SQLException e) {
-            System.out.println("Load Repo - fetchLoad(): " + e.getMessage());
+            System.out.println("LoadRepo - create(): " + e.getMessage());
         }
-
-        return load;
     }
 
     @Override
-    public List<Load> fetchLoads() {
-        String query = "SELECT * FROM tblloads WHERE is_archived = 0";
+    public Load getById(int loadId) {
+        String query = "SELECT load_id, faculty_id, subject_id FROM tblloads WHERE load_id = ? AND is_archived = 0";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-        List<Load> loads = new ArrayList<>();
+            stmt.setInt(1, loadId);
+            ResultSet result = stmt.executeQuery();
 
-        try (Connection connnection = dbConnection.connect();
-                Statement state = connnection.createStatement();
-                ResultSet result = state.executeQuery(query);) {
-
-            while (result.next()) {
-                int id = result.getInt("load_id");
-                int facultyId = result.getInt("faculty_id");
-
-                Load load = new Load();
-
-                load.setId(id);
-                load.setFacultyId(facultyId);
-                loads.add(load);
+            if (result.next()) {
+                return new Load(
+                        result.getInt("load_id"),
+                        result.getInt("faculty_id"),
+                        result.getInt("subject_id"));
             }
         } catch (SQLException e) {
-            System.out.println("Load Repo - fetchLoads(): " + e.getMessage());
+            System.out.println("LoadRepo - getById(): " + e.getMessage());
         }
+        return null;
+    }
 
+    @Override
+    public List<Load> getAll() {
+        List<Load> loads = new ArrayList<>();
+        String query = "SELECT load_id, faculty_id, subject_id FROM tblloads WHERE is_archived = 0";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet result = stmt.executeQuery()) {
+
+            while (result.next()) {
+                loads.add(new Load(
+                        result.getInt("load_id"),
+                        result.getInt("faculty_id"),
+                        result.getInt("subject_id")));
+            }
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - getAll(): " + e.getMessage());
+        }
         return loads;
     }
 
     @Override
-    public boolean createLoad(int facultyId) {
-        String query = "INSERT INTO tblloads (faculty_id) VALUES (?)";
-        boolean isSuccess = false;
-
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement prep = connnection.prepareStatement(query);) {
-            prep.setInt(1, facultyId);
-
-            isSuccess = prep.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Load Repo - createLoad(): " + e.getMessage());
-        }
-
-        return isSuccess;
-    }
-
-    @Override
-    public boolean archiveLoad(int id) {
-        String query = "UPDATE tblloads SET is_archived = 1 WHERE load_id = ?";
-
-        boolean isSuccess = false;
-
+    public List<Load> getByFacultyId(int facultyId) {
+        List<Load> loads = new ArrayList<>();
+        String query = "SELECT load_id, faculty_id, subject_id FROM tblloads WHERE faculty_id = ? AND is_archived = 0";
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Load Repo - archiveLoad(): " + e.getMessage());
-        }
-        return isSuccess;
-    }
+            stmt.setInt(1, facultyId);
+            ResultSet result = stmt.executeQuery();
 
-    @Override
-    public boolean restoreLoad(int id) {
-        String query = "UPDATE tblloads SET is_archived = 0 WHERE load_id = ?";
-
-        boolean isSuccess = false;
-
-        try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, id);
-
-            isSuccess = prep.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Load Repo - restoreLoad(): " + e.getMessage());
-        }
-        return isSuccess;
-    }
-
-    @Override
-    public boolean deleteLoad(int id) {
-        String queryLoad = "DELETE FROM tblloads WHERE load_id = ?";
-        String queryLoadSubjects = "DELETE FROM tblload_subjects WHERE load_id = ?";
-
-        boolean isSuccess = false;
-
-        try (Connection connection = dbConnection.connect();) {
-            // delete load
-            try (PreparedStatement prepLoad = connection.prepareStatement(queryLoad);) {
-                prepLoad.setInt(1, id);
-                boolean isLoadDeleted = prepLoad.executeUpdate() > 0;
-
-                if (isLoadDeleted) {
-                    // delete load subjects
-                    try (PreparedStatement prepLoadSubjects = connection.prepareStatement(queryLoadSubjects);) {
-                        prepLoadSubjects.setInt(1, id);
-                        prepLoadSubjects.executeUpdate();
-                        isSuccess = true;
-                    } catch (SQLException e) {
-                        System.out.println("Load Repo - deleteLoad() - Prep Load Subjects: " + e.getMessage());
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("Load Repo - deleteLoad() - Prep Load: " + e.getMessage());
+            while (result.next()) {
+                loads.add(new Load(
+                        result.getInt("load_id"),
+                        result.getInt("faculty_id"),
+                        result.getInt("subject_id")));
             }
         } catch (SQLException e) {
-            System.out.println("Load Repo - deleteLoad() - Connection: " + e.getMessage());
+            System.out.println("LoadRepo - getByFacultyId(): " + e.getMessage());
         }
-        return isSuccess;
+        return loads;
     }
 
+    @Override
+    public void update(Load load) {
+        String query = "UPDATE tblloads SET faculty_id = ?, subject_id = ? WHERE load_id = ?";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, load.getFacultyId());
+            stmt.setInt(2, load.getSubjectId());
+            stmt.setInt(3, load.getLoadId());
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - update(): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void archive(int loadId) {
+        String query = "UPDATE tblloads SET is_archived = 1 WHERE load_id = ?";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, loadId);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - archive(): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void restore(int loadId) {
+        String query = "UPDATE tblloads SET is_archived = 0 WHERE load_id = ?";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, loadId);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - restore(): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(int loadId) {
+        String query = "DELETE FROM tblloads WHERE load_id = ?";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, loadId);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - delete(): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean assignSubjectToFaculty(int facultyId, int subjectId) {
+        String checkQuery = "SELECT load_id FROM tblloads WHERE faculty_id = ? AND subject_id = ?";
+        String insertQuery = "INSERT INTO tblloads (faculty_id, subject_id) VALUES (?, ?)";
+
+        try (Connection connection = dbConnection.connect()) {
+            // Check if already assigned
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, facultyId);
+                checkStmt.setInt(2, subjectId);
+                ResultSet result = checkStmt.executeQuery();
+                if (result.next()) {
+                    // Already assigned
+                    return false;
+                }
+            }
+            // Assign new load
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                insertStmt.setInt(1, facultyId);
+                insertStmt.setInt(2, subjectId);
+                int affected = insertStmt.executeUpdate();
+                return affected > 0;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public List<Subject> getSubjectsByFacultyId(int facultyId) {
+        List<Subject> subjects = new ArrayList<>();
+        String query = "SELECT tblsubjects.subject_id, tblsubjects.name, tblsubjects.description, " +
+                "tblsubjects.recommended_major, tblsubjects.complexity_level " +
+                "FROM tblloads " +
+                "INNER JOIN tblsubjects ON tblloads.subject_id = tblsubjects.subject_id " +
+                "WHERE tblloads.faculty_id = ? " +
+                "AND tblsubjects.is_archived = 0";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, facultyId);
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Subject subject = new Subject(
+                        result.getInt("subject_id"),
+                        result.getString("name"),
+                        result.getString("description"),
+                        result.getString("recommended_major"),
+                        result.getInt("complexity_level"));
+                subjects.add(subject);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - getSubjectsByFacultyId(): " + e.getMessage());
+        }
+
+        return subjects;
+    }
+
+    @Override
+    public boolean removeSubjectFromFaculty(int facultyId, int subjectId) {
+        String deleteQuery = "DELETE FROM tblloads WHERE faculty_id = ? AND subject_id = ?";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+
+            stmt.setInt(1, facultyId);
+            stmt.setInt(2, subjectId);
+            int affected = stmt.executeUpdate();
+            return affected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
+            return false;
+        }
+    }
 }

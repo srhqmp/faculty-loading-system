@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,150 +19,124 @@ public class SubjectRepoImpl implements SubjectRepo {
     }
 
     @Override
-    public Subject fetchSubject(int id) {
-        String query = "SELECT * FROM tblsubjects WHERE subject_id = ? AND is_archived = 0";
+    public void create(Subject subject) {
+        String query = "INSERT INTO tblsubjects (name, description, recommended_major, complexity_level) VALUES (?, ?, ?, ?)";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+            stmt.setString(1, subject.getName());
+            stmt.setString(2, subject.getDescription());
+            stmt.setString(3, subject.getRecommendedMajor());
+            stmt.setInt(4, subject.getComplexityLevel());
+            stmt.executeUpdate();
 
-            preparedState.setInt(1, id);
-            ResultSet result = preparedState.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("SubjectRepo - create(): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Subject getById(int subjectId) {
+        String query = "SELECT subject_id, name, description, recommended_major, complexity_level FROM tblsubjects WHERE subject_id = ? AND is_archived = 0";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, subjectId);
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                Subject subject = new Subject();
-                String name = result.getString("subject_name");
-                String description = result.getString("subject_description");
-
-                subject.setId(id);
-                subject.setName(name);
-                subject.setDescription(description);
-
-                return subject;
+                return new Subject(
+                        result.getInt("subject_id"),
+                        result.getString("name"),
+                        result.getString("description"),
+                        result.getString("recommended_major"),
+                        result.getInt("complexity_level"));
             }
         } catch (SQLException e) {
-            System.out.println("Subject Repo - fetchSubject(): " + e.getMessage());
+            System.out.println("SubjectRepo - getById(): " + e.getMessage());
         }
-
         return null;
     }
 
     @Override
-    public List<Subject> fetchSubjects() {
-        String query = "SELECT * FROM tblsubjects WHERE is_archived = 0";
-
+    public List<Subject> getAll() {
         List<Subject> subjects = new ArrayList<>();
-
-        try (Connection connnection = dbConnection.connect();
-                Statement state = connnection.createStatement();
-                ResultSet result = state.executeQuery(query);) {
+        String query = "SELECT subject_id, name, description, recommended_major, complexity_level FROM tblsubjects WHERE is_archived = 0";
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                int id = result.getInt("subject_id");
-                String name = result.getString("subject_name");
-                String description = result.getString("subject_description");
-
-                Subject subject = new Subject();
-
-                subject.setId(id);
-                subject.setName(name);
-                subject.setDescription(description);
-
-                subjects.add(subject);
+                subjects.add(new Subject(
+                        result.getInt("subject_id"),
+                        result.getString("name"),
+                        result.getString("description"),
+                        result.getString("recommended_major"),
+                        result.getInt("complexity_level")));
             }
         } catch (SQLException e) {
-            System.out.println("Subject Repo - fetchSubjects(): " + e.getMessage());
+            System.out.println("SubjectRepo - getAll(): " + e.getMessage());
         }
-
         return subjects;
     }
 
     @Override
-    public boolean createSubject(String name, String description) {
-        String query = "INSERT INTO tblsubjects (subject_name, subject_description) "
-                + "VALUES (?,?)";
-        boolean isSuccess = false;
-
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement prep = connnection.prepareStatement(query);) {
-            prep.setString(1, name);
-            prep.setString(2, description);
-
-            isSuccess = prep.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Subject Repo - createSubject(): " + e.getMessage());
-        }
-
-        return isSuccess;
-    }
-
-    @Override
-    public boolean updateSubject(int id, String name, String description) {
-        String query = "UPDATE tblsubjects SET subject_name = ?, subject_description = ? WHERE subject_id = ?";
-
-        boolean isSuccess = false;
-
+    public void update(Subject subject) {
+        String query = "UPDATE tblsubjects SET name = ?, description = ?, recommended_major = ?, complexity_level = ? WHERE subject_id = ?";
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setString(1, name);
-            prep.setString(2, description);
-            prep.setInt(3, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setString(1, subject.getName());
+            stmt.setString(2, subject.getDescription());
+            stmt.setString(3, subject.getRecommendedMajor());
+            stmt.setInt(4, subject.getComplexityLevel());
+            stmt.setInt(5, subject.getSubjectId());
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Subject Repo - updateSubject(): " + e.getMessage());
+            System.out.println("SubjectRepo - update(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean archiveSubject(int id) {
+    public void archive(int subjectId) {
         String query = "UPDATE tblsubjects SET is_archived = 1 WHERE subject_id = ?";
-
-        boolean isSuccess = false;
-
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setInt(1, subjectId);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Subject Repo - archiveSubject(): " + e.getMessage());
+            System.out.println("SubjectRepo - archive(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean restoreSubject(int id) {
+    public void restore(int subjectId) {
         String query = "UPDATE tblsubjects SET is_archived = 0 WHERE subject_id = ?";
-
-        boolean isSuccess = false;
-
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setInt(1, subjectId);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Subject Repo - restoreSubject(): " + e.getMessage());
+            System.out.println("SubjectRepo - restore(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean deleteSubject(int id) {
+    public void delete(int subjectId) {
         String query = "DELETE FROM tblsubjects WHERE subject_id = ?";
-
-        boolean isSuccess = false;
-
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setInt(1, id);
-            prep.executeUpdate();
-            isSuccess = true;
-        } catch (SQLException e) {
-            System.out.println("Subject Repo - deleteSubject(): " + e.getMessage());
-        }
-        return isSuccess;
-    }
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
+            stmt.setInt(1, subjectId);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("SubjectRepo - delete(): " + e.getMessage());
+        }
+    }
 }

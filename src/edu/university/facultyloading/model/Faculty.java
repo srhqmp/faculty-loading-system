@@ -1,44 +1,31 @@
 package edu.university.facultyloading.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Faculty extends User {
 
     private int facultyId;
-    private int loadId;
-
     private String major;
     private int yearsOfExperience;
     private double studentFeedbackScore;
-    private int isAvailable;
-    // private boolean availability;
-    private List<String> subjectsTaught;
+    private boolean isAvailable;
+
+    private List<Subject> assignedSubjects;
 
     public Faculty() {
+        super();
     }
 
-    public Faculty(int id, int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
-            int isAvailable, String username, String password, String firstName, String lastName) {
-        super(id, username, password, firstName, lastName, 1);
+    public Faculty(
+            int facultyId, int userId, String username, String password,
+            String firstName, String lastName,
+            String major, int yearsOfExperience, double studentFeedbackScore, boolean isAvailable) {
+        super(userId, username, password, firstName, lastName, 1); // role = 1
         this.facultyId = facultyId;
-        this.loadId = loadId;
         this.major = major;
         this.yearsOfExperience = yearsOfExperience;
         this.studentFeedbackScore = studentFeedbackScore;
         this.isAvailable = isAvailable;
-    }
-
-    public Faculty(int facultyId, int loadId, String major, int yearsOfExperience, double studentFeedbackScore,
-            int isAvailable, String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, 1);
-        this.facultyId = facultyId;
-        this.loadId = loadId;
-        this.major = major;
-        this.yearsOfExperience = yearsOfExperience;
-        this.studentFeedbackScore = studentFeedbackScore;
-        this.isAvailable = isAvailable;
-        this.subjectsTaught = new ArrayList<>();
     }
 
     public int getFacultyId() {
@@ -47,14 +34,6 @@ public class Faculty extends User {
 
     public void setFacultyId(int facultyId) {
         this.facultyId = facultyId;
-    }
-
-    public int getLoadId() {
-        return loadId;
-    }
-
-    public void setLoadId(int loadId) {
-        this.loadId = loadId;
     }
 
     public String getMajor() {
@@ -69,10 +48,6 @@ public class Faculty extends User {
         return yearsOfExperience;
     }
 
-    public String getName() {
-        return getFirstName() + " " + getLastName();
-    }
-
     public void setYearsOfExperience(int yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
@@ -81,39 +56,31 @@ public class Faculty extends User {
         return studentFeedbackScore;
     }
 
-    public List<String> getSubjectsTaught() {
-        return subjectsTaught;
-    }
-
     public void setStudentFeedbackScore(double studentFeedbackScore) {
         this.studentFeedbackScore = studentFeedbackScore;
     }
 
-    public int getIsAvailable() {
+    public boolean isAvailable() {
         return isAvailable;
     }
 
-    public int isIsAvailable() {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(int isAvailable) {
+    public void setAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 
-    // public boolean isAvailable() {
-    //     return availability;
-    // }
+    public List<Subject> getAssignedSubjects() {
+        return assignedSubjects;
+    }
 
-    // public void setAvailability(boolean availability) {
-    //     this.availability = availability;
-    // }
+    public void setAssignedSubjects(List<Subject> assignedSubjects) {
+        this.assignedSubjects = assignedSubjects;
+    }
 
     @Override
     public String toString() {
-        return "Faculty{" + "facultyId=" + facultyId + ", loadId=" + loadId + ", major=" + major
-                + ", yearsOfExperience=" + yearsOfExperience + ", studentFeedbackScore=" + studentFeedbackScore
-                + ", isAvailable=" + isAvailable + '}';
+        return "Faculty [facultyId=" + facultyId + ", major=" + major + ", yearsOfExperience=" + yearsOfExperience
+                + ", studentFeedbackScore=" + studentFeedbackScore + ", isAvailable=" + isAvailable
+                + ", assignedSubjects=" + assignedSubjects + "]";
     }
 
 }

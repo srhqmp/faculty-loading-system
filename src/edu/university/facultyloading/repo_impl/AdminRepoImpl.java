@@ -19,255 +19,200 @@ public class AdminRepoImpl implements AdminRepo {
         this.dbConnection = dbConnection;
     }
 
-    @Override
-    public Admin fetchAdmin(int adminId) {
-        String query = "SELECT admin_id, tbladmins.user_id AS user_id, username, first_name, last_name "
-                + "FROM tbladmins "
-                + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
-                + "WHERE admin_id = ? "
-                + "AND is_archived = 0";
+    public Admin create(Admin admin) {
+        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 2)";
+        String adminQuery = "INSERT INTO tbladmins (user_id) VALUES (?)";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement preparedState = connection.prepareStatement(query)) {
+                PreparedStatement userStmt = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement adminStmt = connection.prepareStatement(adminQuery,
+                        Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedState.setInt(1, adminId);
-            ResultSet result = preparedState.executeQuery();
+            // Insert into tblusers
+            userStmt.setString(1, admin.getUsername());
+            userStmt.setString(2, admin.getPassword());
+            userStmt.setString(3, admin.getFirstName());
+            userStmt.setString(4, admin.getLastName());
+            userStmt.executeUpdate();
 
+            ResultSet result = userStmt.getGeneratedKeys();
             if (result.next()) {
-                Admin admin = new Admin();
+                int userId = result.getInt(1);
+                admin.setUserId(userId);
 
-                int id = result.getInt("user_id");
-                String username = result.getString("username");
-                String firstName = result.getString("first_name");
-                String lastName = result.getString("last_name");
+                // Insert into tbladmins the user_id
+                adminStmt.setInt(1, userId);
+                adminStmt.executeUpdate();
 
-                admin.setId(id);
-                admin.setAdminId(adminId);
-                admin.setUsername(username);
-                admin.setFirstName(firstName);
-                admin.setLastName(lastName);
+                ResultSet adminKeys = adminStmt.getGeneratedKeys();
+                if (adminKeys.next()) {
+                    int adminId = adminKeys.getInt(1);
+                    admin.setAdminId(adminId);
+                }
 
                 return admin;
             }
+
         } catch (SQLException e) {
-            System.out.println("Admin Repo - fetchAdmin(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - create(): " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public Admin authenticate(String username, String password) {
+        String query = "SELECT tbladmins.admin_id, tblusers.* " +
+                "FROM tbladmins " +
+                "INNER JOIN tblusers ON tbladmins.user_id = tblusers.user_id " +
+                "WHERE tblusers.username = ? " +
+                "AND tblusers.password = ? " +
+                "AND tblusers.role = 2 " +
+                "AND tblusers.is_archived = 0";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                return new Admin(
+                        result.getInt("admin_id"),
+                        result.getInt("user_id"),
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("first_name"),
+                        result.getString("last_name"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("AdminRepoImpl - authenticate(): " + e.getMessage());
         }
         return null;
     }
 
     @Override
-    public Admin fetchAdmin(String username, String password) {
-        String query = "SELECT admin_id, tblusers.user_id, first_name, last_name "
-                + "FROM tbladmins "
-                + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
-                + "WHERE username = ? "
-                + "AND password = ? "
-                + "AND role = 2 "
-                + "AND is_archived = 0";
+    public Admin getById(int adminId) {
+        String query = "SELECT tbladmins.admin_id, tblusers.* " +
+                "FROM tbladmins " +
+                "INNER JOIN tblusers ON tbladmins.user_id = tblusers.user_id " +
+                "WHERE tbladmins.admin_id = ? " +
+                "AND tblusers.is_archived = 0";
 
-        try (Connection connnection = dbConnection.connect();
-                PreparedStatement preparedState = connnection.prepareStatement(query);) {
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            preparedState.setString(1, username);
-            preparedState.setString(2, password);
-            ResultSet result = preparedState.executeQuery();
+            stmt.setInt(1, adminId);
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                Admin admin = new Admin();
-
-                int id = result.getInt("user_id");
-                int adminId = result.getInt("admin_id");
-                String firstName = result.getString("first_name");
-                String lastName = result.getString("last_name");
-
-                admin.setId(id);
-                admin.setAdminId(adminId);
-                admin.setUsername(username);
-                admin.setPassword(password);
-                admin.setFirstName(firstName);
-                admin.setLastName(lastName);
-
-                return admin;
+                return new Admin(
+                        result.getInt("admin_id"),
+                        result.getInt("user_id"),
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("first_name"),
+                        result.getString("last_name"));
             }
+
         } catch (SQLException e) {
-            System.out.println("Admin Repo - fetchAdmin(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - getById(): " + e.getMessage());
         }
         return null;
     }
 
     @Override
-    public List<Admin> fetchAdmins() {
-        String query = "SELECT admin_id, tbladmins.user_id AS user_id, username, first_name, last_name "
-                + "FROM tbladmins "
-                + "INNER JOIN tblusers "
-                + "ON tbladmins.user_id = tblusers.user_id "
-                + "WHERE is_archived = 0";
-
+    public List<Admin> getAll() {
         List<Admin> admins = new ArrayList<>();
+        String query = "SELECT tbladmins.admin_id, tblusers.* " +
+                "FROM tbladmins " +
+                "INNER JOIN tblusers ON tbladmins.user_id = tblusers.user_id " +
+                "WHERE tblusers.is_archived = 0";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query);
                 ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                Admin admin = new Admin();
-
-                admin.setAdminId(result.getInt("admin_id"));
-                admin.setId(result.getInt("user_id"));
-                admin.setUsername(result.getString("username"));
-                admin.setFirstName(result.getString("first_name"));
-                admin.setLastName(result.getString("last_name"));
-
+                Admin admin = new Admin(
+                        result.getInt("admin_id"),
+                        result.getInt("user_id"),
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("first_name"),
+                        result.getString("last_name"));
                 admins.add(admin);
             }
 
         } catch (SQLException e) {
-            System.out.println("Admin Repo - fetchAdmins(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - getAll(): " + e.getMessage());
         }
-
         return admins;
     }
 
     @Override
-    public boolean createAdmin(String username, String password, String firstName, String lastName) {
-        // insert to user
-        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 2)";
-        String queryAdmin = "INSERT INTO tbladmins (user_id) VALUES (?)";
-        boolean isSuccess = false;
-
-        try (Connection connection = dbConnection.connect();) {
-            try (PreparedStatement prepUser = connection.prepareStatement(queryUser,
-                    Statement.RETURN_GENERATED_KEYS);) {
-                prepUser.setString(1, username);
-                prepUser.setString(2, password);
-                prepUser.setString(3, firstName);
-                prepUser.setString(4, lastName);
-                prepUser.executeUpdate();
-
-                // get user_id from created user
-                ResultSet result = prepUser.getGeneratedKeys();
-
-                if (result.next()) {
-                    try (PreparedStatement prepAdmin = connection.prepareStatement(queryAdmin);) {
-                        int userId = result.getInt(1);
-
-                        prepAdmin.setInt(1, userId);
-                        isSuccess = prepAdmin.executeUpdate() > 0;
-                    } catch (SQLException e) {
-                        System.out.println("Admin Repo - createAdmin() - Prep Admin: " + e.getMessage());
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("Admin Repo - createAdmin() - Prep User: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            System.out.println("Admin Repo - createAdmin() - Connection: " + e.getMessage());
-        }
-
-        return isSuccess;
-    }
-
-    @Override
-    public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName) {
-        String query = "UPDATE tblusers SET username = ?, password = ?, "
-                + "first_name = ?, last_name = ? WHERE user_id = ?";
-
-        boolean isSuccess = false;
+    public void update(Admin admin) {
+        String query = "UPDATE tblusers SET username = ?, password = ?, first_name = ?, last_name = ? WHERE user_id = ?";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query);) {
-            prep.setString(1, username);
-            prep.setString(2, password);
-            prep.setString(3, firstName);
-            prep.setString(4, lastName);
-            prep.setInt(5, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setString(1, admin.getUsername());
+            stmt.setString(2, admin.getPassword());
+            stmt.setString(3, admin.getFirstName());
+            stmt.setString(4, admin.getLastName());
+            stmt.setInt(5, admin.getUserId());
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Admin Repo - updateUserProfile(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - update(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean archiveAdmin(int id) {
-        String query = "UPDATE tbladmins SET is_archived = 1 WHERE user_id = ?";
-        boolean isSuccess = false;
+    public void archive(int adminId) {
+        String query = "UPDATE tblusers SET is_archived = 1 WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query)) {
-            prep.setInt(1, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setInt(1, adminId);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Admin Repo - archiveAdmin(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - archive(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean restoreAdmin(int id) {
-        String query = "UPDATE tbladmins SET is_archived = 0 WHERE user_id = ?";
-        boolean isSuccess = false;
+    public void restore(int adminId) {
+        String query = "UPDATE tblusers SET is_archived = 0 WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prep = connection.prepareStatement(query)) {
-            prep.setInt(1, id);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            isSuccess = prep.executeUpdate() > 0;
+            stmt.setInt(1, adminId);
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("Admin Repo - restoreAdmin(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - restore(): " + e.getMessage());
         }
-        return isSuccess;
     }
 
     @Override
-    public boolean deleteAdmin(int id, int adminId) {
-        String queryUser = "DELETE FROM tblusers WHERE user_id = ?";
-        String queryAdmin = "DELETE FROM tbladmins WHERE admin_id = ?";
-        boolean isSuccess = false;
-
-        try (Connection connection = dbConnection.connect();) {
-            // Delete admin
-            try (PreparedStatement prepAdmin = connection.prepareStatement(queryAdmin);) {
-                prepAdmin.setInt(1, adminId);
-                prepAdmin.executeUpdate();
-
-                // Delete user
-                try (PreparedStatement prepUser = connection.prepareStatement(queryUser);) {
-                    prepUser.setInt(1, id);
-                    prepUser.executeUpdate();
-                    isSuccess = true;
-                }
-            } catch (SQLException e) {
-                System.out.println("Admin Repo - deleteAdmin() - Admin Prep: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            System.out.println("Admin Repo - deleteAdmin() - Connection: " + e.getMessage());
-        }
-        return isSuccess;
-    }
-
-    @Override
-    public boolean isUsernameUnique(String username) {
-        String query = "SELECT COUNT(*) FROM tblusers WHERE username = ?";
+    public void delete(int adminId) {
+        String query = "DELETE FROM tblusers WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement prepState = connection.prepareStatement(query)) {
-            prepState.setString(1, username);
+                PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            ResultSet result = prepState.executeQuery();
-            if (result.next()) {
-                int count = result.getInt(1);
-                return count == 0; // true if unique
-            }
+            stmt.setInt(1, adminId);
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - isUsernameUnique(): " + e.getMessage());
+            System.out.println("AdminRepoImpl - delete(): " + e.getMessage());
         }
-        return false;
     }
-
 }

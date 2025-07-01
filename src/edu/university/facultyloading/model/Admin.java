@@ -1,27 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.university.facultyloading.model;
 
-/**
- *
- * @author user
- */
 public class Admin extends User {
 
     private int adminId;
 
     public Admin() {
+        super();
     }
 
-    public Admin(int id, String username, String password, String firstName, String lastName) {
-        super(id, username, password, firstName, lastName, 2);
-    }
-
-    public Admin(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName, 2);
+    public Admin(int adminId, int userId, String username, String password, String firstName, String lastName) {
+        super(userId, username, password, firstName, lastName, 2); // role = 2
+        this.adminId = adminId;
     }
 
     public int getAdminId() {
@@ -34,7 +23,7 @@ public class Admin extends User {
 
     @Override
     public String toString() {
-        return "Admin{" + "adminId=" + adminId + '}';
+        return "Admin [adminId=" + adminId + "]";
     }
 
 }

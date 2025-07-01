@@ -5,22 +5,20 @@ import java.util.List;
 
 public interface AdminRepo {
 
-    public Admin fetchAdmin(int adminId);
+    Admin create(Admin admin);
 
-    public Admin fetchAdmin(String username, String password);
+    Admin authenticate(String username, String password);
 
-    public List<Admin> fetchAdmins();
+    Admin getById(int adminId);
 
-    public boolean createAdmin(String username, String password, String firstName, String lastName);
+    List<Admin> getAll();
 
-    public boolean isUsernameUnique(String username);
+    void update(Admin admin);
 
-    public boolean updateUserProfile(int id, String username, String password, String firstName, String lastName);
+    void archive(int adminId);
 
-    public boolean archiveAdmin(int id);
+    void restore(int adminId);
 
-    public boolean restoreAdmin(int id);
-
-    public boolean deleteAdmin(int id, int adminId);
+    void delete(int adminId);
 
 }

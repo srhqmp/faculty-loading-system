@@ -2,19 +2,19 @@ package edu.university.facultyloading.model;
 
 abstract class User {
 
-    private int id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private int role; // 1 = faculty, 2 = admin
+    protected int userId;
+    protected String username;
+    protected String password;
+    protected String firstName;
+    protected String lastName;
+    protected int role; // 1 = faculty, 2 = admin
 
     public User() {
 
     }
 
-    public User(int id, String username, String password, String firstName, String lastName, int role) {
-        this.id = id;
+    public User(int userId, String username, String password, String firstName, String lastName, int role) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -22,20 +22,12 @@ abstract class User {
         this.role = role;
     }
 
-    public User(String username, String password, String firstName, String lastName, int role) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -80,7 +72,8 @@ abstract class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", role=" + role + '}';
+        return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+                + firstName + ", lastName=" + lastName + ", role=" + role + "]";
     }
 
 }

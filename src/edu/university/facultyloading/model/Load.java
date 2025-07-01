@@ -1,25 +1,22 @@
 package edu.university.facultyloading.model;
 
 public class Load {
-
-    private int id;
+    private int loadId;
     private int facultyId;
     private int subjectId;
 
-    public Load() {
-    }
-
-    public Load(int id, int facultyId) {
-        this.id = id;
+    public Load(int loadId, int facultyId, int subjectId) {
+        this.loadId = loadId;
         this.facultyId = facultyId;
+        this.subjectId = subjectId;
     }
 
-    public int getId() {
-        return id;
+    public int getLoadId() {
+        return loadId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLoadId(int loadId) {
+        this.loadId = loadId;
     }
 
     public int getFacultyId() {
@@ -40,7 +37,7 @@ public class Load {
 
     @Override
     public String toString() {
-        return "Load{" + "id=" + id + ", facultyId=" + facultyId + '}';
+        return "Load [loadId=" + loadId + ", facultyId=" + facultyId + ", subjectId=" + subjectId + "]";
     }
 
 }
