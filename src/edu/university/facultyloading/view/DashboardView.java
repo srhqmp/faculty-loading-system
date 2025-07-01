@@ -2,6 +2,7 @@ package edu.university.facultyloading.view;
 
 import java.util.Scanner;
 
+import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.util.ScannerHelper;
 
 public class DashboardView {
@@ -12,24 +13,36 @@ public class DashboardView {
     }
 
     public int showAdminDashboard() {
-        System.out.println("\n=== Admin Dashboard ===");
-        System.out.println("1. View All Faculties");
-        System.out.println("2. Manage Subjects");
-        System.out.println("3. Assign Subjects to Faculty");
-        System.out.println("4. Remove Assigned Subjects from Faculty");
-        System.out.println("5. View Faculty Loads");
-        System.out.println("0. Logout");
-        System.out.print("Select an option: ");
+        System.out.println();
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║               ADMIN DASHBOARD              ║"));
+        System.out.println(OutputFormatter.centerString("╠════════════════════════════════════════════╣"));
+        System.out.println(OutputFormatter.centerString("║ 1. View All Faculties                      ║"));
+        System.out.println(OutputFormatter.centerString("║ 2. Manage Subjects                         ║"));
+        System.out.println(OutputFormatter.centerString("║ 3. Assign Subjects to Faculty              ║"));
+        System.out.println(OutputFormatter.centerString("║ 4. Remove Assigned Subjects from Faculty   ║"));
+        System.out.println(OutputFormatter.centerString("║ 5. View Faculty Loads                      ║"));
+        System.out.println(OutputFormatter.centerString("║ 0. Logout                                  ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════════════╝"));
+
+        System.out.print(OutputFormatter.centerString("Select an option: "));
 
         return ScannerHelper.readInt(scanner);
     }
 
     public int showFacultyDashboard() {
-        System.out.println("\n=== Faculty Dashboard ===");
-        System.out.println("1. View Assigned Subjects");
-        System.out.println("2: Update Availability");
-        System.out.println("0. Logout");
-        System.out.print("Select an option: ");
+        System.out.println();
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║          FACULTY DASHBOARD         ║"));
+        System.out.println(OutputFormatter.centerString("╠════════════════════════════════════╣"));
+        System.out.println(OutputFormatter.centerString("║ 1. View Assigned Subjects          ║"));
+        System.out.println(OutputFormatter.centerString("║ 2. Update Availability             ║"));
+        System.out.println(OutputFormatter.centerString("║ 0. Logout                          ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+
+        System.out.print(OutputFormatter.centerString("Select an option: "));
 
         return ScannerHelper.readInt(scanner);
     }

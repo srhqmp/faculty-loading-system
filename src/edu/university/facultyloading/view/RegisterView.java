@@ -2,6 +2,8 @@ package edu.university.facultyloading.view;
 
 import java.util.Scanner;
 
+import edu.university.facultyloading.util.OutputFormatter;
+
 public class RegisterView {
     private Scanner scanner;
 
@@ -10,37 +12,41 @@ public class RegisterView {
     }
 
     public String[] showRegisterPrompt() {
-        System.out.println("=== Faculty Loading System Registration ===");
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║           Register User            ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        System.out.println();
 
         String userType = "";
         while (true) {
-            System.out.print("Enter user type (1 = Admin, 0 = Faculty): ");
+            System.out.print("\t\t    Enter user type (1 = Admin, 0 = Faculty): ");
             userType = scanner.nextLine().trim();
             if (userType.equals("1") || userType.equals("0"))
                 break;
-            System.out.println("Invalid input. Please enter 1 or 0.");
+            System.out.println(OutputFormatter.centerString("Invalid input. Please enter 1 or 0."));
         }
 
-        System.out.print("Username: ");
+        System.out.print("\t\t\t    Username: ");
         String username = scanner.nextLine().trim();
 
-        System.out.print("Password: ");
+        System.out.print("\t\t\t    Password: ");
         String password = scanner.nextLine().trim();
 
-        System.out.print("First Name: ");
+        System.out.print("\t\t\t    First Name: ");
         String firstName = scanner.nextLine().trim();
 
-        System.out.print("Last Name: ");
+        System.out.print("\t\t\t    Last Name: ");
         String lastName = scanner.nextLine().trim();
 
         String major = "";
         String yearsOfExperience = "";
 
         if (userType.equals("0")) {
-            System.out.print("Major: ");
+            System.out.print("\t\t\t    Major: ");
             major = scanner.nextLine().trim();
 
-            System.out.print("Years of Experience: ");
+            System.out.print("\t\t\t    Years of Experience: ");
             yearsOfExperience = scanner.nextLine().trim();
         }
 

@@ -18,13 +18,19 @@ public class SubjectManagementView {
 
     public void showSubjectManagementMenu() {
         while (true) {
-            System.out.println("\n=== Manage Subjects ===");
-            System.out.println("1. View All Subjects");
-            System.out.println("2. Add Subject");
-            System.out.println("3. Edit Subject");
-            System.out.println("4. Delete Subject");
-            System.out.println("0. Back to Dashboard");
-            System.out.print("Enter choice: ");
+            System.out.println();
+            System.out.println();
+            System.out.println(OutputFormatter.centerString("╔══════════════════════════════════╗"));
+            System.out.println(OutputFormatter.centerString("║       SUBJECT MANAGEMENT         ║"));
+            System.out.println(OutputFormatter.centerString("╠══════════════════════════════════╣"));
+            System.out.println(OutputFormatter.centerString("║ 1. View All Subjects             ║"));
+            System.out.println(OutputFormatter.centerString("║ 2. Add New Subject               ║"));
+            System.out.println(OutputFormatter.centerString("║ 3. Edit Subject                  ║"));
+            System.out.println(OutputFormatter.centerString("║ 4. Delete Subject                ║"));
+            System.out.println(OutputFormatter.centerString("║ 0. Back to Admin Dashboard       ║"));
+            System.out.println(OutputFormatter.centerString("╚══════════════════════════════════╝"));
+
+            System.out.print(OutputFormatter.centerString("Enter choice: "));
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -44,15 +50,24 @@ public class SubjectManagementView {
                 case 0:
                     return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println(OutputFormatter.centerString("Invalid option. Please try again."));
             }
         }
     }
 
     private void viewAllSubjects() {
         List<Subject> subjects = subjectController.getAllSubjects();
+
+        System.out.println();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║               SUBJECTS             ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        System.out.println();
+
+        OutputFormatter.printDivider();
         System.out.printf("%-5s %-20s %-30s %-20s %-10s%n",
                 "ID", "Name", "Description", "Recommended Major", "Complexity");
+        OutputFormatter.printDivider();
         for (Subject s : subjects) {
             System.out.printf("%-5d %-20s %-30s %-20s %-10d%n",
                     s.getSubjectId(),
@@ -61,6 +76,7 @@ public class SubjectManagementView {
                     OutputFormatter.truncate(s.getRecommendedMajor(), 20),
                     s.getComplexityLevel());
         }
+        OutputFormatter.printDivider();
     }
 
     private void addSubject() {

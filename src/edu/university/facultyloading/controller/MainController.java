@@ -7,6 +7,7 @@ import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
+import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.view.AssignSubjectView;
 import edu.university.facultyloading.view.DashboardView;
 import edu.university.facultyloading.view.FacultyListView;
@@ -52,17 +53,40 @@ public class MainController {
 
     public void start() {
         while (true) {
-            System.out.println("\n=== Welcome to Faculty Loading System ===");
-            System.out.println("1. Login");
-            System.out.println("2. Register");
-            System.out.print("Choose an option: ");
+            String[] header = {
+                    "╔════════════════════════════════════════════════════════════════════╗",
+                    "║                            WELCOME TO                              ║",
+                    "║                                                                    ║",
+                    "║    ███████╗ █████╗  ██████╗██╗   ██╗██╗     ████████╗██╗   ██╗     ║",
+                    "║    ██╔════╝██╔══██╗██╔════╝██║   ██║██║     ╚══██╔══╝╚██╗ ██╔╝     ║",
+                    "║    █████╗  ███████║██║     ██║   ██║██║        ██║    ╚████╔╝      ║",
+                    "║    ██╔══╝  ██╔══██║██║     ██║   ██║██║        ██║     ╚██╔╝       ║",
+                    "║    ██║     ██║  ██║╚██████╗╚██████╔╝███████╗   ██║      ██║        ║",
+                    "║    ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝      ╚═╝        ║",
+                    "║                                                                    ║",
+                    "║                           LOADING SYSTEM                           ║",
+                    "╚════════════════════════════════════════════════════════════════════╝"
+            };
+            System.out.println();
+            for (String line : header) {
+                System.out.println(OutputFormatter.centerString(line));
+            }
+            System.out.println();
+
+            System.out.println(OutputFormatter.centerString("╔══════════════════════════════╗"));
+            System.out.println(OutputFormatter.centerString("║           MAIN MENU          ║"));
+            System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
+            System.out.println(OutputFormatter.centerString("║ 1. Login                     ║"));
+            System.out.println(OutputFormatter.centerString("║ 2. Register                  ║"));
+            System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
+            System.out.print(OutputFormatter.centerString("Choose an option: "));
 
             int choice = -1;
 
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please try again.");
+                System.out.println(OutputFormatter.centerString("Invalid input. Please try again."));
                 continue;
             }
 
@@ -74,7 +98,7 @@ public class MainController {
                     handleRegistration();
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println(OutputFormatter.centerString("Invalid choice. Please try again."));
             }
         }
     }
@@ -89,14 +113,14 @@ public class MainController {
         System.out.println();
 
         if (loggedInAdmin != null) {
-            System.out.println("Welcome " + loggedInAdmin.getFullname() + "!");
+            System.out.println(OutputFormatter.centerString("Welcome " + loggedInAdmin.getFullname() + "!"));
             displayAdminDashboard();
             return;
         }
 
         loggedInFaculty = facultyRepo.authenticate(username, password);
         if (loggedInFaculty != null) {
-            System.out.println("Welcome " + loggedInFaculty.getFullname() + "!");
+            System.out.println(OutputFormatter.centerString("Welcome " + loggedInFaculty.getFullname() + "!"));
             displayFacultyDashboard();
             return;
         }
@@ -107,11 +131,28 @@ public class MainController {
     private void handleRegistration() {
         String[] data = registerView.showRegisterPrompt();
 
-        int userType = Integer.parseInt(data[0]);
-        String username = data[1];
-        String password = data[2];
-        String firstName = data[3];
-        String lastName = data[4];
+        int userType;
+        try {
+            userType = Integer.parseInt(data[0]);
+            if (userType != 1 && userType != 2) {
+                System.out.println(OutputFormatter.centerString("Invalid user type."));
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(OutputFormatter.centerString("User type must be a number."));
+            return;
+        }
+
+        String username = data[1].trim();
+        String password = data[2].trim();
+        String firstName = data[3].trim();
+        String lastName = data[4].trim();
+
+        // Basic validation
+        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+            System.out.println(OutputFormatter.centerString("All fields must be filled."));
+            return;
+        }
 
         if (userType == 1) {
             Admin admin = new Admin();
@@ -121,19 +162,35 @@ public class MainController {
             admin.setLastName(lastName);
             adminRepo.create(admin);
 
-            System.out.println("Admin registered successfully.");
+            System.out.println(OutputFormatter.centerString("Admin registered successfully."));
             System.out.println();
             System.out.println();
 
             loggedInAdmin = adminRepo.authenticate(username, password);
-
             if (loggedInAdmin != null) {
-                System.out.println("Welcome " + loggedInAdmin.getFullname() + "!");
+                System.out.println(OutputFormatter.centerString("Welcome " + loggedInAdmin.getFullname() + "!"));
                 displayAdminDashboard();
             }
         } else {
-            String major = data[5];
-            int yearsOfExperience = Integer.parseInt(data[6]);
+            String major = data[5].trim();
+            String yearsInput = data[6].trim();
+
+            if (major.isEmpty() || yearsInput.isEmpty()) {
+                System.out.println(OutputFormatter.centerString("Major and experience must be filled."));
+                return;
+            }
+
+            int yearsOfExperience;
+            try {
+                yearsOfExperience = Integer.parseInt(yearsInput);
+                if (yearsOfExperience < 0) {
+                    System.out.println(OutputFormatter.centerString("Years of experience must be non-negative."));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(OutputFormatter.centerString("Years of experience must be a number."));
+                return;
+            }
 
             Faculty faculty = new Faculty();
             faculty.setUsername(username);
@@ -144,13 +201,13 @@ public class MainController {
             faculty.setYearsOfExperience(yearsOfExperience);
             facultyRepo.create(faculty);
 
-            System.out.println("Faculty registered successfully.");
+            System.out.println(OutputFormatter.centerString("Faculty registered successfully."));
             System.out.println();
             System.out.println();
 
             loggedInFaculty = facultyRepo.authenticate(username, password);
             if (loggedInFaculty != null) {
-                System.out.println("Welcome " + loggedInFaculty.getFullname() + "!");
+                System.out.println(OutputFormatter.centerString("Welcome " + loggedInFaculty.getFullname() + "!"));
                 displayFacultyDashboard();
             }
         }
@@ -232,10 +289,10 @@ public class MainController {
                     // Logout
                     loggedInAdmin = null;
                     running = false;
-                    System.out.println("Logged out.");
+                    System.out.println(OutputFormatter.centerString("Logged out."));
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println(OutputFormatter.centerString("Invalid choice. Please try again."));
             }
         }
     }
@@ -260,10 +317,10 @@ public class MainController {
                     // Logout
                     loggedInFaculty = null;
                     running = false;
-                    System.out.println("Logged out.");
+                    System.out.println(OutputFormatter.centerString("Logged out."));
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println(OutputFormatter.centerString("Invalid choice. Please try again."));
             }
         }
     }

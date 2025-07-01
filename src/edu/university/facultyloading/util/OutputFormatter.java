@@ -8,7 +8,7 @@ public class OutputFormatter {
         }
     }
 
-    private static final int CONSOLE_WIDTH = 80;
+    private static final int CONSOLE_WIDTH = 100;
 
     // Public method to center a string using default width
     public static String centerString(String str) {
