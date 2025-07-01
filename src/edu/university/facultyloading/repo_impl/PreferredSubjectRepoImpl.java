@@ -1,6 +1,5 @@
 package edu.university.facultyloading.repo_impl;
 
-import edu.university.facultyloading.model.LoadSubject;
 import edu.university.facultyloading.model.PreferredSubject;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.PreferredSubjectRepo;

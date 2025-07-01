@@ -4,6 +4,7 @@ public class Load {
 
     private int id;
     private int facultyId;
+    private int subjectId;
 
     public Load() {
     }
@@ -27,6 +28,14 @@ public class Load {
 
     public void setFacultyId(int facultyId) {
         this.facultyId = facultyId;
+    }
+
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     @Override

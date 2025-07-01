@@ -8,12 +8,10 @@ import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.LoadRepo;
-import edu.university.facultyloading.repo.LoadSubjectRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.repo_impl.AdminRepoImpl;
 import edu.university.facultyloading.repo_impl.FacultyRepoImpl;
 import edu.university.facultyloading.repo_impl.LoadRepoImpl;
-import edu.university.facultyloading.repo_impl.LoadSubjectRepoImpl;
 import edu.university.facultyloading.repo_impl.SubjectRepoImpl;
 import edu.university.facultyloading.util.DbConnection;
 import edu.university.facultyloading.view.AdminDashboardView;
@@ -39,13 +37,12 @@ public class Main {
         FacultyRepo facultyRepo = new FacultyRepoImpl(db);
         SubjectRepo subjectRepo = new SubjectRepoImpl(db);
         LoadRepo loadRepo = new LoadRepoImpl(db);
-        LoadSubjectRepo loadSubjectRepo = new LoadSubjectRepoImpl(db);
 
         // Controller / functions within the system /these always needs the REPO
         AdminController adminController = new AdminController(adminRepo);
-        FacultyController facultyController = new FacultyController(facultyRepo);
+        FacultyController facultyController = new FacultyController(facultyRepo, loadRepo);
         SubjectController subjectController = new SubjectController(subjectRepo);
-        LoadController loadController = new LoadController(loadRepo, loadSubjectRepo, subjectRepo);
+        LoadController loadController = new LoadController(loadRepo, subjectRepo);
 
         // Views
         LoginView loginView = new LoginView(scanner, adminController, facultyController);
