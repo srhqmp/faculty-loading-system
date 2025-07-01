@@ -151,6 +151,22 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
+    public void updateAvailability(int facultyId, boolean isAvailable) {
+        String query = "UPDATE tblfaculties SET is_available = ? WHERE faculty_id = ?";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, isAvailable ? 1 : 0);
+            stmt.setInt(2, facultyId);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Faculty Repo - updateAvailability(): " + e.getMessage());
+        }
+    }
+
+    @Override
     public void archive(int facultyId) {
         String query = "UPDATE tblusers SET is_archived = 1 WHERE user_id = (SELECT user_id FROM tblfaculties WHERE faculty_id = ?)";
 
@@ -210,4 +226,5 @@ public class FacultyRepoImpl implements FacultyRepo {
         return new Faculty(facultyId, userId, username, password, firstName, lastName, major,
                 yearsOfExperience, studentFeedbackScore, isAvailable);
     }
+
 }

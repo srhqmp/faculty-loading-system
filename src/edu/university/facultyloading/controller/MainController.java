@@ -51,6 +51,7 @@ public class MainController {
             System.out.print("Choose an option: ");
 
             int choice = -1;
+
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
@@ -77,14 +78,18 @@ public class MainController {
         String password = credentials[1];
 
         loggedInAdmin = adminRepo.authenticate(username, password);
+        System.out.println();
+        System.out.println();
 
         if (loggedInAdmin != null) {
+            System.out.println("Welcome " + loggedInAdmin.getFullname() + "!");
             displayAdminDashboard();
             return;
         }
 
         loggedInFaculty = facultyRepo.authenticate(username, password);
         if (loggedInFaculty != null) {
+            System.out.println("Welcome " + loggedInFaculty.getFullname() + "!");
             displayFacultyDashboard();
             return;
         }
@@ -139,7 +144,14 @@ public class MainController {
         boolean running = true;
         while (running) {
             int choice = dashboardView.showAdminDashboard();
+
+            // Provide faculties and subjects
             List<Faculty> faculties = facultyRepo.getAll();
+            for (Faculty faculty : faculties) {
+                // get faculty load
+                List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(faculty.getFacultyId());
+                faculty.setAssignedSubjects(assignedSubjects);
+            }
             List<Subject> subjects = subjectRepo.getAll();
 
             switch (choice) {
@@ -178,7 +190,7 @@ public class MainController {
                         System.out.println("Faculty not found.");
                     }
                     break;
-                case 5:
+                case 0:
                     // Logout
                     loggedInAdmin = null;
                     running = false;
@@ -201,6 +213,12 @@ public class MainController {
                     facultyLoadView.showFacultyLoads(loggedInFaculty, assignedSubjects);
                     break;
                 case 2:
+                    // Update availabiity
+                    boolean isAvailable = dashboardView.promptAvailabilityUpdate();
+                    facultyRepo.updateAvailability(loggedInFaculty.getFacultyId(), isAvailable);
+                    System.out.println("Availability status updated successfully.");
+                    break;
+                case 0:
                     // Logout
                     loggedInFaculty = null;
                     running = false;

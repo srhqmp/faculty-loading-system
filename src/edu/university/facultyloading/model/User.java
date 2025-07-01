@@ -70,6 +70,10 @@ abstract class User {
         this.role = role;
     }
 
+    public String getFullname() {
+        return this.firstName + " " + this.lastName;
+    }
+
     @Override
     public String toString() {
         return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="

@@ -98,14 +98,14 @@ public class SubjectManagementView {
             return;
         }
 
-        System.out.print("Enter new name [Leave empty to keep \"" + existing.getName() + "\"]: ");
+        System.out.print("Enter new name [Press ENTER to keep \"" + existing.getName() + "\"]: ");
         String name = scanner.nextLine();
-        System.out.print("Enter new description [Leave empty to keep current]: ");
+        System.out.print("Enter new description [Press ENTER to keep current]: ");
         String description = scanner.nextLine();
         System.out.print(
-                "Enter new recommended major [Leave empty to keep \"" + existing.getRecommendedMajor() + "\"]: ");
+                "Enter new recommended major [Press ENTER to keep \"" + existing.getRecommendedMajor() + "\"]: ");
         String recommendedMajor = scanner.nextLine();
-        System.out.print("Enter new complexity level [Leave empty to keep " + existing.getComplexityLevel() + "]: ");
+        System.out.print("Enter new complexity level [Press ENTER to keep " + existing.getComplexityLevel() + "]: ");
         String complexityInput = scanner.nextLine();
 
         if (!name.trim().isEmpty())

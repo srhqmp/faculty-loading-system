@@ -14,6 +14,8 @@ public interface FacultyRepo {
 
     void update(Faculty faculty);
 
+    void updateAvailability(int facultyId, boolean isAvailable);
+
     void archive(int facultyId);
 
     void restore(int facultyId);
