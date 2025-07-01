@@ -24,10 +24,6 @@ public class FacultyLoadView {
         System.out.printf("%-5s %-20s %-30s\n", "ID", "Subject Name", "Description");
         OutputFormatter.printDivider();
         for (Subject s : assignedSubjects) {
-            // String shortDesc = s.getDescription().length() > 30
-            // ? s.getDescription().substring(0, 30) + "..."
-            // : s.getDescription();
-
             System.out.printf("%-5d %-20s %-30s\n", s.getSubjectId(), s.getName(),
                     OutputFormatter.truncate(s.getDescription(), 30));
         }
