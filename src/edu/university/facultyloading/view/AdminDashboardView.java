@@ -5,6 +5,7 @@ import java.util.Scanner;
 import edu.university.facultyloading.controller.AdminController;
 import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.model.Admin;
+import edu.university.facultyloading.util.OutputFormatter;
 
 public class AdminDashboardView {
 
@@ -22,17 +23,20 @@ public class AdminDashboardView {
     }
 
     public void showMenu(Admin admin) {
-        System.out.println("\n----Admin Dashboard----");
-        System.out.println("1) Manage Faculty Profiles");
-        System.out.println("2) Manage Subject");
-        System.out.println("3) Assign Subject to Faculty");
-        System.out.println("4) View Faculty Teaching Load");
-        System.out.println("5) Update Profile");
-        System.out.println("0) Logout");
-
-        System.out.print("Enter you choice: ");
-
-        String choice = scanner.nextLine();
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║             ADMIN DASHBOARD                ║"));
+        System.out.println(OutputFormatter.centerString("╠════════════════════════════════════════════╣"));
+        System.out.println(OutputFormatter.centerString("║ 1. Manage Faculty Profiles                 ║"));
+        System.out.println(OutputFormatter.centerString("║ 2. Manage Subject                          ║"));
+        System.out.println(OutputFormatter.centerString("║ 3. Assign Subject to Faculty               ║"));
+        System.out.println(OutputFormatter.centerString("║ 4. View Faculty Teaching Load              ║"));
+        System.out.println(OutputFormatter.centerString("║ 5. Update Profile                          ║"));
+        System.out.println(OutputFormatter.centerString("║ 0. Logout                                  ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════════════╝"));
+        System.out.print(OutputFormatter.centerString("Enter your choice [0-5]: "));
+        
+        String choice = scanner.nextLine().trim();
+        System.out.println();
 
         switch (choice) {
             case "1":

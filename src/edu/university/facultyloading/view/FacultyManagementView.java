@@ -26,12 +26,14 @@ public class FacultyManagementView {
 
     public void showMenu(Admin admin) {
         while (true) {
-            System.out.println("\n== Faculty Management ==");
-            System.out.println("1. View All Faculties");
-            System.out.println("2. Edit Faculty");
-            System.out.println("3. Delete Faculty");
-            System.out.println("0. Back");
-            System.out.print("Enter choice: ");
+            System.out.println(OutputFormatter.centerString("╔══════════════════════════════════╗"));
+            System.out.println(OutputFormatter.centerString("║       FACULTY MANAGEMENT         ║"));
+            System.out.println(OutputFormatter.centerString("╠══════════════════════════════════╣"));
+            System.out.println(OutputFormatter.centerString("║ 1. View All Faculties            ║"));
+            System.out.println(OutputFormatter.centerString("║ 2. Edit Faculty                  ║"));
+            System.out.println(OutputFormatter.centerString("║ 3. Delete Faculty                ║"));
+            System.out.println(OutputFormatter.centerString("║ 0. Back                          ║"));
+            System.out.println(OutputFormatter.centerString("╚══════════════════════════════════╝"));
 
             String choice = scanner.nextLine();
 
@@ -116,7 +118,7 @@ public class FacultyManagementView {
             System.out.println("Failed to update faculty.");
         }
     }
-
+ 
     private void deleteFaculty() {
         viewAllFaculty();
 

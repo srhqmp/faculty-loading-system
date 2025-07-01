@@ -58,10 +58,10 @@ public class LoginView {
             return;
         }
 
-        System.out.print(OutputFormatter.centerString("Username: "));
+        System.out.print("\t\t\t    Username: ");
         String username = scanner.nextLine();
 
-        System.out.print(OutputFormatter.centerString("Password: "));
+        System.out.print("\t\t\t    Password: ");
         String password = scanner.nextLine();
 
         System.out.println();

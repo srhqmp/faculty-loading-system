@@ -25,13 +25,16 @@ public class SubjectManagementView {
 
     public void showMenu(Admin admin) {
         while (true) {
-            System.out.println("\n== Subject Management ==");
-            System.out.println("1. View All Subjects");
-            System.out.println("2. Add New Subject");
-            System.out.println("3. Edit Subject");
-            System.out.println("4. Delete Subject");
-            System.out.println("0. Back");
-            System.out.print("Enter choice: ");
+            System.out.println(OutputFormatter.centerString("╔══════════════════════════════════╗"));
+            System.out.println(OutputFormatter.centerString("║       SUBJECT MANAGEMENT         ║"));
+            System.out.println(OutputFormatter.centerString("╠══════════════════════════════════╣"));
+            System.out.println(OutputFormatter.centerString("║ 1. View All Subjects             ║"));
+            System.out.println(OutputFormatter.centerString("║ 2. Add New Subject               ║"));
+            System.out.println(OutputFormatter.centerString("║ 3. Edit Subject                  ║"));
+            System.out.println(OutputFormatter.centerString("║ 4. Delete Subject                ║"));
+            System.out.println(OutputFormatter.centerString("║ 0. Back                          ║"));
+            System.out.println(OutputFormatter.centerString("╚══════════════════════════════════╝"));
+            System.out.print(OutputFormatter.centerString("Enter choice [0-4]: "));
 
             String choice = scanner.nextLine();
 
@@ -127,7 +130,7 @@ public class SubjectManagementView {
     private void deleteSubject() {
         viewAllSubjects();
 
-        System.out.print("Enter subject ID to delete: ");
+        System.out.print("\\t\\t\\t    Enter subject ID to delete: ");
         int id = readInt();
 
         // Validate if subject exists before deletion

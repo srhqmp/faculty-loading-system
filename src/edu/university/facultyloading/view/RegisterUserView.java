@@ -50,22 +50,22 @@ public class RegisterUserView {
                 if (choice.equals("1") || choice.equals("2") || choice.equals("0")) {
                     break; // valid choice
                 } else {
-                    System.out.println("Invalid input. Please try again.\n");
+                    System.out.println(OutputFormatter.centerString("Invalid input. Please try again.\n"));
                 }
             }
 
             System.out.println();
 
-            System.out.print("Enter username: ");
+            System.out.print("\t\t\t    Enter username: ");
             String username = scanner.nextLine();
 
-            System.out.print("Enter password: ");
+            System.out.print("\t\t\t    Enter password: ");
             String password = scanner.nextLine();
 
-            System.out.print("Enter first name: ");
+            System.out.print("\t\t\t    Enter first name: ");
             String firstName = scanner.nextLine();
 
-            System.out.print("Enter last name: ");
+            System.out.print("\t\t\t    Enter last name: ");
             String lastName = scanner.nextLine();
 
             System.out.println();
@@ -93,7 +93,7 @@ public class RegisterUserView {
                     appController.goToFacultyDashboard(faculty);
                 }
             } else {
-                System.out.println("Registration failed. Please check your inputs.");
+                System.out.println(OutputFormatter.centerString("Registration failed. Please check your inputs."));
             }
         }
     }

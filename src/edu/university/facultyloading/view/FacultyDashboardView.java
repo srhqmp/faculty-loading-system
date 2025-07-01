@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import edu.university.facultyloading.controller.AppController;
 import edu.university.facultyloading.model.Faculty;
+import edu.university.facultyloading.util.OutputFormatter;
 
 public class FacultyDashboardView {
 
@@ -19,13 +20,15 @@ public class FacultyDashboardView {
     }
 
     public void showMenu(Faculty faculty) {
-        System.out.println("\n-----Faculty Dashboard------");
-        System.out.println("1) Manage Profile");
-        System.out.println("2) Add Subject Preference");
-        System.out.println("3) View Teaching Load");
-        System.out.println("4) Logout");
-
-        System.out.print("Enter your choice: ");
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║          FACULTY DASHBOARD         ║"));
+        System.out.println(OutputFormatter.centerString("╠════════════════════════════════════╣"));
+        System.out.println(OutputFormatter.centerString("║ 1. Manage Profile                  ║"));
+        System.out.println(OutputFormatter.centerString("║ 2. Add Subject Preference          ║"));
+        System.out.println(OutputFormatter.centerString("║ 3. View Teaching Load              ║"));
+        System.out.println(OutputFormatter.centerString("║ 4. Logout                          ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        System.out.print(OutputFormatter.centerString("Enter your choice [1-4]: "));
 
         String choice = scanner.nextLine();
 
@@ -48,33 +51,33 @@ public class FacultyDashboardView {
                 break;
             default:
                 System.out.println();
-                System.out.println("Invalid choice please try again");
+                System.out.println(OutputFormatter.centerString("Invalid choice please try again"));
                 break;
         }
     }
 
     private void displayProfile(Faculty faculty) {
         System.out.println();
-        System.out.println("╔════════════════════════════════════════════════╗");
-        System.out.println("║                   MY PROFILE                   ║");
-        System.out.println("╚════════════════════════════════════════════════╝");
+        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════════════════╗"));
+        System.out.println(OutputFormatter.centerString("║                   MY PROFILE                   ║"));
+        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════════════════╝"));
 
-        System.out.println("ID: " + faculty.getId());
-        System.out.println("Faculty ID: " + faculty.getFacultyId());
-        System.out.println("Username: " + faculty.getUsername());
-        System.out.println("Name: " + faculty.getFirstName() + " " + faculty.getLastName());
-        System.out.println("Role: " + faculty.getRole());
-        System.out.println("Major: " + faculty.getMajor());
-        System.out.println("Years of Experience: " + faculty.getYearsOfExperience());
-        System.out.println("Feedback Score: " + faculty.getStudentFeedbackScore());
-        System.out.println("Available: " + (faculty.getIsAvailable() == 1 ? "Yes" : "No"));
+        System.out.println("\t\t\t    ID: " + faculty.getId());
+        System.out.println("\t\t\t    Faculty ID: " + faculty.getFacultyId());
+        System.out.println("\t\t\t    Username: " + faculty.getUsername());
+        System.out.println("\t\t\t    Name: " + faculty.getFirstName() + " " + faculty.getLastName());
+        System.out.println("\t\t\t    Role: " + faculty.getRole());
+        System.out.println("\t\t\t    Major: " + faculty.getMajor());
+        System.out.println("\t\t\t    Years of Experience: " + faculty.getYearsOfExperience());
+        System.out.println("\t\t\t    Feedback Score: " + faculty.getStudentFeedbackScore());
+        System.out.println("\t\t\t    Available: " + (faculty.getIsAvailable() == 1 ? "Yes" : "No"));
         System.out.println();
 
     }
 
     private void manageProfile(Faculty faculty) {
         displayProfile(faculty);
-        
+
     }
 
     private void addSubjectPreference() {
@@ -86,7 +89,7 @@ public class FacultyDashboardView {
     }
 
     private void logOut() {
-        System.out.println("You have been log out. Thank you!");
+        System.out.println(OutputFormatter.centerString("You have been log out. Thank you!"));
     }
 
 }
