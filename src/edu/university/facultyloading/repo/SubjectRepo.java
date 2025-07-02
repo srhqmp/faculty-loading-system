@@ -4,17 +4,17 @@ import edu.university.facultyloading.model.Subject;
 import java.util.List;
 
 public interface SubjectRepo {
-    void create(Subject subject);
+    boolean create(Subject subject);
 
     Subject getById(int subjectId);
 
     List<Subject> getAll();
 
-    void update(Subject subject);
+    boolean update(Subject subject);
 
-    void archive(int subjectId);
+    boolean archive(int subjectId);
 
-    void restore(int subjectId);
+    boolean restore(int subjectId);
 
-    void delete(int subjectId);
+    boolean delete(int subjectId);
 }

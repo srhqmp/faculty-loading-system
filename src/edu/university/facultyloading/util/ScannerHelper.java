@@ -7,7 +7,7 @@ public class ScannerHelper {
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number.");
+            PromptMessageView.errorMessage("Invalid number.");
             return -1;
         }
     }

@@ -5,6 +5,9 @@ public class Load {
     private int facultyId;
     private int subjectId;
 
+    public Load() {
+    }
+
     public Load(int loadId, int facultyId, int subjectId) {
         this.loadId = loadId;
         this.facultyId = facultyId;

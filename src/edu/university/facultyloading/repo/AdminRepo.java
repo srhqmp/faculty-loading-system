@@ -13,12 +13,12 @@ public interface AdminRepo {
 
     List<Admin> getAll();
 
-    void update(Admin admin);
+    boolean update(Admin admin);
 
-    void archive(int adminId);
+    boolean archive(int adminId);
 
-    void restore(int adminId);
+    boolean restore(int adminId);
 
-    void delete(int adminId);
+    boolean delete(int adminId);
 
 }

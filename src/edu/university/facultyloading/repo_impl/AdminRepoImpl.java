@@ -3,6 +3,8 @@ package edu.university.facultyloading.repo_impl;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.util.DbConnection;
+import edu.university.facultyloading.util.PromptMessageView;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,44 +22,48 @@ public class AdminRepoImpl implements AdminRepo {
     }
 
     public Admin create(Admin admin) {
-        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 2)";
-        String adminQuery = "INSERT INTO tbladmins (user_id) VALUES (?)";
+        String queryUser = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 2)";
+        String queryAdmin = "INSERT INTO tbladmins (user_id) VALUES (?)";
 
-        try (Connection connection = dbConnection.connect();
-                PreparedStatement userStmt = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement adminStmt = connection.prepareStatement(adminQuery,
-                        Statement.RETURN_GENERATED_KEYS)) {
+        Admin createdAdmin = null;
 
-            // Insert into tblusers
-            userStmt.setString(1, admin.getUsername());
-            userStmt.setString(2, admin.getPassword());
-            userStmt.setString(3, admin.getFirstName());
-            userStmt.setString(4, admin.getLastName());
-            userStmt.executeUpdate();
+        try (Connection connection = dbConnection.connect()) {
+            try (PreparedStatement prepUser = connection.prepareStatement(queryUser, Statement.RETURN_GENERATED_KEYS)) {
+                prepUser.setString(1, admin.getUsername());
+                prepUser.setString(2, admin.getPassword());
+                prepUser.setString(3, admin.getFirstName());
+                prepUser.setString(4, admin.getLastName());
+                prepUser.executeUpdate();
 
-            ResultSet result = userStmt.getGeneratedKeys();
-            if (result.next()) {
-                int userId = result.getInt(1);
-                admin.setUserId(userId);
+                ResultSet userKeys = prepUser.getGeneratedKeys();
+                if (userKeys.next()) {
+                    int userId = userKeys.getInt(1);
+                    admin.setUserId(userId);
 
-                // Insert into tbladmins the user_id
-                adminStmt.setInt(1, userId);
-                adminStmt.executeUpdate();
+                    try (PreparedStatement prepAdmin = connection.prepareStatement(queryAdmin,
+                            Statement.RETURN_GENERATED_KEYS)) {
+                        prepAdmin.setInt(1, userId);
+                        int rowsAffected = prepAdmin.executeUpdate();
 
-                ResultSet adminKeys = adminStmt.getGeneratedKeys();
-                if (adminKeys.next()) {
-                    int adminId = adminKeys.getInt(1);
-                    admin.setAdminId(adminId);
+                        if (rowsAffected > 0) {
+                            ResultSet adminKeys = prepAdmin.getGeneratedKeys();
+                            int adminId = -1;
+                            if (adminKeys.next()) {
+                                adminId = adminKeys.getInt(1);
+                            }
+                            admin.setAdminId(adminId);
+
+                            // Return the updated admin object with IDs set
+                            createdAdmin = admin;
+                        }
+                    }
                 }
-
-                return admin;
             }
-
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - create(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - createAdmin(): " + e.getMessage());
         }
 
-        return null;
+        return createdAdmin;
     }
 
     @Override
@@ -88,7 +94,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - authenticate(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - authenticate(): " + e.getMessage());
         }
         return null;
     }
@@ -118,7 +124,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - getById(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -147,13 +153,13 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - getAll(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - getAll(): " + e.getMessage());
         }
         return admins;
     }
 
     @Override
-    public void update(Admin admin) {
+    public boolean update(Admin admin) {
         String query = "UPDATE tblusers SET username = ?, password = ?, first_name = ?, last_name = ? WHERE user_id = ?";
 
         try (Connection connection = dbConnection.connect();
@@ -164,55 +170,60 @@ public class AdminRepoImpl implements AdminRepo {
             stmt.setString(3, admin.getFirstName());
             stmt.setString(4, admin.getLastName());
             stmt.setInt(5, admin.getUserId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - update(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - update(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void archive(int adminId) {
+    public boolean archive(int adminId) {
         String query = "UPDATE tblusers SET is_archived = 1 WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, adminId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - archive(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - archive(): " + e.getMessage());
+
         }
+        return false;
     }
 
     @Override
-    public void restore(int adminId) {
+    public boolean restore(int adminId) {
         String query = "UPDATE tblusers SET is_archived = 0 WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, adminId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - restore(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - restore(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void delete(int adminId) {
+    public boolean delete(int adminId) {
         String query = "DELETE FROM tblusers WHERE user_id = (SELECT user_id FROM tbladmins WHERE admin_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, adminId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("AdminRepoImpl - delete(): " + e.getMessage());
+            PromptMessageView.errorMessage("AdminRepoImpl - delete(): " + e.getMessage());
         }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package edu.university.facultyloading.util;
 
 public class OutputFormatter {
+    public static final String INDENT = "\t\t\t";
 
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
@@ -8,7 +9,7 @@ public class OutputFormatter {
         }
     }
 
-    private static final int CONSOLE_WIDTH = 80;
+    private static final int CONSOLE_WIDTH = 130;
 
     // Public method to center a string using default width
     public static String centerString(String str) {
@@ -31,6 +32,12 @@ public class OutputFormatter {
     public static void printDivider() {
         String dash = new String(new char[CONSOLE_WIDTH]).replace("\0", "-");
         System.out.println(dash);
+    }
+
+    public static String truncate(String text, int maxLength) {
+        if (text == null)
+            return "";
+        return text.length() <= maxLength ? text : text.substring(0, maxLength - 3) + "...";
     }
 
 }

@@ -6,7 +6,7 @@ import edu.university.facultyloading.model.Subject;
 import java.util.List;
 
 public interface LoadRepo {
-    void create(Load load);
+    boolean create(Load load);
 
     Load getById(int loadId);
 
@@ -14,13 +14,13 @@ public interface LoadRepo {
 
     List<Load> getByFacultyId(int facultyId);
 
-    void update(Load load);
+    boolean update(Load load);
 
-    void archive(int loadId);
+    boolean archive(int loadId);
 
-    void restore(int loadId);
+    boolean restore(int loadId);
 
-    void delete(int loadId);
+    boolean delete(int loadId);
 
     boolean assignSubjectToFaculty(int facultyId, int subjectId);
 
