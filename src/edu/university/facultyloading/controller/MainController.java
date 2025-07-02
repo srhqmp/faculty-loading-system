@@ -49,7 +49,8 @@ public class MainController {
     }
 
     public void start() {
-        while (true) {
+        boolean running = true;
+        while (running) {
             String[] header = {
                     "╔════════════════════════════════════════════════════════════════════╗",
                     "║                            WELCOME TO                              ║",
@@ -75,6 +76,7 @@ public class MainController {
             System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
             System.out.println(OutputFormatter.centerString("║ 1. Login                     ║"));
             System.out.println(OutputFormatter.centerString("║ 2. Register                  ║"));
+            System.out.println(OutputFormatter.centerString("║ 0. Exit                      ║"));
             System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
             System.out.print(OutputFormatter.centerString("Choose an option: "));
 
@@ -93,6 +95,11 @@ public class MainController {
                     break;
                 case 2:
                     handleRegistration();
+                    break;
+                case 0:
+                    running = false;
+                    System.out.println();
+                    System.out.println(OutputFormatter.centerString("Exiting the program. Goodbye!"));
                     break;
                 default:
                     System.out.println(OutputFormatter.centerString("Invalid choice. Please try again."));
