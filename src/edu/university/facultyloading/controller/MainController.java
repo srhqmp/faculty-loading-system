@@ -195,7 +195,22 @@ public class MainController {
                     else
                         assignSubjectView.showAssignmentFailed();
                     break;
-                case 4: // Remove Assigned Subject from Faculty
+                case 4: // Assign the best faculty to a subject
+                    subjectManagementView.viewAllSubjects(subjects);
+                    int subjectIdToAssign = assignSubjectView.promptSubjectIdToAssign();
+
+                    if (!HelperMethods.subjectInTheList(subjectIdToAssign, subjects)) {
+                        PromptMessageView.errorMessage("Subject with ID " + subjectIdToAssign + " does not exist.");
+                        break;
+                    }
+
+                    for (Subject subject : subjects) {
+                        if (subject.getSubjectId() == subjectIdToAssign) {
+                            loadController.assignFaculty(faculties, subject);
+                        }
+                    }
+                    break;
+                case 5: // Remove Assigned Subject from Faculty
                     facultyListView.showFaculties(faculties);
                     int facultyIdToRemove = assignSubjectView.promptFacultyId();
 
@@ -228,7 +243,7 @@ public class MainController {
                     else
                         assignSubjectView.showRemoveAssignmentFailed();
                     break;
-                case 5: // View Faculty Loads
+                case 6: // View Faculty Loads
                     facultyListView.showFaculties(faculties);
 
                     int viewFacultyId = assignSubjectView.promptFacultyId();

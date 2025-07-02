@@ -22,8 +22,9 @@ public class DashboardView {
         PromptMessageView.choices("║ 1. View All Faculties                      ║");
         PromptMessageView.choices("║ 2. Manage Subjects                         ║");
         PromptMessageView.choices("║ 3. Assign Subjects to Faculty              ║");
-        PromptMessageView.choices("║ 4. Remove Assigned Subjects from Faculty   ║");
-        PromptMessageView.choices("║ 5. View Faculty Loads                      ║");
+        PromptMessageView.choices("║ 4. Assign the Best Faculty to a Subject    ║");
+        PromptMessageView.choices("║ 5. Remove Assigned Subjects from Faculty   ║");
+        PromptMessageView.choices("║ 6. View Faculty Loads                      ║");
         PromptMessageView.choices("║ 0. Logout                                  ║");
         PromptMessageView.choices("╚════════════════════════════════════════════╝");
 
