@@ -45,7 +45,7 @@ public class AdminDashboardView {
                 break;
             case "3":
                 System.out.println();
-                assignSubjectToFaculty();
+                assignSubjectToFaculty(admin);
                 break;
             case "4":
                 System.out.println();
@@ -72,8 +72,8 @@ public class AdminDashboardView {
         appController.goToSubjectManagement(admin);
     }
 
-    private void assignSubjectToFaculty() {
-
+    private void assignSubjectToFaculty(Admin admin) {
+        appController.goToFacultyManagement(admin);
     }
 
     private void viewFacultyTeachingLoad() {
