@@ -4,7 +4,7 @@ import edu.university.facultyloading.model.Faculty;
 import java.util.List;
 
 public interface FacultyRepo {
-    void create(Faculty faculty);
+    Faculty create(Faculty faculty);
 
     Faculty authenticate(String username, String password);
 
@@ -12,13 +12,13 @@ public interface FacultyRepo {
 
     List<Faculty> getAll();
 
-    void update(Faculty faculty);
+    boolean update(Faculty faculty);
 
-    void updateAvailability(int facultyId, boolean isAvailable);
+    boolean updateAvailability(int facultyId, boolean isAvailable);
 
-    void archive(int facultyId);
+    boolean archive(int facultyId);
 
-    void restore(int facultyId);
+    boolean restore(int facultyId);
 
-    void delete(int facultyId);
+    boolean delete(int facultyId);
 }

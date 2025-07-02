@@ -21,13 +21,13 @@ import java.util.Scanner;
 
 public class MainController {
 
-    private final AdminRepo adminRepo;
-    private final FacultyRepo facultyRepo;
-    private final SubjectRepo subjectRepo;
     private final LoadRepo loadRepo;
     private final Scanner scanner = new Scanner(System.in);
 
     private final SubjectController subjectController;
+    private final AdminController adminController;
+    private final FacultyController facultyController;
+    private final RegistrationController registrationController;
 
     private final LoginView loginView = new LoginView(scanner);
     private final DashboardView dashboardView = new DashboardView(scanner);
@@ -41,12 +41,13 @@ public class MainController {
 
     public MainController(AdminRepo adminRepo, FacultyRepo facultyRepo, SubjectRepo subjectRepo,
             LoadRepo loadRepo) {
-        this.adminRepo = adminRepo;
-        this.facultyRepo = facultyRepo;
-        this.subjectRepo = subjectRepo;
         this.loadRepo = loadRepo;
 
         this.subjectController = new SubjectController(subjectRepo);
+        this.adminController = new AdminController(adminRepo);
+        this.facultyController = new FacultyController(facultyRepo);
+        this.registrationController = new RegistrationController(adminController, facultyController);
+
     }
 
     public void start() {
@@ -106,19 +107,25 @@ public class MainController {
         String username = credentials[0];
         String password = credentials[1];
 
-        loggedInAdmin = adminRepo.authenticate(username, password);
+        handleLogin(username, password);
+    }
+
+    private void handleLogin(String username, String password) {
+        loggedInAdmin = adminController.login(username, password);
         System.out.println();
         System.out.println();
 
         if (loggedInAdmin != null) {
-            System.out.println(OutputFormatter.centerString("Welcome " + loggedInAdmin.getFullname() + "!"));
+            System.out.println(OutputFormatter.centerString("Welcome " +
+                    loggedInAdmin.getFullname() + "!"));
             displayAdminDashboard();
             return;
         }
 
-        loggedInFaculty = facultyRepo.authenticate(username, password);
+        loggedInFaculty = facultyController.authenticate(username, password);
         if (loggedInFaculty != null) {
-            System.out.println(OutputFormatter.centerString("Welcome " + loggedInFaculty.getFullname() + "!"));
+            System.out.println(OutputFormatter.centerString("Welcome " +
+                    loggedInFaculty.getFullname() + "!"));
             displayFacultyDashboard();
             return;
         }
@@ -128,87 +135,15 @@ public class MainController {
 
     private void handleRegistration() {
         String[] data = registerView.showRegisterPrompt();
+        boolean success = registrationController.registerUser(data);
 
-        int userType;
-        try {
-            userType = Integer.parseInt(data[0]);
-            if (userType != 1 && userType != 2) {
-                System.out.println(OutputFormatter.centerString("Invalid user type."));
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println(OutputFormatter.centerString("User type must be a number."));
+        if (!success)
             return;
-        }
 
         String username = data[1].trim();
         String password = data[2].trim();
-        String firstName = data[3].trim();
-        String lastName = data[4].trim();
 
-        // Basic validation
-        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
-            System.out.println(OutputFormatter.centerString("All fields must be filled."));
-            return;
-        }
-
-        if (userType == 1) {
-            Admin admin = new Admin();
-            admin.setUsername(username);
-            admin.setPassword(password);
-            admin.setFirstName(firstName);
-            admin.setLastName(lastName);
-            adminRepo.create(admin);
-
-            System.out.println(OutputFormatter.centerString("Admin registered successfully."));
-            System.out.println();
-            System.out.println();
-
-            loggedInAdmin = adminRepo.authenticate(username, password);
-            if (loggedInAdmin != null) {
-                System.out.println(OutputFormatter.centerString("Welcome " + loggedInAdmin.getFullname() + "!"));
-                displayAdminDashboard();
-            }
-        } else {
-            String major = data[5].trim();
-            String yearsInput = data[6].trim();
-
-            if (major.isEmpty() || yearsInput.isEmpty()) {
-                System.out.println(OutputFormatter.centerString("Major and experience must be filled."));
-                return;
-            }
-
-            int yearsOfExperience;
-            try {
-                yearsOfExperience = Integer.parseInt(yearsInput);
-                if (yearsOfExperience < 0) {
-                    System.out.println(OutputFormatter.centerString("Years of experience must be non-negative."));
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println(OutputFormatter.centerString("Years of experience must be a number."));
-                return;
-            }
-
-            Faculty faculty = new Faculty();
-            faculty.setUsername(username);
-            faculty.setPassword(password);
-            faculty.setFirstName(firstName);
-            faculty.setLastName(lastName);
-            faculty.setMajor(major);
-            faculty.setYearsOfExperience(yearsOfExperience);
-            facultyRepo.create(faculty);
-
-            System.out.println(OutputFormatter.centerString("Faculty registered successfully."));
-            System.out.println();
-            System.out.println();
-
-            loggedInFaculty = facultyRepo.authenticate(username, password);
-            if (loggedInFaculty != null) {
-                System.out.println(OutputFormatter.centerString("Welcome " + loggedInFaculty.getFullname() + "!"));
-                displayFacultyDashboard();
-            }
-        }
+        handleLogin(username, password);
     }
 
     private void displayAdminDashboard() {
@@ -217,13 +152,13 @@ public class MainController {
             int choice = dashboardView.showAdminDashboard();
 
             // Provide faculties and subjects
-            List<Faculty> faculties = facultyRepo.getAll();
+            List<Faculty> faculties = facultyController.getAllFaculties();
             for (Faculty faculty : faculties) {
                 // get faculty load
                 List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(faculty.getFacultyId());
                 faculty.setAssignedSubjects(assignedSubjects);
             }
-            List<Subject> subjects = subjectRepo.getAll();
+            List<Subject> subjects = subjectController.getAllSubjects();
             SubjectManagementView subjectManagementView = new SubjectManagementView(scanner, subjectController);
 
             switch (choice) {
@@ -269,7 +204,7 @@ public class MainController {
                     facultyListView.showFaculties(faculties);
 
                     int viewFacultyId = assignSubjectView.promptFacultyId();
-                    Faculty faculty = facultyRepo.getById(viewFacultyId);
+                    Faculty faculty = facultyController.getFaculty(viewFacultyId);
 
                     if (faculty != null) {
                         List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(viewFacultyId);
@@ -302,7 +237,7 @@ public class MainController {
                 case 2:
                     // Update availabiity
                     boolean isAvailable = dashboardView.promptAvailabilityUpdate();
-                    facultyRepo.updateAvailability(loggedInFaculty.getFacultyId(), isAvailable);
+                    facultyController.updateAvailability(loggedInFaculty.getFacultyId(), isAvailable);
                     System.out.println("Availability status updated successfully.");
                     break;
                 case 0:

@@ -20,35 +20,48 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public void create(Faculty faculty) {
-        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 1)";
-        String facultyQuery = "INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_score, is_available) VALUES (?, ?, ?, ?, ?)";
+    public Faculty create(Faculty faculty) {
+        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 0)";
+        String facultyQuery = "INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_score, is_available) VALUES (?, ?, ?, ?, 1)";
 
         try (Connection connection = dbConnection.connect();
-                PreparedStatement userStmt = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement userStmt = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement facultyStmt = connection.prepareStatement(facultyQuery,
+                        Statement.RETURN_GENERATED_KEYS)) {
 
+            // Insert into tblusers
             userStmt.setString(1, faculty.getUsername());
             userStmt.setString(2, faculty.getPassword());
             userStmt.setString(3, faculty.getFirstName());
             userStmt.setString(4, faculty.getLastName());
             userStmt.executeUpdate();
 
-            ResultSet keys = userStmt.getGeneratedKeys();
-            if (keys.next()) {
-                int userId = keys.getInt(1);
-                try (PreparedStatement facultyStmt = connection.prepareStatement(facultyQuery)) {
-                    facultyStmt.setInt(1, userId);
-                    facultyStmt.setString(2, faculty.getMajor());
-                    facultyStmt.setInt(3, faculty.getYearsOfExperience());
-                    facultyStmt.setDouble(4, faculty.getStudentFeedbackScore());
-                    facultyStmt.setInt(5, faculty.isAvailable() ? 1 : 0);
-                    facultyStmt.executeUpdate();
+            ResultSet userKeys = userStmt.getGeneratedKeys();
+            if (userKeys.next()) {
+                int userId = userKeys.getInt(1);
+                faculty.setUserId(userId);
+
+                // Insert into tblfaculties
+                facultyStmt.setInt(1, userId);
+                facultyStmt.setString(2, faculty.getMajor());
+                facultyStmt.setInt(3, faculty.getYearsOfExperience());
+                facultyStmt.setDouble(4, faculty.getStudentFeedbackScore());
+                facultyStmt.executeUpdate();
+
+                ResultSet facultyKeys = facultyStmt.getGeneratedKeys();
+                if (facultyKeys.next()) {
+                    int facultyId = facultyKeys.getInt(1);
+                    faculty.setFacultyId(facultyId);
                 }
+
+                return faculty;
             }
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - create(): " + e.getMessage());
+            System.out.println("FacultyRepoImpl - create(): " + e.getMessage());
         }
+
+        return null;
     }
 
     @Override
@@ -121,7 +134,7 @@ public class FacultyRepoImpl implements FacultyRepo {
     }
 
     @Override
-    public void update(Faculty faculty) {
+    public boolean update(Faculty faculty) {
         String userQuery = "UPDATE tblusers SET username = ?, password = ?, first_name = ?, last_name = ? WHERE user_id = ?";
         String facultyQuery = "UPDATE tblfaculties SET major = ?, years_of_experience = ?, student_feedback_score = ?, is_available = ? WHERE faculty_id = ?";
 
@@ -143,15 +156,16 @@ public class FacultyRepoImpl implements FacultyRepo {
             facultyStmt.setDouble(3, faculty.getStudentFeedbackScore());
             facultyStmt.setBoolean(4, faculty.isAvailable());
             facultyStmt.setInt(5, faculty.getFacultyId());
-            facultyStmt.executeUpdate();
+            return facultyStmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Faculty Repo - update(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void updateAvailability(int facultyId, boolean isAvailable) {
+    public boolean updateAvailability(int facultyId, boolean isAvailable) {
         String query = "UPDATE tblfaculties SET is_available = ? WHERE faculty_id = ?";
 
         try (Connection connection = dbConnection.connect();
@@ -159,56 +173,60 @@ public class FacultyRepoImpl implements FacultyRepo {
 
             stmt.setInt(1, isAvailable ? 1 : 0);
             stmt.setInt(2, facultyId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Faculty Repo - updateAvailability(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void archive(int facultyId) {
+    public boolean archive(int facultyId) {
         String query = "UPDATE tblusers SET is_archived = 1 WHERE user_id = (SELECT user_id FROM tblfaculties WHERE faculty_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, facultyId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Faculty Repo - archive(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void restore(int facultyId) {
+    public boolean restore(int facultyId) {
         String query = "UPDATE tblusers SET is_archived = 0 WHERE user_id = (SELECT user_id FROM tblfaculties WHERE faculty_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, facultyId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Faculty Repo - restore(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void delete(int facultyId) {
+    public boolean delete(int facultyId) {
         String query = "DELETE FROM tblusers WHERE user_id = (SELECT user_id FROM tblfaculties WHERE faculty_id = ?)";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, facultyId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("Faculty Repo - delete(): " + e.getMessage());
         }
+        return false;
     }
 
     private Faculty mapResultSetToFaculty(ResultSet result) throws SQLException {
