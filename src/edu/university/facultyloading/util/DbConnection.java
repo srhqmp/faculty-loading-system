@@ -16,7 +16,7 @@ public class DbConnection {
         try {
             Class.forName(DRIVER); // loads the driver
         } catch (ClassNotFoundException e) {
-            PromptMessageView.errorMessage("Failed to load JDBC Driver: " + e.getMessage());
+            PromptMessage.errorMessage("Failed to load JDBC Driver: " + e.getMessage());
         }
     }
 

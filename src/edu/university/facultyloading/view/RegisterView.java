@@ -3,7 +3,7 @@ package edu.university.facultyloading.view;
 import java.util.Scanner;
 
 import edu.university.facultyloading.util.OutputFormatter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 public class RegisterView {
     private Scanner scanner;
@@ -14,9 +14,9 @@ public class RegisterView {
 
     public String[] showRegisterPrompt() {
         System.out.println();
-        PromptMessageView.choices("╔════════════════════════════════════╗");
-        PromptMessageView.choices("║           Register User            ║");
-        PromptMessageView.choices("╚════════════════════════════════════╝");
+        PromptMessage.choices("╔════════════════════════════════════╗");
+        PromptMessage.choices("║           Register User            ║");
+        PromptMessage.choices("╚════════════════════════════════════╝");
         System.out.println();
 
         String userType = "";
@@ -25,7 +25,7 @@ public class RegisterView {
             userType = scanner.nextLine().trim();
             if (userType.equals("1") || userType.equals("0"))
                 break;
-            PromptMessageView.errorMessage("Invalid input. Please enter 1 or 0.");
+            PromptMessage.errorMessage("Invalid input. Please enter 1 or 0.");
         }
 
         System.out.print(OutputFormatter.INDENT + "Username: ");
@@ -57,10 +57,10 @@ public class RegisterView {
     }
 
     public void showRegistrationSuccess() {
-        PromptMessageView.successMessage("Registration successful!");
+        PromptMessage.successMessage("Registration successful!");
     }
 
     public void showRegistrationFailed(String reason) {
-        PromptMessageView.errorMessage("Registration failed: " + reason);
+        PromptMessage.errorMessage("Registration failed: " + reason);
     }
 }

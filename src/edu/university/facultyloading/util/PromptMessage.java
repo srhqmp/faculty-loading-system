@@ -1,6 +1,6 @@
 package edu.university.facultyloading.util;
 
-public class PromptMessageView {
+public class PromptMessage {
 
     public static void errorMessage(String message) {
         String centered = OutputFormatter.centerString(message.trim());

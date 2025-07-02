@@ -2,7 +2,7 @@ package edu.university.facultyloading.view;
 
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.util.OutputFormatter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 import edu.university.facultyloading.model.Faculty;
 
 import java.util.List;
@@ -10,19 +10,19 @@ import java.util.List;
 public class FacultyLoadView {
     public void showFacultyLoads(Faculty faculty, List<Subject> assignedSubjects) {
         System.out.println();
-        PromptMessageView.choices("╔════════════════════════════════════╗");
-        PromptMessageView.choices("║             FACULTY LOAD           ║");
-        PromptMessageView.choices("╚════════════════════════════════════╝");
-        PromptMessageView.header(faculty.getFullname());
+        PromptMessage.choices("╔════════════════════════════════════╗");
+        PromptMessage.choices("║             FACULTY LOAD           ║");
+        PromptMessage.choices("╚════════════════════════════════════╝");
+        PromptMessage.header(faculty.getFullname());
         System.out.println();
 
         if (assignedSubjects.isEmpty()) {
-            PromptMessageView.warningMessage("No subjects assigned.");
+            PromptMessage.warningMessage("No subjects assigned.");
             return;
         }
 
         if (!faculty.isAvailable()) {
-            PromptMessageView.warningMessage("Faculty is currently unavailable.");
+            PromptMessage.warningMessage("Faculty is currently unavailable.");
         }
 
         OutputFormatter.printDivider();

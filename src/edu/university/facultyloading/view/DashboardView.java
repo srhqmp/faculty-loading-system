@@ -3,7 +3,7 @@ package edu.university.facultyloading.view;
 import java.util.Scanner;
 
 import edu.university.facultyloading.util.OutputFormatter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 import edu.university.facultyloading.util.ScannerHelper;
 
 public class DashboardView {
@@ -16,17 +16,17 @@ public class DashboardView {
     public int showAdminDashboard() {
         System.out.println();
         System.out.println();
-        PromptMessageView.choices("╔════════════════════════════════════════════╗");
-        PromptMessageView.choices("║               ADMIN DASHBOARD              ║");
-        PromptMessageView.choices("╠════════════════════════════════════════════╣");
-        PromptMessageView.choices("║ 1. View All Faculties                      ║");
-        PromptMessageView.choices("║ 2. Manage Subjects                         ║");
-        PromptMessageView.choices("║ 3. Assign Subjects to Faculty              ║");
-        PromptMessageView.choices("║ 4. Assign the Best Faculty to a Subject    ║");
-        PromptMessageView.choices("║ 5. Remove Assigned Subjects from Faculty   ║");
-        PromptMessageView.choices("║ 6. View Faculty Loads                      ║");
-        PromptMessageView.choices("║ 0. Logout                                  ║");
-        PromptMessageView.choices("╚════════════════════════════════════════════╝");
+        PromptMessage.choices("╔════════════════════════════════════════════╗");
+        PromptMessage.choices("║               ADMIN DASHBOARD              ║");
+        PromptMessage.choices("╠════════════════════════════════════════════╣");
+        PromptMessage.choices("║ 1. View All Faculties                      ║");
+        PromptMessage.choices("║ 2. Manage Subjects                         ║");
+        PromptMessage.choices("║ 3. Assign Subjects to Faculty              ║");
+        PromptMessage.choices("║ 4. Assign the Best Faculty to a Subject    ║");
+        PromptMessage.choices("║ 5. Remove Assigned Subjects from Faculty   ║");
+        PromptMessage.choices("║ 6. View Faculty Loads                      ║");
+        PromptMessage.choices("║ 0. Logout                                  ║");
+        PromptMessage.choices("╚════════════════════════════════════════════╝");
 
         System.out.print(OutputFormatter.centerString("Select an option: "));
 
@@ -36,13 +36,13 @@ public class DashboardView {
     public int showFacultyDashboard() {
         System.out.println();
         System.out.println();
-        PromptMessageView.choices("╔════════════════════════════════════╗");
-        PromptMessageView.choices("║          FACULTY DASHBOARD         ║");
-        PromptMessageView.choices("╠════════════════════════════════════╣");
-        PromptMessageView.choices("║ 1. View Assigned Subjects          ║");
-        PromptMessageView.choices("║ 2. Update Availability             ║");
-        PromptMessageView.choices("║ 0. Logout                          ║");
-        PromptMessageView.choices("╚════════════════════════════════════╝");
+        PromptMessage.choices("╔════════════════════════════════════╗");
+        PromptMessage.choices("║          FACULTY DASHBOARD         ║");
+        PromptMessage.choices("╠════════════════════════════════════╣");
+        PromptMessage.choices("║ 1. View Assigned Subjects          ║");
+        PromptMessage.choices("║ 2. Update Availability             ║");
+        PromptMessage.choices("║ 0. Logout                          ║");
+        PromptMessage.choices("╚════════════════════════════════════╝");
 
         System.out.print(OutputFormatter.centerString("Select an option: "));
 
@@ -58,7 +58,7 @@ public class DashboardView {
         } else if (input.equals("no") || input.equals("n")) {
             return false;
         } else {
-            PromptMessageView.errorMessage("Invalid input. Please enter 'yes' or 'no'.");
+            PromptMessage.errorMessage("Invalid input. Please enter 'yes' or 'no'.");
             return promptAvailabilityUpdate();
         }
     }

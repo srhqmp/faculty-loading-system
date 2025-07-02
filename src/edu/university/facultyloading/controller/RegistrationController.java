@@ -2,7 +2,7 @@ package edu.university.facultyloading.controller;
 
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Faculty;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 public class RegistrationController {
     private final AdminController adminController;
@@ -34,10 +34,10 @@ public class RegistrationController {
             if (admin == null) {
                 throw new Exception();
             }
-            PromptMessageView.successMessage("Admin registered successfully.");
+            PromptMessage.successMessage("Admin registered successfully.");
             return true;
         } catch (Exception e) {
-            PromptMessageView
+            PromptMessage
                     .errorMessage("Registration failed. Please check your input.");
             return false;
         }
@@ -56,10 +56,10 @@ public class RegistrationController {
             if (faculty == null) {
                 throw new Exception();
             }
-            PromptMessageView.successMessage("Faculty registered successfully.");
+            PromptMessage.successMessage("Faculty registered successfully.");
             return true;
         } catch (Exception e) {
-            PromptMessageView
+            PromptMessage
                     .errorMessage("Registration failed. Please check your input.");
             return false;
         }

@@ -6,7 +6,7 @@ import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 public class SubjectController {
 
@@ -28,7 +28,7 @@ public class SubjectController {
 
     public Subject getSubject(int subjectId) {
         if (subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid Subject ID.");
+            PromptMessage.errorMessage("Invalid Subject ID.");
             return null;
         }
 
@@ -47,7 +47,7 @@ public class SubjectController {
     public boolean updateSubject(int subjectId, String name, String description, String recommendedMajor,
             int complexityLevel) {
         if (subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid Subject ID.");
+            PromptMessage.errorMessage("Invalid Subject ID.");
             return false;
         }
 
@@ -61,7 +61,7 @@ public class SubjectController {
 
     public boolean deleteSubject(int subjectId) {
         if (subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid Subject ID.");
+            PromptMessage.errorMessage("Invalid Subject ID.");
             return false;
         }
         return subjectRepo.archive(subjectId);
@@ -69,7 +69,7 @@ public class SubjectController {
 
     public boolean restoreSubject(int subjectId) {
         if (subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid Subject ID.");
+            PromptMessage.errorMessage("Invalid Subject ID.");
             return false;
         }
         return subjectRepo.restore(subjectId);

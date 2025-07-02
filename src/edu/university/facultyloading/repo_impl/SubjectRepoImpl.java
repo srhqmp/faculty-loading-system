@@ -3,7 +3,7 @@ package edu.university.facultyloading.repo_impl;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.util.DbConnection;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +33,7 @@ public class SubjectRepoImpl implements SubjectRepo {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - create(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - create(): " + e.getMessage());
             return false;
         }
     }
@@ -56,7 +56,7 @@ public class SubjectRepoImpl implements SubjectRepo {
                         result.getInt("complexity_level"));
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - getById(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class SubjectRepoImpl implements SubjectRepo {
                         result.getInt("complexity_level")));
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - getAll(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - getAll(): " + e.getMessage());
         }
         return subjects;
     }
@@ -97,7 +97,7 @@ public class SubjectRepoImpl implements SubjectRepo {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - update(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - update(): " + e.getMessage());
             return false;
         }
     }
@@ -111,7 +111,7 @@ public class SubjectRepoImpl implements SubjectRepo {
             stmt.setInt(1, subjectId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - archive(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - archive(): " + e.getMessage());
             return false;
         }
     }
@@ -125,7 +125,7 @@ public class SubjectRepoImpl implements SubjectRepo {
             stmt.setInt(1, subjectId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - restore(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - restore(): " + e.getMessage());
             return false;
         }
     }
@@ -139,7 +139,7 @@ public class SubjectRepoImpl implements SubjectRepo {
             stmt.setInt(1, subjectId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("SubjectRepo - delete(): " + e.getMessage());
+            PromptMessage.errorMessage("SubjectRepo - delete(): " + e.getMessage());
             return false;
         }
     }

@@ -1,7 +1,7 @@
 package edu.university.facultyloading.view;
 
 import edu.university.facultyloading.util.OutputFormatter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 public class MainMenuView {
     public void show() {
@@ -21,17 +21,17 @@ public class MainMenuView {
         };
 
         for (String line : header) {
-            PromptMessageView.header(line);
+            PromptMessage.header(line);
         }
 
         System.out.println();
-        PromptMessageView.choices("╔══════════════════════════════╗");
-        PromptMessageView.choices("║           MAIN MENU          ║");
-        PromptMessageView.choices("╠══════════════════════════════╣");
-        PromptMessageView.choices("║ 1. Login                     ║");
-        PromptMessageView.choices("║ 2. Register                  ║");
-        PromptMessageView.choices("║ 0. Exit                      ║");
-        PromptMessageView.choices("╚══════════════════════════════╝");
+        PromptMessage.choices("╔══════════════════════════════╗");
+        PromptMessage.choices("║           MAIN MENU          ║");
+        PromptMessage.choices("╠══════════════════════════════╣");
+        PromptMessage.choices("║ 1. Login                     ║");
+        PromptMessage.choices("║ 2. Register                  ║");
+        PromptMessage.choices("║ 0. Exit                      ║");
+        PromptMessage.choices("╚══════════════════════════════╝");
         System.out.print(OutputFormatter.centerString("Choose an option: "));
     }
 }

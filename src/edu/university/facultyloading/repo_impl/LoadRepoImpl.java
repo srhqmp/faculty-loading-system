@@ -5,7 +5,7 @@ import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.util.DbConnection;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,7 +45,7 @@ public class LoadRepoImpl implements LoadRepo {
             return insertStmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - create(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - create(): " + e.getMessage());
         }
 
         return false;
@@ -67,7 +67,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id"));
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - getById(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -87,7 +87,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id")));
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - getAll(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - getAll(): " + e.getMessage());
         }
         return loads;
     }
@@ -109,7 +109,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id")));
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - getByFacultyId(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - getByFacultyId(): " + e.getMessage());
         }
         return loads;
     }
@@ -126,7 +126,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - update(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - update(): " + e.getMessage());
         }
         return false;
     }
@@ -141,7 +141,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - archive(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - archive(): " + e.getMessage());
         }
         return false;
     }
@@ -156,7 +156,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - restore(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - restore(): " + e.getMessage());
         }
         return false;
     }
@@ -171,7 +171,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - delete(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - delete(): " + e.getMessage());
         }
         return false;
     }
@@ -200,7 +200,7 @@ public class LoadRepoImpl implements LoadRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
         }
         return false;
     }
@@ -232,7 +232,7 @@ public class LoadRepoImpl implements LoadRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - getSubjectsByFacultyId(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - getSubjectsByFacultyId(): " + e.getMessage());
         }
 
         return subjects;
@@ -273,7 +273,7 @@ public class LoadRepoImpl implements LoadRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - getAvailableFacultiesBySubjectId(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - getAvailableFacultiesBySubjectId(): " + e.getMessage());
         }
 
         return faculties;
@@ -291,7 +291,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
+            PromptMessage.errorMessage("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
         }
         return false;
     }

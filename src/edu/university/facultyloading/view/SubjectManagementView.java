@@ -7,7 +7,7 @@ import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.util.FacultyFilter;
 import edu.university.facultyloading.util.OutputFormatter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 import edu.university.facultyloading.util.ScannerHelper;
 
 public class SubjectManagementView {
@@ -23,15 +23,15 @@ public class SubjectManagementView {
         while (true) {
             System.out.println();
             System.out.println();
-            PromptMessageView.choices("╔══════════════════════════════════╗");
-            PromptMessageView.choices("║       SUBJECT MANAGEMENT         ║");
-            PromptMessageView.choices("╠══════════════════════════════════╣");
-            PromptMessageView.choices("║ 1. View All Subjects             ║");
-            PromptMessageView.choices("║ 2. Add New Subject               ║");
-            PromptMessageView.choices("║ 3. Edit Subject                  ║");
-            PromptMessageView.choices("║ 4. Delete Subject                ║");
-            PromptMessageView.choices("║ 0. Back to Admin Dashboard       ║");
-            PromptMessageView.choices("╚══════════════════════════════════╝");
+            PromptMessage.choices("╔══════════════════════════════════╗");
+            PromptMessage.choices("║       SUBJECT MANAGEMENT         ║");
+            PromptMessage.choices("╠══════════════════════════════════╣");
+            PromptMessage.choices("║ 1. View All Subjects             ║");
+            PromptMessage.choices("║ 2. Add New Subject               ║");
+            PromptMessage.choices("║ 3. Edit Subject                  ║");
+            PromptMessage.choices("║ 4. Delete Subject                ║");
+            PromptMessage.choices("║ 0. Back to Admin Dashboard       ║");
+            PromptMessage.choices("╚══════════════════════════════════╝");
 
             System.out.print(OutputFormatter.centerString("Enter choice: "));
             int choice = scanner.nextInt();
@@ -53,7 +53,7 @@ public class SubjectManagementView {
                 case 0:
                     return;
                 default:
-                    PromptMessageView.errorMessage("Invalid option. Please try again.");
+                    PromptMessage.errorMessage("Invalid option. Please try again.");
             }
         }
     }
@@ -66,9 +66,9 @@ public class SubjectManagementView {
 
     public void viewAllSubjects(List<Subject> subjects) {
         System.out.println();
-        PromptMessageView.choices("╔════════════════════════════════════╗");
-        PromptMessageView.choices("║               SUBJECTS             ║");
-        PromptMessageView.choices("╚════════════════════════════════════╝");
+        PromptMessage.choices("╔════════════════════════════════════╗");
+        PromptMessage.choices("║               SUBJECTS             ║");
+        PromptMessage.choices("╚════════════════════════════════════╝");
         System.out.println();
 
         OutputFormatter.printDivider();
@@ -104,9 +104,9 @@ public class SubjectManagementView {
 
         boolean success = subjectController.createSubject(name, description, recommendedMajor, complexityLevel);
         if (success) {
-            PromptMessageView.successMessage("Subject added successfully.");
+            PromptMessage.successMessage("Subject added successfully.");
         } else {
-            PromptMessageView.errorMessage("Failed to add subject. Please check your input.");
+            PromptMessage.errorMessage("Failed to add subject. Please check your input.");
         }
     }
 
@@ -117,7 +117,7 @@ public class SubjectManagementView {
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
-            PromptMessageView.errorMessage("Subject not found.");
+            PromptMessage.errorMessage("Subject not found.");
             return;
         }
 
@@ -142,16 +142,16 @@ public class SubjectManagementView {
                 int parsed = Integer.parseInt(complexityInput);
                 finalComplexity = parsed;
             } catch (NumberFormatException e) {
-                PromptMessageView.errorMessage("Invalid complexity level input. Keeping previous value.");
+                PromptMessage.errorMessage("Invalid complexity level input. Keeping previous value.");
             }
         }
 
         boolean success = subjectController.updateSubject(id, finalName, finalDescription, finalRecommendedMajor,
                 finalComplexity);
         if (success) {
-            PromptMessageView.successMessage("Subject updated successfully.");
+            PromptMessage.successMessage("Subject updated successfully.");
         } else {
-            PromptMessageView.errorMessage("Failed to update subject. Please check your input.");
+            PromptMessage.errorMessage("Failed to update subject. Please check your input.");
         }
     }
 
@@ -162,7 +162,7 @@ public class SubjectManagementView {
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
-            PromptMessageView.errorMessage("Subject not found.");
+            PromptMessage.errorMessage("Subject not found.");
             return;
         }
 
@@ -171,12 +171,12 @@ public class SubjectManagementView {
         if (confirm.equalsIgnoreCase("y")) {
             boolean success = subjectController.deleteSubject(id);
             if (success) {
-                PromptMessageView.successMessage("Subject deleted successfully.");
+                PromptMessage.successMessage("Subject deleted successfully.");
             } else {
-                PromptMessageView.errorMessage("Failed to delete subject.");
+                PromptMessage.errorMessage("Failed to delete subject.");
             }
         } else {
-            PromptMessageView.successMessage("Delete cancelled.");
+            PromptMessage.successMessage("Delete cancelled.");
         }
     }
 

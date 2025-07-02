@@ -3,7 +3,7 @@ package edu.university.facultyloading.repo_impl;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.util.DbConnection;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,7 +60,7 @@ public class AdminRepoImpl implements AdminRepo {
                 }
             }
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - createAdmin(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - createAdmin(): " + e.getMessage());
         }
 
         return createdAdmin;
@@ -94,7 +94,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - authenticate(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - authenticate(): " + e.getMessage());
         }
         return null;
     }
@@ -124,7 +124,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - getById(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -153,7 +153,7 @@ public class AdminRepoImpl implements AdminRepo {
             }
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - getAll(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - getAll(): " + e.getMessage());
         }
         return admins;
     }
@@ -173,7 +173,7 @@ public class AdminRepoImpl implements AdminRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - update(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - update(): " + e.getMessage());
         }
         return false;
     }
@@ -189,7 +189,7 @@ public class AdminRepoImpl implements AdminRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - archive(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - archive(): " + e.getMessage());
 
         }
         return false;
@@ -206,7 +206,7 @@ public class AdminRepoImpl implements AdminRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - restore(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - restore(): " + e.getMessage());
         }
         return false;
     }
@@ -222,7 +222,7 @@ public class AdminRepoImpl implements AdminRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            PromptMessageView.errorMessage("AdminRepoImpl - delete(): " + e.getMessage());
+            PromptMessage.errorMessage("AdminRepoImpl - delete(): " + e.getMessage());
         }
         return false;
     }

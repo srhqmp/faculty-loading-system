@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.repo.FacultyRepo;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 public class FacultyController {
 
@@ -44,7 +44,7 @@ public class FacultyController {
 
     public Faculty getFaculty(int facultyId) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return null;
         }
 
@@ -62,7 +62,7 @@ public class FacultyController {
             return false;
         }
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return false;
         }
 
@@ -74,7 +74,7 @@ public class FacultyController {
 
     public boolean updateAvailability(int facultyId, boolean isAvailable) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return false;
         }
 
@@ -83,7 +83,7 @@ public class FacultyController {
 
     public boolean restoreFaculty(int facultyId) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return false;
         }
 
@@ -92,7 +92,7 @@ public class FacultyController {
 
     public boolean deleteFaculty(int facultyId) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return false;
         }
 

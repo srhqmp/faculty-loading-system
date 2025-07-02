@@ -5,7 +5,7 @@ import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.util.FacultyFilter;
-import edu.university.facultyloading.util.PromptMessageView;
+import edu.university.facultyloading.util.PromptMessage;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class LoadController {
 
     public boolean createLoad(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
+            PromptMessage.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -28,7 +28,7 @@ public class LoadController {
 
     public Load getLoadById(int loadId) {
         if (loadId <= 0) {
-            PromptMessageView.errorMessage("Invalid load ID.");
+            PromptMessage.errorMessage("Invalid load ID.");
             return null;
         }
 
@@ -41,7 +41,7 @@ public class LoadController {
 
     public List<Load> getLoadsByFacultyId(int facultyId) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return null;
         }
 
@@ -50,7 +50,7 @@ public class LoadController {
 
     public boolean updateLoad(int loadId, int facultyId, int subjectId) {
         if (loadId <= 0 || facultyId <= 0 || subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid load, faculty, or subject ID.");
+            PromptMessage.errorMessage("Invalid load, faculty, or subject ID.");
             return false;
         }
 
@@ -60,7 +60,7 @@ public class LoadController {
 
     public boolean restoreLoad(int loadId) {
         if (loadId <= 0) {
-            PromptMessageView.errorMessage("Invalid load ID.");
+            PromptMessage.errorMessage("Invalid load ID.");
             return false;
         }
 
@@ -69,7 +69,7 @@ public class LoadController {
 
     public boolean deleteLoad(int loadId) {
         if (loadId <= 0) {
-            PromptMessageView.errorMessage("Invalid load ID.");
+            PromptMessage.errorMessage("Invalid load ID.");
             return false;
         }
 
@@ -78,7 +78,7 @@ public class LoadController {
 
     public boolean assignSubjectToFaculty(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
+            PromptMessage.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -87,7 +87,7 @@ public class LoadController {
 
     public boolean removeSubjectFromFaculty(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
+            PromptMessage.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -96,7 +96,7 @@ public class LoadController {
 
     public List<Subject> getSubjectsByFacultyId(int facultyId) {
         if (facultyId <= 0) {
-            PromptMessageView.errorMessage("Invalid faculty ID.");
+            PromptMessage.errorMessage("Invalid faculty ID.");
             return null;
         }
 
@@ -121,16 +121,16 @@ public class LoadController {
             boolean success = createLoad(bestFaculty.getFacultyId(), subject.getSubjectId());
 
             if (success) {
-                PromptMessageView.successMessage(
+                PromptMessage.successMessage(
                         "Assigned " + bestFaculty.getFullname() + " to " + subject.getName()
                                 + " | Score: " + highestScore);
             } else {
-                PromptMessageView.errorMessage(
+                PromptMessage.errorMessage(
                         bestFaculty.getFullname() + " is already assigned to " + subject.getName() + ".");
             }
 
         } else {
-            PromptMessageView.errorMessage("No qualified faculty found for " + subject.getName());
+            PromptMessage.errorMessage("No qualified faculty found for " + subject.getName());
         }
     }
 
