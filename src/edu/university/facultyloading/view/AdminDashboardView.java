@@ -73,7 +73,7 @@ public class AdminDashboardView {
     }
 
     private void assignSubjectToFaculty(Admin admin) {
-        appController.goToFacultyManagement(admin);
+        appController.goToLoadManagement(admin);
     }
 
     private void viewFacultyTeachingLoad() {

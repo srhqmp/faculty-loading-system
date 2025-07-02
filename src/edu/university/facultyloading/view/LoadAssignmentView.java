@@ -9,21 +9,24 @@ import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Subject;
-import edu.university.facultyloading.util.AssignmentManager;
+import edu.university.facultyloading.repo.ScoringStrategy;
+import edu.university.facultyloading.util.LoadAssignmentManager;
 import edu.university.facultyloading.util.OutputFormatter;
 
 public class LoadAssignmentView {
     private final FacultyController facultyController;
     private final Scanner scanner;
     private AppController appController;
+    private ScoringStrategy scoringStrategy;
     private final SubjectController subjectController;
-    private final AssignmentManager assignmentManager;
+    private final LoadAssignmentManager assignmentManager;
 
-    public LoadAssignmentView(Scanner scanner, FacultyController facultyController, SubjectController subjectController) {
+    public LoadAssignmentView(Scanner scanner, FacultyController facultyController, SubjectController subjectController,
+            ScoringStrategy scoringStrategy) {
         this.facultyController = facultyController;
         this.subjectController = subjectController;
         this.scanner = scanner;
-        this.assignmentManager = new AssignmentManager(facultyController, subjectController);
+        this.assignmentManager = new LoadAssignmentManager(facultyController.getAllFaculties(), scoringStrategy);
     }
 
     public void setAppController(AppController appController) {
@@ -32,10 +35,9 @@ public class LoadAssignmentView {
 
     public void showMenu(Admin admin) {
         while (true) {
-            System.out.println("\n== Faculty Management ==");
-            System.out.println("1. View All Faculties");
-            System.out.println("2. View All Subjects");
-            System.out.println("3. Assign Subject to Faculty");
+            System.out.println("\n== Subject Load Management ==");
+            System.out.println("1. View All Subjects");
+            System.out.println("2. Assign Subject to Faculty");
             System.out.println("0. Back");
             System.out.print("Enter choice: ");
 
@@ -44,13 +46,9 @@ public class LoadAssignmentView {
             switch (choice) {
                 case "1":
                     System.out.println();
-                    viewAllFaculty();
-                    break;
-                case "2":
-                    System.out.println();
                     viewAllSubjects();
                     break;
-                case "3":
+                case "2":
                     System.out.println();
                     assignSubjectToFaculty();
                     break;
@@ -107,6 +105,20 @@ public class LoadAssignmentView {
     }
 
     private void assignSubjectToFaculty() {
+        System.out.print("Enter subject ID to assign: ");
+        int subjectId = Integer.parseInt(scanner.nextLine());
+
+        Subject subject = subjectController.getSubject(subjectId);
+        if (subject == null) {
+            System.out.println("Subject not found.");
+            return;
+        }
+
+        assignmentManager.assignFaculty(subject);
+
+    }
+
+    private void assignSubjectToFacultyTEST() {
         System.out.print("Enter faculty ID to assign subject: ");
         int facultyId = Integer.parseInt(scanner.nextLine());
 
@@ -125,8 +137,10 @@ public class LoadAssignmentView {
             return;
         }
 
-        if (facultyController.assignSubjectToFaculty(faculty, subject)) {
-            System.out.println("Subject assigned successfully to " + faculty.getFirstName() + " " + faculty.getLastName());
+        if (subject != null) {
+            assignmentManager.assignFaculty(subject);
+            System.out.println(
+                    "Subject assigned successfully to " + faculty.getFirstName() + " " + faculty.getLastName());
         } else {
             System.out.println("Failed to assign subject. Please try again.");
         }

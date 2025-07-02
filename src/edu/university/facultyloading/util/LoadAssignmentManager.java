@@ -15,16 +15,15 @@ import java.util.Map;
  *
  * @author acezh
  */
-public class AssignmentManager {
+public class LoadAssignmentManager {
 
-    private final List<Subject> subjectList;
     private final List<Faculty> facultyList;
     private final ScoringStrategy strategy;
 
     private final Map<Subject, Faculty> assignments;
 
-    public AssignmentManager(List<Subject> subjectList, List<Faculty> facultyList, ScoringStrategy strategy) {
-        this.subjectList = subjectList;
+    public LoadAssignmentManager(List<Faculty> facultyList, ScoringStrategy strategy) {
+
         this.facultyList = facultyList;
         this.strategy = strategy;
         this.assignments = new HashMap<>();

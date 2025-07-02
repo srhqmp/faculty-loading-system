@@ -9,6 +9,7 @@ import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
 import edu.university.facultyloading.view.SubjectManagementView;
+import edu.university.facultyloading.view.LoadAssignmentView;
 
 public class AppController {
     private final MainMenuView mainMenuView;
@@ -20,11 +21,13 @@ public class AppController {
     // management views
     private final SubjectManagementView subjectManagementView;
     private final FacultyManagementView facultyManagementView;
+    private final LoadAssignmentView loadAssignmentView;
 
     public AppController(MainMenuView mainMenuView, LoginView loginView, RegisterUserView registerUserView,
             AdminDashboardView adminDashboardView, FacultyDashboardView facultyDashboardView,
             SubjectManagementView subjectManagementView,
-            FacultyManagementView facultyManagementView) {
+            FacultyManagementView facultyManagementView,
+            LoadAssignmentView loadAssignmentView) {
         this.mainMenuView = mainMenuView;
         this.loginView = loginView;
         this.registerUserView = registerUserView;
@@ -32,6 +35,7 @@ public class AppController {
         this.facultyDashboardView = facultyDashboardView;
         this.subjectManagementView = subjectManagementView;
         this.facultyManagementView = facultyManagementView;
+        this.loadAssignmentView = loadAssignmentView;
 
         // set app controller to all views
         this.mainMenuView.setAppController(this);
@@ -42,7 +46,8 @@ public class AppController {
         this.facultyDashboardView.setAppController(this);
         // manager
         this.facultyManagementView.setAppController(this);
-        this.subjectManagementView.setAppController(this);
+        this.subjectManagementView.setAppController(this);        
+        this.loadAssignmentView.setAppController(this);
     }
 
     public void start() {
@@ -71,6 +76,10 @@ public class AppController {
 
     public void goToFacultyManagement(Admin admin) {
         facultyManagementView.showMenu(admin);
+    }
+    
+    public void goToLoadManagement(Admin admin) {
+        loadAssignmentView.showMenu(admin);
     }
 
     public void goToSubjectManagement(Admin admin) {

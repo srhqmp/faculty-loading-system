@@ -8,12 +8,15 @@ import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.LoadRepo;
+import edu.university.facultyloading.repo.ScoringStrategy;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.repo_impl.AdminRepoImpl;
+import edu.university.facultyloading.repo_impl.DefaultScoringStrategy;
 import edu.university.facultyloading.repo_impl.FacultyRepoImpl;
 import edu.university.facultyloading.repo_impl.LoadRepoImpl;
 import edu.university.facultyloading.repo_impl.SubjectRepoImpl;
 import edu.university.facultyloading.util.DbConnection;
+import edu.university.facultyloading.util.LoadAssignmentManager;
 import edu.university.facultyloading.view.AdminDashboardView;
 import edu.university.facultyloading.view.FacultyDashboardView;
 import edu.university.facultyloading.view.FacultyManagementView;
@@ -21,6 +24,7 @@ import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterUserView;
 import edu.university.facultyloading.view.SubjectManagementView;
+import edu.university.facultyloading.view.LoadAssignmentView;
 
 import java.util.Scanner;
 
@@ -31,6 +35,7 @@ public class Main {
 
         // utils
         DbConnection db = new DbConnection();
+        ScoringStrategy scoringStrategy = new DefaultScoringStrategy();
 
         // Repo / coordination/functions with DB/ contains SQL
         AdminRepo adminRepo = new AdminRepoImpl(db);
@@ -43,6 +48,7 @@ public class Main {
         FacultyController facultyController = new FacultyController(facultyRepo);
         SubjectController subjectController = new SubjectController(subjectRepo);
         LoadController loadController = new LoadController(loadRepo, subjectRepo);
+        // LoadAssignmentManager loadAssignmentManager = new LoadAssignmentManager(facultyController.getAllFaculties(), scoringStrategy);
 
         // Views
         LoginView loginView = new LoginView(scanner, adminController, facultyController);
@@ -52,10 +58,11 @@ public class Main {
         FacultyDashboardView facultyDashboardView = new FacultyDashboardView(scanner);
         FacultyManagementView facultyManagementView = new FacultyManagementView(scanner, facultyController);
         SubjectManagementView subjectManagementView = new SubjectManagementView(scanner, subjectController);
+        LoadAssignmentView loadAssignmentView = new LoadAssignmentView(scanner, facultyController, subjectController, scoringStrategy);
 
         // Manage navigation
         AppController viewContoller = new AppController(mainMenuView, loginView, registerView, adminDashboardView,
-                facultyDashboardView, subjectManagementView, facultyManagementView);
+                facultyDashboardView, subjectManagementView, facultyManagementView, loadAssignmentView);
 
         // Start the app
         viewContoller.start();
