@@ -18,9 +18,9 @@ public class LoginView {
         System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
         System.out.println();
 
-        System.out.print("\t\t\t    Username: ");
+        System.out.print(OutputFormatter.INDENT + "Username: ");
         String username = scanner.nextLine().trim();
-        System.out.print("\t\t\t    Password: ");
+        System.out.print(OutputFormatter.INDENT + "Password: ");
         String password = scanner.nextLine().trim();
 
         return new String[] { username, password };
