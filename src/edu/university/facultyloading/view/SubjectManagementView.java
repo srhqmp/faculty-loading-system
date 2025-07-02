@@ -6,6 +6,7 @@ import java.util.Scanner;
 import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.ScannerHelper;
 
 public class SubjectManagementView {
     private final SubjectController subjectController;
@@ -57,7 +58,11 @@ public class SubjectManagementView {
 
     private void viewAllSubjects() {
         List<Subject> subjects = subjectController.getAllSubjects();
+        // Call overloaded viewAllSubjects
+        viewAllSubjects(subjects);
+    }
 
+    public void viewAllSubjects(List<Subject> subjects) {
         System.out.println();
         System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
         System.out.println(OutputFormatter.centerString("║               SUBJECTS             ║"));
@@ -68,6 +73,7 @@ public class SubjectManagementView {
         System.out.printf("%-5s %-20s %-30s %-20s %-10s%n",
                 "ID", "Name", "Description", "Recommended Major", "Complexity");
         OutputFormatter.printDivider();
+
         for (Subject s : subjects) {
             System.out.printf("%-5d %-20s %-30s %-20s %-10d%n",
                     s.getSubjectId(),
@@ -89,25 +95,21 @@ public class SubjectManagementView {
         System.out.print("Enter recommended major: ");
         String recommendedMajor = scanner.nextLine();
 
-        System.out.print("Enter complexity level (integer): ");
-        int complexityLevel = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Enter complexity level (1–10): ");
+        int complexityLevel = ScannerHelper.readInt(scanner);
 
-        Subject subject = new Subject();
-        subject.setName(name);
-        subject.setDescription(description);
-        subject.setRecommendedMajor(recommendedMajor);
-        subject.setComplexityLevel(complexityLevel);
-
-        subjectController.createSubject(subject);
-        System.out.println("Subject added.");
+        boolean success = subjectController.createSubject(name, description, recommendedMajor, complexityLevel);
+        if (success) {
+            System.out.println("Subject added successfully.");
+        } else {
+            System.out.println("Failed to add subject. Please check your input.");
+        }
     }
 
     private void editSubject() {
         viewAllSubjects();
         System.out.print("Enter subject ID to edit: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = ScannerHelper.readInt(scanner);
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
@@ -125,30 +127,34 @@ public class SubjectManagementView {
         System.out.print("Enter new complexity level [Press ENTER to keep " + existing.getComplexityLevel() + "]: ");
         String complexityInput = scanner.nextLine();
 
-        if (!name.trim().isEmpty())
-            existing.setName(name);
-        if (!description.trim().isEmpty())
-            existing.setDescription(description);
-        if (!recommendedMajor.trim().isEmpty())
-            existing.setRecommendedMajor(recommendedMajor);
+        String finalName = name.trim().isEmpty() ? existing.getName() : name.trim();
+        String finalDescription = description.trim().isEmpty() ? existing.getDescription() : description.trim();
+        String finalRecommendedMajor = recommendedMajor.trim().isEmpty() ? existing.getRecommendedMajor()
+                : recommendedMajor.trim();
+        int finalComplexity = existing.getComplexityLevel();
+
         if (!complexityInput.trim().isEmpty()) {
             try {
-                int complexityLevel = Integer.parseInt(complexityInput);
-                existing.setComplexityLevel(complexityLevel);
+                int parsed = Integer.parseInt(complexityInput);
+                finalComplexity = parsed;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid complexity level input. Keeping previous value.");
             }
         }
 
-        subjectController.updateSubject(existing);
-        System.out.println("Subject updated.");
+        boolean success = subjectController.updateSubject(id, finalName, finalDescription, finalRecommendedMajor,
+                finalComplexity);
+        if (success) {
+            System.out.println("Subject updated successfully.");
+        } else {
+            System.out.println("Failed to update subject. Please check your input.");
+        }
     }
 
     private void deleteSubject() {
         viewAllSubjects();
         System.out.print("Enter subject ID to delete: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = ScannerHelper.readInt(scanner);
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
@@ -159,10 +165,15 @@ public class SubjectManagementView {
         System.out.print("Are you sure you want to delete \"" + existing.getName() + "\"? (y/n): ");
         String confirm = scanner.nextLine();
         if (confirm.equalsIgnoreCase("y")) {
-            subjectController.deleteSubject(id);
-            System.out.println("Subject deleted.");
+            boolean success = subjectController.deleteSubject(id);
+            if (success) {
+                System.out.println("Subject deleted.");
+            } else {
+                System.out.println("Failed to delete subject.");
+            }
         } else {
             System.out.println("Delete cancelled.");
         }
     }
+
 }

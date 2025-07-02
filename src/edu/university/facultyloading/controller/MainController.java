@@ -14,7 +14,6 @@ import edu.university.facultyloading.view.FacultyListView;
 import edu.university.facultyloading.view.FacultyLoadView;
 import edu.university.facultyloading.view.LoginView;
 import edu.university.facultyloading.view.RegisterView;
-import edu.university.facultyloading.view.SubjectListView;
 import edu.university.facultyloading.view.SubjectManagementView;
 
 import java.util.List;
@@ -33,7 +32,6 @@ public class MainController {
     private final LoginView loginView = new LoginView(scanner);
     private final DashboardView dashboardView = new DashboardView(scanner);
     private final FacultyListView facultyListView = new FacultyListView();
-    private final SubjectListView subjectListView = new SubjectListView();
     private final AssignSubjectView assignSubjectView = new AssignSubjectView(scanner);
     private final FacultyLoadView facultyLoadView = new FacultyLoadView();
     private final RegisterView registerView = new RegisterView(scanner);
@@ -226,22 +224,19 @@ public class MainController {
                 faculty.setAssignedSubjects(assignedSubjects);
             }
             List<Subject> subjects = subjectRepo.getAll();
+            SubjectManagementView subjectManagementView = new SubjectManagementView(scanner, subjectController);
 
             switch (choice) {
-                case 1:
-                    // View all Faculties
+                case 1: // View all Faculties
                     facultyListView.showFaculties(faculties);
                     break;
-                case 2:
-                    // Manage Subjects
-                    SubjectManagementView subjectManagementView = new SubjectManagementView(scanner, subjectController);
+                case 2: // Manage Subjects
                     subjectManagementView.showSubjectManagementMenu();
                     break;
-                case 3:
-                    // Assign Subjects to Faculty
+                case 3: // Assign Subjects to Faculty
                     facultyListView.showFaculties(faculties);
                     int facultyId = assignSubjectView.promptFacultyId();
-                    subjectListView.showSubjects(subjects);
+                    subjectManagementView.viewAllSubjects(subjects);
                     int subjectId = assignSubjectView.promptSubjectIdToAssign();
                     boolean success = loadRepo.assignSubjectToFaculty(facultyId, subjectId);
                     if (success)
@@ -249,8 +244,7 @@ public class MainController {
                     else
                         assignSubjectView.showAssignmentFailed();
                     break;
-                case 4:
-                    // Remove Assigned Subject from Faculty
+                case 4: // Remove Assigned Subject from Faculty
                     facultyListView.showFaculties(faculties);
                     int facultyIdToRemove = assignSubjectView.promptFacultyId();
 
@@ -262,7 +256,7 @@ public class MainController {
                         break;
                     }
 
-                    subjectListView.showSubjects(assignedSubjectsToRemove);
+                    subjectManagementView.viewAllSubjects(assignedSubjectsToRemove);
                     int subjectIdToRemove = assignSubjectView.promptSubjectIdToRemove();
 
                     boolean removeSuccess = loadRepo.removeSubjectFromFaculty(facultyIdToRemove, subjectIdToRemove);
@@ -271,8 +265,7 @@ public class MainController {
                     else
                         assignSubjectView.showRemoveAssignmentFailed();
                     break;
-                case 5:
-                    // View Faculty Loads
+                case 5: // View Faculty Loads
                     facultyListView.showFaculties(faculties);
 
                     int viewFacultyId = assignSubjectView.promptFacultyId();
@@ -285,8 +278,7 @@ public class MainController {
                         System.out.println("Faculty not found.");
                     }
                     break;
-                case 0:
-                    // Logout
+                case 0: // Logout
                     loggedInAdmin = null;
                     running = false;
                     System.out.println(OutputFormatter.centerString("Logged out."));
