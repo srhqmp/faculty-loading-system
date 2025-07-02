@@ -15,6 +15,7 @@ import edu.university.facultyloading.view.DashboardView;
 import edu.university.facultyloading.view.FacultyListView;
 import edu.university.facultyloading.view.FacultyLoadView;
 import edu.university.facultyloading.view.LoginView;
+import edu.university.facultyloading.view.MainMenuView;
 import edu.university.facultyloading.view.RegisterView;
 import edu.university.facultyloading.view.SubjectManagementView;
 
@@ -36,6 +37,7 @@ public class MainController {
     private final AssignSubjectView assignSubjectView = new AssignSubjectView(scanner);
     private final FacultyLoadView facultyLoadView = new FacultyLoadView();
     private final RegisterView registerView = new RegisterView(scanner);
+    private final MainMenuView mainMenuView = new MainMenuView();
 
     private Admin loggedInAdmin = null;
     private Faculty loggedInFaculty = null;
@@ -52,34 +54,7 @@ public class MainController {
     public void start() {
         boolean running = true;
         while (running) {
-            String[] header = {
-                    "╔════════════════════════════════════════════════════════════════════╗",
-                    "║                            WELCOME TO                              ║",
-                    "║                                                                    ║",
-                    "║    ███████╗ █████╗  ██████╗██╗   ██╗██╗     ████████╗██╗   ██╗     ║",
-                    "║    ██╔════╝██╔══██╗██╔════╝██║   ██║██║     ╚══██╔══╝╚██╗ ██╔╝     ║",
-                    "║    █████╗  ███████║██║     ██║   ██║██║        ██║    ╚████╔╝      ║",
-                    "║    ██╔══╝  ██╔══██║██║     ██║   ██║██║        ██║     ╚██╔╝       ║",
-                    "║    ██║     ██║  ██║╚██████╗╚██████╔╝███████╗   ██║      ██║        ║",
-                    "║    ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝      ╚═╝        ║",
-                    "║                                                                    ║",
-                    "║                           LOADING SYSTEM                           ║",
-                    "╚════════════════════════════════════════════════════════════════════╝"
-            };
-
-            for (String line : header) {
-                PromptMessageView.header(line);
-            }
-
-            System.out.println();
-            PromptMessageView.choices("╔══════════════════════════════╗");
-            PromptMessageView.choices("║           MAIN MENU          ║");
-            PromptMessageView.choices("╠══════════════════════════════╣");
-            PromptMessageView.choices("║ 1. Login                     ║");
-            PromptMessageView.choices("║ 2. Register                  ║");
-            PromptMessageView.choices("║ 0. Exit                      ║");
-            PromptMessageView.choices("╚══════════════════════════════╝");
-            System.out.print(OutputFormatter.centerString("Choose an option: "));
+            mainMenuView.show();
 
             int choice = -1;
 
