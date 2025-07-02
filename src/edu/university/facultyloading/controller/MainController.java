@@ -134,7 +134,7 @@ public class MainController {
         int userType;
         try {
             userType = Integer.parseInt(data[0]);
-            if (userType != 1 && userType != 2) {
+            if (userType != 1 && userType != 0) {
                 System.out.println(OutputFormatter.centerString("Invalid user type."));
                 return;
             }
