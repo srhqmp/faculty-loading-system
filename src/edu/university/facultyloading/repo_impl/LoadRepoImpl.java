@@ -1,5 +1,6 @@
 package edu.university.facultyloading.repo_impl;
 
+import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
@@ -23,17 +24,30 @@ public class LoadRepoImpl implements LoadRepo {
 
     @Override
     public boolean create(Load load) {
-        String query = "INSERT INTO tblloads (faculty_id, subject_id) VALUES (?, ?)";
-        try (Connection connection = dbConnection.connect();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+        String checkQuery = "SELECT COUNT(*) FROM tblloads WHERE faculty_id = ? AND subject_id = ?";
+        String insertQuery = "INSERT INTO tblloads (faculty_id, subject_id) VALUES (?, ?)";
 
-            stmt.setInt(1, load.getFacultyId());
-            stmt.setInt(2, load.getSubjectId());
-            return stmt.executeUpdate() > 0;
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+                PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+
+            checkStmt.setInt(1, load.getFacultyId());
+            checkStmt.setInt(2, load.getSubjectId());
+
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return false; // Prevent duplicate
+            }
+
+            insertStmt.setInt(1, load.getFacultyId());
+            insertStmt.setInt(2, load.getSubjectId());
+
+            return insertStmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             PromptMessageView.errorMessage("LoadRepo - create(): " + e.getMessage());
         }
+
         return false;
     }
 
@@ -222,6 +236,47 @@ public class LoadRepoImpl implements LoadRepo {
         }
 
         return subjects;
+    }
+
+    @Override
+    public List<Faculty> getAvailableFacultiesBySubjectId(int subjectId) {
+        List<Faculty> faculties = new ArrayList<>();
+
+        String query = "SELECT tblfaculties.faculty_id, tblusers.user_id, tblusers.username, " +
+                "tblusers.first_name, tblusers.last_name, " +
+                "tblfaculties.is_available " +
+                "FROM tblloads " +
+                "INNER JOIN tblfaculties ON tblloads.faculty_id = tblfaculties.faculty_id " +
+                "INNER JOIN tblusers ON tblfaculties.faculty_id = tblusers.user_id " +
+                "INNER JOIN tblsubjects ON tblloads.subject_id = tblsubjects.subject_id " +
+                "WHERE tblloads.subject_id = ? " +
+                "AND tblfaculties.is_available = 1 " +
+                "AND tblusers.is_archived = 0 " +
+                "AND tblsubjects.is_archived = 0";
+
+        try (Connection connection = dbConnection.connect();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, subjectId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Faculty faculty = new Faculty();
+                faculty.setFacultyId(rs.getInt("faculty_id"));
+                faculty.setUserId(rs.getInt("user_id"));
+                faculty.setUsername(rs.getString("username"));
+                faculty.setFirstName(rs.getString("first_name"));
+                faculty.setLastName(rs.getString("last_name"));
+                faculty.setAvailable(rs.getInt("is_available") == 1);
+
+                faculties.add(faculty);
+            }
+
+        } catch (SQLException e) {
+            PromptMessageView.errorMessage("LoadRepo - getAvailableFacultiesBySubjectId(): " + e.getMessage());
+        }
+
+        return faculties;
     }
 
     @Override

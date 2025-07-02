@@ -106,15 +106,4 @@ INSERT INTO tblsubjects (name, description, recommended_major, complexity_level)
 ('Genetics', 'Genetic principles', 'Biology', 3),
 ('Sociological Theories', 'Sociology foundations', 'Sociology', 3);
 
--- FACULTY LOADS (3–5 per faculty)
-INSERT INTO tblloads (faculty_id, subject_id) VALUES
-(1, 1), (1, 3), (1, 11), (1, 2),
-(2, 2), (2, 12), (2, 11),
-(3, 5), (3, 13), (3, 11),
-(4, 4), (4, 1), (4, 12), (4, 8),
-(5, 6), (5, 14), (5, 7),
-(6, 7), (6, 6), (6, 1),
-(7, 8), (7, 7), (7, 9), (7, 15),
-(8, 15), (8, 13), (8, 4),
-(9, 9), (9, 12), (9, 10),
-(10, 10), (10, 8), (10, 15), (10, 14);
+

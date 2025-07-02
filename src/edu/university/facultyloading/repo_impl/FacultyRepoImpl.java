@@ -241,7 +241,7 @@ public class FacultyRepoImpl implements FacultyRepo {
         String major = result.getString("major");
         int yearsOfExperience = result.getInt("years_of_experience");
         double studentFeedbackScore = result.getDouble("student_feedback_score");
-        boolean isAvailable = result.getBoolean("is_available");
+        boolean isAvailable = result.getInt("is_available") == 1;
 
         return new Faculty(facultyId, userId, username, password, firstName, lastName, major,
                 yearsOfExperience, studentFeedbackScore, isAvailable);

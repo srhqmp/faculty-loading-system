@@ -11,7 +11,7 @@ public class FacultyFilter {
         List<Faculty> filtered = new ArrayList<>();
 
         for (Faculty faculty : facultyList) {
-            if (faculty.isAvailable())
+            if (!faculty.isAvailable())
                 continue;
 
             if (!faculty.getMajor().equalsIgnoreCase(subject.getRecommendedMajor()))
@@ -33,6 +33,27 @@ public class FacultyFilter {
         }
 
         return available;
+    }
+
+    public static String getFacultyInitials(List<Faculty> faculties) {
+        if (faculties == null) {
+            return "";
+        }
+
+        String result = "";
+        for (int i = 0; i < faculties.size(); i++) {
+            Faculty faculty = faculties.get(i);
+
+            String firstName = faculty.getFirstName();
+            String lastName = faculty.getLastName();
+
+            result += ("" + Character.toUpperCase(firstName.charAt(0)) + Character.toUpperCase(lastName.charAt(0)));
+            if (i < faculties.size() - 1) {
+                result += ", ";
+            }
+        }
+
+        return result;
     }
 
 }

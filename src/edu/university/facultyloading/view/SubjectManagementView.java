@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Subject;
+import edu.university.facultyloading.util.FacultyFilter;
 import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.util.PromptMessageView;
 import edu.university.facultyloading.util.ScannerHelper;
@@ -71,19 +72,21 @@ public class SubjectManagementView {
         System.out.println();
 
         OutputFormatter.printDivider();
-        System.out.printf("%-5s %-20s %-30s %-20s %-10s%n",
-                "ID", "Name", "Description", "Recommended Major", "Complexity");
+        System.out.printf("%-5s %-20s %-30s %-20s %-15s %-40s%n",
+                "ID", "Name", "Description", "Recommended Major", "Complexity", "Instructors");
         OutputFormatter.printDivider();
 
         for (Subject s : subjects) {
-            System.out.printf("%-5d %-20s %-30s %-20s %-10d%n",
+            System.out.printf("%-5d %-20s %-30s %-20s %-15d %-40s%n",
                     s.getSubjectId(),
                     OutputFormatter.truncate(s.getName(), 20),
                     OutputFormatter.truncate(s.getDescription(), 30),
                     OutputFormatter.truncate(s.getRecommendedMajor(), 20),
-                    s.getComplexityLevel());
+                    s.getComplexityLevel(),
+                    FacultyFilter.getFacultyInitials(s.getAssignedFaculties()));
         }
         OutputFormatter.printDivider();
+
     }
 
     private void addSubject() {

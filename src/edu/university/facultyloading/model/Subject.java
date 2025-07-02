@@ -1,5 +1,7 @@
 package edu.university.facultyloading.model;
 
+import java.util.List;
+
 public class Subject {
 
     private int subjectId;
@@ -7,6 +9,7 @@ public class Subject {
     private String description;
     private String recommendedMajor;
     private int complexityLevel;
+    private List<Faculty> assignedFaculties;
 
     public Subject() {
 
@@ -60,10 +63,20 @@ public class Subject {
         this.complexityLevel = complexityLevel;
     }
 
+    public List<Faculty> getAssignedFaculties() {
+        return assignedFaculties;
+    }
+
+    public void setAssignedFaculties(List<Faculty> assignedFaculties) {
+        this.assignedFaculties = assignedFaculties;
+
+    }
+
     @Override
     public String toString() {
         return "Subject [subjectId=" + subjectId + ", name=" + name + ", description=" + description
-                + ", recommendedMajor=" + recommendedMajor + ", complexityLevel=" + complexityLevel + "]";
+                + ", recommendedMajor=" + recommendedMajor + ", complexityLevel=" + complexityLevel
+                + ", assignedFaculties=" + assignedFaculties + "]";
     }
 
 }

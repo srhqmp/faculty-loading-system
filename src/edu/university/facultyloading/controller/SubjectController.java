@@ -1,16 +1,21 @@
 package edu.university.facultyloading.controller;
 
 import java.util.List;
+
+import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Subject;
+import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.util.PromptMessageView;
 
 public class SubjectController {
 
     private final SubjectRepo subjectRepo;
+    private final LoadRepo loadRepo;
 
-    public SubjectController(SubjectRepo subjectRepo) {
+    public SubjectController(SubjectRepo subjectRepo, LoadRepo loadRepo) {
         this.subjectRepo = subjectRepo;
+        this.loadRepo = loadRepo;
     }
 
     public boolean createSubject(String name, String description, String recommendedMajor, int complexityLevel) {
@@ -31,7 +36,12 @@ public class SubjectController {
     }
 
     public List<Subject> getAllSubjects() {
-        return subjectRepo.getAll();
+        List<Subject> subjects = subjectRepo.getAll();
+        for (Subject subject : subjects) {
+            List<Faculty> assignedFaculties = loadRepo.getAvailableFacultiesBySubjectId(subject.getSubjectId());
+            subject.setAssignedFaculties(assignedFaculties);
+        }
+        return subjects;
     }
 
     public boolean updateSubject(int subjectId, String name, String description, String recommendedMajor,

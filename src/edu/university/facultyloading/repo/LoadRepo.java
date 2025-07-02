@@ -1,5 +1,6 @@
 package edu.university.facultyloading.repo;
 
+import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 
@@ -24,7 +25,9 @@ public interface LoadRepo {
 
     boolean assignSubjectToFaculty(int facultyId, int subjectId);
 
-    List<Subject> getSubjectsByFacultyId(int facultyId); 
-    
+    List<Subject> getSubjectsByFacultyId(int facultyId);
+
     boolean removeSubjectFromFaculty(int facultyId, int subjectId);
+
+    List<Faculty> getAvailableFacultiesBySubjectId(int subjectId);
 }

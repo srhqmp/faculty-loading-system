@@ -7,9 +7,7 @@ import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.util.FacultyFilter;
 import edu.university.facultyloading.util.PromptMessageView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LoadController {
     private final LoadRepo loadRepo;
@@ -110,7 +108,6 @@ public class LoadController {
         List<Faculty> qualified = FacultyFilter.filterBySubject(faculties, subject);
         Faculty bestFaculty = null;
         double highestScore = 0;
-        Map<Subject, Faculty> assignments = new HashMap<>();
 
         for (Faculty faculty : qualified) {
             double score = calculateScore(faculty, subject);
@@ -121,9 +118,17 @@ public class LoadController {
         }
 
         if (bestFaculty != null) {
-            assignments.put(subject, bestFaculty);
-            PromptMessageView.successMessage("Assigned " + bestFaculty.getFullname() + " to " + subject.getName()
-                    + " | Score: " + highestScore);
+            boolean success = createLoad(bestFaculty.getFacultyId(), subject.getSubjectId());
+
+            if (success) {
+                PromptMessageView.successMessage(
+                        "Assigned " + bestFaculty.getFullname() + " to " + subject.getName()
+                                + " | Score: " + highestScore);
+            } else {
+                PromptMessageView.errorMessage(
+                        bestFaculty.getFullname() + " is already assigned to " + subject.getName() + ".");
+            }
+
         } else {
             PromptMessageView.errorMessage("No qualified faculty found for " + subject.getName());
         }

@@ -17,8 +17,12 @@ public class FacultyLoadView {
         System.out.println();
 
         if (assignedSubjects.isEmpty()) {
-            PromptMessageView.successMessage("No subjects assigned.");
+            PromptMessageView.warningMessage("No subjects assigned.");
             return;
+        }
+
+        if (!faculty.isAvailable()) {
+            PromptMessageView.warningMessage("Faculty is currently unavailable.");
         }
 
         OutputFormatter.printDivider();

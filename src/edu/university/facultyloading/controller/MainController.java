@@ -42,7 +42,7 @@ public class MainController {
 
     public MainController(AdminRepo adminRepo, FacultyRepo facultyRepo, SubjectRepo subjectRepo,
             LoadRepo loadRepo) {
-        this.subjectController = new SubjectController(subjectRepo);
+        this.subjectController = new SubjectController(subjectRepo, loadRepo);
         this.adminController = new AdminController(adminRepo);
         this.facultyController = new FacultyController(facultyRepo);
         this.registrationController = new RegistrationController(adminController, facultyController);
