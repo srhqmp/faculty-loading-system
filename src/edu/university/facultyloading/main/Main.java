@@ -59,6 +59,8 @@ public class Main {
 
         // Start the app
         viewContoller.start();
+        //Close the scanner
+        
 
     }
 
