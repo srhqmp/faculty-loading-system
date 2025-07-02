@@ -28,6 +28,7 @@ public class MainController {
     private final AdminController adminController;
     private final FacultyController facultyController;
     private final RegistrationController registrationController;
+    private final LoadController loadController;
 
     private final LoginView loginView = new LoginView(scanner);
     private final DashboardView dashboardView = new DashboardView(scanner);
@@ -47,6 +48,7 @@ public class MainController {
         this.adminController = new AdminController(adminRepo);
         this.facultyController = new FacultyController(facultyRepo);
         this.registrationController = new RegistrationController(adminController, facultyController);
+        this.loadController = new LoadController(loadRepo);
 
     }
 
@@ -155,7 +157,7 @@ public class MainController {
             List<Faculty> faculties = facultyController.getAllFaculties();
             for (Faculty faculty : faculties) {
                 // get faculty load
-                List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(faculty.getFacultyId());
+                List<Subject> assignedSubjects = loadController.getSubjectsByFacultyId(faculty.getFacultyId());
                 faculty.setAssignedSubjects(assignedSubjects);
             }
             List<Subject> subjects = subjectController.getAllSubjects();
@@ -173,7 +175,7 @@ public class MainController {
                     int facultyId = assignSubjectView.promptFacultyId();
                     subjectManagementView.viewAllSubjects(subjects);
                     int subjectId = assignSubjectView.promptSubjectIdToAssign();
-                    boolean success = loadRepo.assignSubjectToFaculty(facultyId, subjectId);
+                    boolean success = loadController.assignSubjectToFaculty(facultyId, subjectId);
                     if (success)
                         assignSubjectView.showAssignmentSuccess();
                     else
@@ -184,7 +186,7 @@ public class MainController {
                     int facultyIdToRemove = assignSubjectView.promptFacultyId();
 
                     // Get assigned subjects for the faculty
-                    List<Subject> assignedSubjectsToRemove = loadRepo.getSubjectsByFacultyId(facultyIdToRemove);
+                    List<Subject> assignedSubjectsToRemove = loadController.getSubjectsByFacultyId(facultyIdToRemove);
 
                     if (assignedSubjectsToRemove.isEmpty()) {
                         System.out.println("No subjects assigned to this faculty.");
@@ -194,7 +196,8 @@ public class MainController {
                     subjectManagementView.viewAllSubjects(assignedSubjectsToRemove);
                     int subjectIdToRemove = assignSubjectView.promptSubjectIdToRemove();
 
-                    boolean removeSuccess = loadRepo.removeSubjectFromFaculty(facultyIdToRemove, subjectIdToRemove);
+                    boolean removeSuccess = loadController.removeSubjectFromFaculty(facultyIdToRemove,
+                            subjectIdToRemove);
                     if (removeSuccess)
                         assignSubjectView.showRemoveAssignmentSuccess();
                     else
@@ -207,7 +210,7 @@ public class MainController {
                     Faculty faculty = facultyController.getFaculty(viewFacultyId);
 
                     if (faculty != null) {
-                        List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(viewFacultyId);
+                        List<Subject> assignedSubjects = loadController.getSubjectsByFacultyId(viewFacultyId);
                         facultyLoadView.showFacultyLoads(faculty, assignedSubjects);
                     } else {
                         System.out.println("Faculty not found.");
@@ -231,7 +234,8 @@ public class MainController {
             switch (choice) {
                 case 1:
                     // View Load Assignments
-                    List<Subject> assignedSubjects = loadRepo.getSubjectsByFacultyId(loggedInFaculty.getFacultyId());
+                    List<Subject> assignedSubjects = loadController
+                            .getSubjectsByFacultyId(loggedInFaculty.getFacultyId());
                     facultyLoadView.showFacultyLoads(loggedInFaculty, assignedSubjects);
                     break;
                 case 2:

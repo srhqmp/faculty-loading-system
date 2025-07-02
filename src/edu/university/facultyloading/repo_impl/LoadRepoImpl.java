@@ -20,18 +20,19 @@ public class LoadRepoImpl implements LoadRepo {
     }
 
     @Override
-    public void create(Load load) {
+    public boolean create(Load load) {
         String query = "INSERT INTO tblloads (faculty_id, subject_id) VALUES (?, ?)";
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, load.getFacultyId());
             stmt.setInt(2, load.getSubjectId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - create(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class LoadRepoImpl implements LoadRepo {
     }
 
     @Override
-    public void update(Load load) {
+    public boolean update(Load load) {
         String query = "UPDATE tblloads SET faculty_id = ?, subject_id = ? WHERE load_id = ?";
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -106,53 +107,57 @@ public class LoadRepoImpl implements LoadRepo {
             stmt.setInt(1, load.getFacultyId());
             stmt.setInt(2, load.getSubjectId());
             stmt.setInt(3, load.getLoadId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - update(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void archive(int loadId) {
+    public boolean archive(int loadId) {
         String query = "UPDATE tblloads SET is_archived = 1 WHERE load_id = ?";
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, loadId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - archive(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void restore(int loadId) {
+    public boolean restore(int loadId) {
         String query = "UPDATE tblloads SET is_archived = 0 WHERE load_id = ?";
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, loadId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - restore(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void delete(int loadId) {
+    public boolean delete(int loadId) {
         String query = "DELETE FROM tblloads WHERE load_id = ?";
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, loadId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - delete(): " + e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -175,14 +180,13 @@ public class LoadRepoImpl implements LoadRepo {
             try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                 insertStmt.setInt(1, facultyId);
                 insertStmt.setInt(2, subjectId);
-                int affected = insertStmt.executeUpdate();
-                return affected > 0;
+                return insertStmt.executeUpdate() > 0;
             }
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -227,12 +231,11 @@ public class LoadRepoImpl implements LoadRepo {
 
             stmt.setInt(1, facultyId);
             stmt.setInt(2, subjectId);
-            int affected = stmt.executeUpdate();
-            return affected > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.out.println("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
-            return false;
         }
+        return false;
     }
 }
