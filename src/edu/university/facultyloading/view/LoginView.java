@@ -3,6 +3,7 @@ package edu.university.facultyloading.view;
 import java.util.Scanner;
 
 import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.PromptMessageView;
 
 public class LoginView {
     private Scanner scanner;
@@ -13,9 +14,9 @@ public class LoginView {
 
     public String[] showLoginPrompt() {
         System.out.println();
-        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
-        System.out.println(OutputFormatter.centerString("║               LOG IN               ║"));
-        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        PromptMessageView.choices("╔════════════════════════════════════╗");
+        PromptMessageView.choices("║               LOG IN               ║");
+        PromptMessageView.choices("╚════════════════════════════════════╝");
         System.out.println();
 
         System.out.print(OutputFormatter.INDENT + "Username: ");
@@ -27,6 +28,6 @@ public class LoginView {
     }
 
     public void showLoginFailed() {
-        System.out.println(OutputFormatter.centerString("Login failed: Invalid username or password."));
+        PromptMessageView.errorMessage("Login failed. Invalid username or password.");
     }
 }

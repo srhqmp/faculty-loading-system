@@ -3,6 +3,7 @@ package edu.university.facultyloading.controller;
 import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
+import edu.university.facultyloading.util.PromptMessageView;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class LoadController {
 
     public boolean createLoad(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            System.out.println("Invalid faculty or subject ID.");
+            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -25,7 +26,7 @@ public class LoadController {
 
     public Load getLoadById(int loadId) {
         if (loadId <= 0) {
-            System.out.println("Invalid load ID.");
+            PromptMessageView.errorMessage("Invalid load ID.");
             return null;
         }
 
@@ -38,7 +39,7 @@ public class LoadController {
 
     public List<Load> getLoadsByFacultyId(int facultyId) {
         if (facultyId <= 0) {
-            System.out.println("Invalid faculty ID.");
+            PromptMessageView.errorMessage("Invalid faculty ID.");
             return null;
         }
 
@@ -47,7 +48,7 @@ public class LoadController {
 
     public boolean updateLoad(int loadId, int facultyId, int subjectId) {
         if (loadId <= 0 || facultyId <= 0 || subjectId <= 0) {
-            System.out.println("Invalid load, faculty, or subject ID.");
+            PromptMessageView.errorMessage("Invalid load, faculty, or subject ID.");
             return false;
         }
 
@@ -57,7 +58,7 @@ public class LoadController {
 
     public boolean restoreLoad(int loadId) {
         if (loadId <= 0) {
-            System.out.println("Invalid load ID.");
+            PromptMessageView.errorMessage("Invalid load ID.");
             return false;
         }
 
@@ -66,7 +67,7 @@ public class LoadController {
 
     public boolean deleteLoad(int loadId) {
         if (loadId <= 0) {
-            System.out.println("Invalid load ID.");
+            PromptMessageView.errorMessage("Invalid load ID.");
             return false;
         }
 
@@ -75,7 +76,7 @@ public class LoadController {
 
     public boolean assignSubjectToFaculty(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            System.out.println("Invalid faculty or subject ID.");
+            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -84,7 +85,7 @@ public class LoadController {
 
     public boolean removeSubjectFromFaculty(int facultyId, int subjectId) {
         if (facultyId <= 0 || subjectId <= 0) {
-            System.out.println("Invalid faculty or subject ID.");
+            PromptMessageView.errorMessage("Invalid faculty or subject ID.");
             return false;
         }
 
@@ -93,7 +94,7 @@ public class LoadController {
 
     public List<Subject> getSubjectsByFacultyId(int facultyId) {
         if (facultyId <= 0) {
-            System.out.println("Invalid faculty ID.");
+            PromptMessageView.errorMessage("Invalid faculty ID.");
             return null;
         }
 

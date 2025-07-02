@@ -9,12 +9,12 @@ import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
 import edu.university.facultyloading.util.HelperMethods;
 import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.PromptMessageView;
 import edu.university.facultyloading.view.AssignSubjectView;
 import edu.university.facultyloading.view.DashboardView;
 import edu.university.facultyloading.view.FacultyListView;
 import edu.university.facultyloading.view.FacultyLoadView;
 import edu.university.facultyloading.view.LoginView;
-import edu.university.facultyloading.view.PrompMessageView;
 import edu.university.facultyloading.view.RegisterView;
 import edu.university.facultyloading.view.SubjectManagementView;
 
@@ -66,20 +66,19 @@ public class MainController {
                     "║                           LOADING SYSTEM                           ║",
                     "╚════════════════════════════════════════════════════════════════════╝"
             };
-            System.out.println();
-            for (String line : header) {
-                // System.out.println(OutputFormatter.centerString(line));
-                PrompMessageView.successMessage(line);
-            }
-            System.out.println();
 
-            System.out.println(OutputFormatter.centerString("╔══════════════════════════════╗"));
-            System.out.println(OutputFormatter.centerString("║           MAIN MENU          ║"));
-            System.out.println(OutputFormatter.centerString("╠══════════════════════════════╣"));
-            System.out.println(OutputFormatter.centerString("║ 1. Login                     ║"));
-            System.out.println(OutputFormatter.centerString("║ 2. Register                  ║"));
-            System.out.println(OutputFormatter.centerString("║ 0. Exit                      ║"));
-            System.out.println(OutputFormatter.centerString("╚══════════════════════════════╝"));
+            for (String line : header) {
+                PromptMessageView.header(line);
+            }
+
+            System.out.println();
+            PromptMessageView.choices("╔══════════════════════════════╗");
+            PromptMessageView.choices("║           MAIN MENU          ║");
+            PromptMessageView.choices("╠══════════════════════════════╣");
+            PromptMessageView.choices("║ 1. Login                     ║");
+            PromptMessageView.choices("║ 2. Register                  ║");
+            PromptMessageView.choices("║ 0. Exit                      ║");
+            PromptMessageView.choices("╚══════════════════════════════╝");
             System.out.print(OutputFormatter.centerString("Choose an option: "));
 
             int choice = -1;
@@ -87,7 +86,7 @@ public class MainController {
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                PrompMessageView.errorMessage("Invalid input. Please try again.");
+                PromptMessageView.errorMessage("Invalid input. Please try again.");
                 continue;
             }
 
@@ -100,11 +99,10 @@ public class MainController {
                     break;
                 case 0:
                     running = false;
-                    System.out.println();
-                    System.out.println(OutputFormatter.centerString("Exiting the program. Goodbye!"));
+                    PromptMessageView.successMessage("Exiting the program. Goodbye!");
                     break;
                 default:
-                    System.out.println(OutputFormatter.centerString("Invalid choice. Please try again."));
+                    PromptMessageView.errorMessage("Invalid choice. Please try again.");
             }
         }
     }
@@ -119,11 +117,9 @@ public class MainController {
 
     private void handleLogin(String username, String password) {
         loggedInAdmin = adminController.login(username, password);
-        System.out.println();
-        System.out.println();
 
         if (loggedInAdmin != null) {
-            PrompMessageView.successMessage("Welcome " +
+            PromptMessageView.successMessage("Welcome " +
                     loggedInAdmin.getFullname() + "!");
             displayAdminDashboard();
             return;
@@ -131,7 +127,7 @@ public class MainController {
 
         loggedInFaculty = facultyController.authenticate(username, password);
         if (loggedInFaculty != null) {
-            PrompMessageView.successMessage("Welcome " +
+            PromptMessageView.successMessage("Welcome " +
                     loggedInFaculty.getFullname() + "!");
             displayFacultyDashboard();
             return;
@@ -180,7 +176,7 @@ public class MainController {
                     int facultyId = assignSubjectView.promptFacultyId();
 
                     if (!HelperMethods.facultyInTheList(facultyId, faculties)) {
-                        PrompMessageView.errorMessage("Faculty with ID " + facultyId + " does not exist.");
+                        PromptMessageView.errorMessage("Faculty with ID " + facultyId + " does not exist.");
                         break;
                     }
 
@@ -188,7 +184,7 @@ public class MainController {
                     int subjectId = assignSubjectView.promptSubjectIdToAssign();
 
                     if (!HelperMethods.subjectInTheList(subjectId, subjects)) {
-                        PrompMessageView.errorMessage("Subject with ID " + subjectId + " does not exist.");
+                        PromptMessageView.errorMessage("Subject with ID " + subjectId + " does not exist.");
                         break;
                     }
 
@@ -204,7 +200,7 @@ public class MainController {
                     int facultyIdToRemove = assignSubjectView.promptFacultyId();
 
                     if (!HelperMethods.facultyInTheList(facultyIdToRemove, faculties)) {
-                        PrompMessageView.errorMessage("Faculty with ID " + facultyIdToRemove + " does not exist.");
+                        PromptMessageView.errorMessage("Faculty with ID " + facultyIdToRemove + " does not exist.");
                         break;
                     }
 
@@ -212,7 +208,7 @@ public class MainController {
                     List<Subject> assignedSubjectsToRemove = loadController.getSubjectsByFacultyId(facultyIdToRemove);
 
                     if (assignedSubjectsToRemove.isEmpty()) {
-                        PrompMessageView.errorMessage("No subjects assigned to this faculty.");
+                        PromptMessageView.errorMessage("No subjects assigned to this faculty.");
                         break;
                     }
 
@@ -220,7 +216,7 @@ public class MainController {
                     int subjectIdToRemove = assignSubjectView.promptSubjectIdToRemove();
 
                     if (!HelperMethods.subjectInTheList(subjectIdToRemove, assignedSubjectsToRemove)) {
-                        PrompMessageView.errorMessage("Subject with ID " + subjectIdToRemove
+                        PromptMessageView.errorMessage("Subject with ID " + subjectIdToRemove
                                 + " does not exist in the subject load.");
                         break;
                     }
@@ -239,7 +235,7 @@ public class MainController {
                     Faculty faculty = facultyController.getFaculty(viewFacultyId);
 
                     if (!HelperMethods.facultyInTheList(viewFacultyId, faculties)) {
-                        PrompMessageView.errorMessage("Faculty with ID " + viewFacultyId + " does not exist.");
+                        PromptMessageView.errorMessage("Faculty with ID " + viewFacultyId + " does not exist.");
                         break;
                     }
 
@@ -247,16 +243,16 @@ public class MainController {
                         List<Subject> assignedSubjects = loadController.getSubjectsByFacultyId(viewFacultyId);
                         facultyLoadView.showFacultyLoads(faculty, assignedSubjects);
                     } else {
-                        PrompMessageView.errorMessage("Faculty not found.");
+                        PromptMessageView.errorMessage("Faculty not found.");
                     }
                     break;
                 case 0: // Logout
                     loggedInAdmin = null;
                     running = false;
-                    PrompMessageView.successMessage(OutputFormatter.centerString("Logged out."));
+                    PromptMessageView.successMessage(OutputFormatter.centerString("Logged out."));
                     break;
                 default:
-                    PrompMessageView.errorMessage(OutputFormatter.centerString("Invalid choice. Please try again."));
+                    PromptMessageView.errorMessage(OutputFormatter.centerString("Invalid choice. Please try again."));
             }
         }
     }
@@ -276,16 +272,16 @@ public class MainController {
                     // Update availabiity
                     boolean isAvailable = dashboardView.promptAvailabilityUpdate();
                     facultyController.updateAvailability(loggedInFaculty.getFacultyId(), isAvailable);
-                    PrompMessageView.successMessage("Availability status updated successfully.");
+                    PromptMessageView.successMessage("Availability status updated successfully.");
                     break;
                 case 0:
                     // Logout
                     loggedInFaculty = null;
                     running = false;
-                    PrompMessageView.successMessage(OutputFormatter.centerString("Logged out."));
+                    PromptMessageView.successMessage(OutputFormatter.centerString("Logged out."));
                     break;
                 default:
-                    PrompMessageView.errorMessage(OutputFormatter.centerString("Invalid choice. Please try again."));
+                    PromptMessageView.errorMessage(OutputFormatter.centerString("Invalid choice. Please try again."));
             }
         }
     }

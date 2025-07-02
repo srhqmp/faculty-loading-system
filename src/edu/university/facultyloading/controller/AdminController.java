@@ -3,6 +3,7 @@ package edu.university.facultyloading.controller;
 import java.util.List;
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.repo.AdminRepo;
+import edu.university.facultyloading.util.PromptMessageView;
 
 public class AdminController {
 
@@ -37,7 +38,7 @@ public class AdminController {
 
     public Admin getAdmin(int adminId) {
         if (adminId <= 0) {
-            System.out.println("Invalid admin ID.");
+            PromptMessageView.errorMessage("Invalid admin ID.");
             return null;
         }
 
@@ -54,7 +55,7 @@ public class AdminController {
             return false;
         }
         if (adminId <= 0) {
-            System.out.println("Invalid admin ID.");
+            PromptMessageView.errorMessage("Invalid admin ID.");
             return false;
         }
 
@@ -64,7 +65,7 @@ public class AdminController {
 
     public boolean restoreAdmin(int adminId) {
         if (adminId <= 0) {
-            System.out.println("Invalid admin ID.");
+            PromptMessageView.errorMessage("Invalid admin ID.");
             return false;
         }
 
@@ -73,7 +74,7 @@ public class AdminController {
 
     public boolean deleteAdmin(int adminId) {
         if (adminId <= 0) {
-            System.out.println("Invalid admin ID.");
+            PromptMessageView.errorMessage("Invalid admin ID.");
             return false;
         }
 

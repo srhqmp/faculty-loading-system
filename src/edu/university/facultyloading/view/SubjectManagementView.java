@@ -6,6 +6,7 @@ import java.util.Scanner;
 import edu.university.facultyloading.controller.SubjectController;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.PromptMessageView;
 import edu.university.facultyloading.util.ScannerHelper;
 
 public class SubjectManagementView {
@@ -21,15 +22,15 @@ public class SubjectManagementView {
         while (true) {
             System.out.println();
             System.out.println();
-            System.out.println(OutputFormatter.centerString("╔══════════════════════════════════╗"));
-            System.out.println(OutputFormatter.centerString("║       SUBJECT MANAGEMENT         ║"));
-            System.out.println(OutputFormatter.centerString("╠══════════════════════════════════╣"));
-            System.out.println(OutputFormatter.centerString("║ 1. View All Subjects             ║"));
-            System.out.println(OutputFormatter.centerString("║ 2. Add New Subject               ║"));
-            System.out.println(OutputFormatter.centerString("║ 3. Edit Subject                  ║"));
-            System.out.println(OutputFormatter.centerString("║ 4. Delete Subject                ║"));
-            System.out.println(OutputFormatter.centerString("║ 0. Back to Admin Dashboard       ║"));
-            System.out.println(OutputFormatter.centerString("╚══════════════════════════════════╝"));
+            PromptMessageView.choices("╔══════════════════════════════════╗");
+            PromptMessageView.choices("║       SUBJECT MANAGEMENT         ║");
+            PromptMessageView.choices("╠══════════════════════════════════╣");
+            PromptMessageView.choices("║ 1. View All Subjects             ║");
+            PromptMessageView.choices("║ 2. Add New Subject               ║");
+            PromptMessageView.choices("║ 3. Edit Subject                  ║");
+            PromptMessageView.choices("║ 4. Delete Subject                ║");
+            PromptMessageView.choices("║ 0. Back to Admin Dashboard       ║");
+            PromptMessageView.choices("╚══════════════════════════════════╝");
 
             System.out.print(OutputFormatter.centerString("Enter choice: "));
             int choice = scanner.nextInt();
@@ -51,7 +52,7 @@ public class SubjectManagementView {
                 case 0:
                     return;
                 default:
-                    System.out.println(OutputFormatter.centerString("Invalid option. Please try again."));
+                    PromptMessageView.errorMessage("Invalid option. Please try again.");
             }
         }
     }
@@ -64,9 +65,9 @@ public class SubjectManagementView {
 
     public void viewAllSubjects(List<Subject> subjects) {
         System.out.println();
-        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
-        System.out.println(OutputFormatter.centerString("║               SUBJECTS             ║"));
-        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        PromptMessageView.choices("╔════════════════════════════════════╗");
+        PromptMessageView.choices("║               SUBJECTS             ║");
+        PromptMessageView.choices("╚════════════════════════════════════╝");
         System.out.println();
 
         OutputFormatter.printDivider();
@@ -100,9 +101,9 @@ public class SubjectManagementView {
 
         boolean success = subjectController.createSubject(name, description, recommendedMajor, complexityLevel);
         if (success) {
-            System.out.println("Subject added successfully.");
+            PromptMessageView.successMessage("Subject added successfully.");
         } else {
-            System.out.println("Failed to add subject. Please check your input.");
+            PromptMessageView.errorMessage("Failed to add subject. Please check your input.");
         }
     }
 
@@ -113,7 +114,7 @@ public class SubjectManagementView {
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
-            System.out.println("Subject not found.");
+            PromptMessageView.errorMessage("Subject not found.");
             return;
         }
 
@@ -138,16 +139,16 @@ public class SubjectManagementView {
                 int parsed = Integer.parseInt(complexityInput);
                 finalComplexity = parsed;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid complexity level input. Keeping previous value.");
+                PromptMessageView.errorMessage("Invalid complexity level input. Keeping previous value.");
             }
         }
 
         boolean success = subjectController.updateSubject(id, finalName, finalDescription, finalRecommendedMajor,
                 finalComplexity);
         if (success) {
-            System.out.println("Subject updated successfully.");
+            PromptMessageView.successMessage("Subject updated successfully.");
         } else {
-            System.out.println("Failed to update subject. Please check your input.");
+            PromptMessageView.errorMessage("Failed to update subject. Please check your input.");
         }
     }
 
@@ -158,7 +159,7 @@ public class SubjectManagementView {
 
         Subject existing = subjectController.getSubject(id);
         if (existing == null) {
-            System.out.println("Subject not found.");
+            PromptMessageView.errorMessage("Subject not found.");
             return;
         }
 
@@ -167,12 +168,12 @@ public class SubjectManagementView {
         if (confirm.equalsIgnoreCase("y")) {
             boolean success = subjectController.deleteSubject(id);
             if (success) {
-                System.out.println("Subject deleted.");
+                PromptMessageView.successMessage("Subject deleted successfully.");
             } else {
-                System.out.println("Failed to delete subject.");
+                PromptMessageView.errorMessage("Failed to delete subject.");
             }
         } else {
-            System.out.println("Delete cancelled.");
+            PromptMessageView.successMessage("Delete cancelled.");
         }
     }
 

@@ -4,6 +4,8 @@ import edu.university.facultyloading.model.Load;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.util.DbConnection;
+import edu.university.facultyloading.util.PromptMessageView;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +32,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - create(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - create(): " + e.getMessage());
         }
         return false;
     }
@@ -51,7 +53,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id"));
             }
         } catch (SQLException e) {
-            System.out.println("LoadRepo - getById(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -71,7 +73,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id")));
             }
         } catch (SQLException e) {
-            System.out.println("LoadRepo - getAll(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - getAll(): " + e.getMessage());
         }
         return loads;
     }
@@ -93,7 +95,7 @@ public class LoadRepoImpl implements LoadRepo {
                         result.getInt("subject_id")));
             }
         } catch (SQLException e) {
-            System.out.println("LoadRepo - getByFacultyId(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - getByFacultyId(): " + e.getMessage());
         }
         return loads;
     }
@@ -110,7 +112,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - update(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - update(): " + e.getMessage());
         }
         return false;
     }
@@ -125,7 +127,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - archive(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - archive(): " + e.getMessage());
         }
         return false;
     }
@@ -140,7 +142,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - restore(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - restore(): " + e.getMessage());
         }
         return false;
     }
@@ -155,7 +157,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - delete(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - delete(): " + e.getMessage());
         }
         return false;
     }
@@ -184,7 +186,7 @@ public class LoadRepoImpl implements LoadRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - assignSubjectToFaculty(): " + e.getMessage());
         }
         return false;
     }
@@ -216,7 +218,7 @@ public class LoadRepoImpl implements LoadRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - getSubjectsByFacultyId(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - getSubjectsByFacultyId(): " + e.getMessage());
         }
 
         return subjects;
@@ -234,7 +236,7 @@ public class LoadRepoImpl implements LoadRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
+            PromptMessageView.errorMessage("LoadRepo - removeSubjectFromFaculty(): " + e.getMessage());
         }
         return false;
     }

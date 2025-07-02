@@ -2,6 +2,7 @@ package edu.university.facultyloading.view;
 
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.PromptMessageView;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ public class FacultyListView {
 
     public void showFaculties(List<Faculty> faculties) {
         System.out.println();
-        System.out.println(OutputFormatter.centerString("╔════════════════════════════════════╗"));
-        System.out.println(OutputFormatter.centerString("║             FACULTIES              ║"));
-        System.out.println(OutputFormatter.centerString("╚════════════════════════════════════╝"));
+        PromptMessageView.choices("╔════════════════════════════════════╗");
+        PromptMessageView.choices("║             FACULTIES              ║");
+        PromptMessageView.choices("╚════════════════════════════════════╝");
         System.out.println();
 
         OutputFormatter.printDivider();

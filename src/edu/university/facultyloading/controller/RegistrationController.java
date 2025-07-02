@@ -2,7 +2,7 @@ package edu.university.facultyloading.controller;
 
 import edu.university.facultyloading.model.Admin;
 import edu.university.facultyloading.model.Faculty;
-import edu.university.facultyloading.util.OutputFormatter;
+import edu.university.facultyloading.util.PromptMessageView;
 
 public class RegistrationController {
     private final AdminController adminController;
@@ -34,10 +34,11 @@ public class RegistrationController {
             if (admin == null) {
                 throw new Exception();
             }
-            System.out.println(OutputFormatter.centerString("Admin registered successfully."));
+            PromptMessageView.successMessage("Admin registered successfully.");
             return true;
         } catch (Exception e) {
-            System.out.println(OutputFormatter.centerString("Registration failed. Please check your input."));
+            PromptMessageView
+                    .errorMessage("Registration failed. Please check your input.");
             return false;
         }
     }
@@ -55,12 +56,11 @@ public class RegistrationController {
             if (faculty == null) {
                 throw new Exception();
             }
-            System.out.println();
-            System.out.println(OutputFormatter.centerString("Faculty registered successfully."));
+            PromptMessageView.successMessage("Faculty registered successfully.");
             return true;
         } catch (Exception e) {
-            System.out.println();
-            System.out.println(OutputFormatter.centerString("Registration failed. Please check your input."));
+            PromptMessageView
+                    .errorMessage("Registration failed. Please check your input.");
             return false;
         }
     }

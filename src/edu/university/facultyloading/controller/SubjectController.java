@@ -3,6 +3,7 @@ package edu.university.facultyloading.controller;
 import java.util.List;
 import edu.university.facultyloading.model.Subject;
 import edu.university.facultyloading.repo.SubjectRepo;
+import edu.university.facultyloading.util.PromptMessageView;
 
 public class SubjectController {
 
@@ -22,7 +23,7 @@ public class SubjectController {
 
     public Subject getSubject(int subjectId) {
         if (subjectId <= 0) {
-            System.out.println("Invalid Subject ID.");
+            PromptMessageView.errorMessage("Invalid Subject ID.");
             return null;
         }
 
@@ -36,7 +37,7 @@ public class SubjectController {
     public boolean updateSubject(int subjectId, String name, String description, String recommendedMajor,
             int complexityLevel) {
         if (subjectId <= 0) {
-            System.out.println("Invalid Subject ID.");
+            PromptMessageView.errorMessage("Invalid Subject ID.");
             return false;
         }
 
@@ -50,7 +51,7 @@ public class SubjectController {
 
     public boolean deleteSubject(int subjectId) {
         if (subjectId <= 0) {
-            System.out.println("Invalid Subject ID.");
+            PromptMessageView.errorMessage("Invalid Subject ID.");
             return false;
         }
         return subjectRepo.archive(subjectId);
@@ -58,7 +59,7 @@ public class SubjectController {
 
     public boolean restoreSubject(int subjectId) {
         if (subjectId <= 0) {
-            System.out.println("Invalid Subject ID.");
+            PromptMessageView.errorMessage("Invalid Subject ID.");
             return false;
         }
         return subjectRepo.restore(subjectId);

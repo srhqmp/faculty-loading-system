@@ -3,6 +3,8 @@ package edu.university.facultyloading.repo_impl;
 import edu.university.facultyloading.model.Faculty;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.util.DbConnection;
+import edu.university.facultyloading.util.PromptMessageView;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,7 +60,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("FacultyRepoImpl - create(): " + e.getMessage());
+            PromptMessageView.errorMessage("FacultyRepoImpl - create(): " + e.getMessage());
         }
 
         return null;
@@ -83,7 +85,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - authenticate(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - authenticate(): " + e.getMessage());
         }
         return null;
     }
@@ -106,7 +108,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - getById(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - getById(): " + e.getMessage());
         }
         return null;
     }
@@ -128,7 +130,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - getAll(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - getAll(): " + e.getMessage());
         }
         return faculties;
     }
@@ -159,7 +161,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             return facultyStmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - update(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - update(): " + e.getMessage());
         }
         return false;
     }
@@ -176,7 +178,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - updateAvailability(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - updateAvailability(): " + e.getMessage());
         }
         return false;
     }
@@ -192,7 +194,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - archive(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - archive(): " + e.getMessage());
         }
         return false;
     }
@@ -208,7 +210,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - restore(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - restore(): " + e.getMessage());
         }
         return false;
     }
@@ -224,7 +226,7 @@ public class FacultyRepoImpl implements FacultyRepo {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Faculty Repo - delete(): " + e.getMessage());
+            PromptMessageView.errorMessage("Faculty Repo - delete(): " + e.getMessage());
         }
         return false;
     }
