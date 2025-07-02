@@ -1,6 +1,7 @@
 package edu.university.facultyloading.util;
 
 public class OutputFormatter {
+    public static final String INDENT = "\t\t\t";
 
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
