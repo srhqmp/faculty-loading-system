@@ -7,6 +7,7 @@ import edu.university.facultyloading.repo.AdminRepo;
 import edu.university.facultyloading.repo.FacultyRepo;
 import edu.university.facultyloading.repo.LoadRepo;
 import edu.university.facultyloading.repo.SubjectRepo;
+import edu.university.facultyloading.util.HelperMethods;
 import edu.university.facultyloading.util.OutputFormatter;
 import edu.university.facultyloading.view.AssignSubjectView;
 import edu.university.facultyloading.view.DashboardView;
@@ -20,8 +21,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainController {
-
-    private final LoadRepo loadRepo;
     private final Scanner scanner = new Scanner(System.in);
 
     private final SubjectController subjectController;
@@ -42,14 +41,11 @@ public class MainController {
 
     public MainController(AdminRepo adminRepo, FacultyRepo facultyRepo, SubjectRepo subjectRepo,
             LoadRepo loadRepo) {
-        this.loadRepo = loadRepo;
-
         this.subjectController = new SubjectController(subjectRepo);
         this.adminController = new AdminController(adminRepo);
         this.facultyController = new FacultyController(facultyRepo);
         this.registrationController = new RegistrationController(adminController, facultyController);
         this.loadController = new LoadController(loadRepo);
-
     }
 
     public void start() {
@@ -173,9 +169,22 @@ public class MainController {
                 case 3: // Assign Subjects to Faculty
                     facultyListView.showFaculties(faculties);
                     int facultyId = assignSubjectView.promptFacultyId();
+
+                    if (!HelperMethods.facultyInTheList(facultyId, faculties)) {
+                        System.out.println("Faculty with ID " + facultyId + " does not exist.");
+                        break;
+                    }
+
                     subjectManagementView.viewAllSubjects(subjects);
                     int subjectId = assignSubjectView.promptSubjectIdToAssign();
+
+                    if (!HelperMethods.subjectInTheList(subjectId, subjects)) {
+                        System.out.println("Subject with ID " + subjectId + " does not exist.");
+                        break;
+                    }
+
                     boolean success = loadController.assignSubjectToFaculty(facultyId, subjectId);
+
                     if (success)
                         assignSubjectView.showAssignmentSuccess();
                     else
@@ -184,6 +193,11 @@ public class MainController {
                 case 4: // Remove Assigned Subject from Faculty
                     facultyListView.showFaculties(faculties);
                     int facultyIdToRemove = assignSubjectView.promptFacultyId();
+
+                    if (!HelperMethods.facultyInTheList(facultyIdToRemove, faculties)) {
+                        System.out.println("Faculty with ID " + facultyIdToRemove + " does not exist.");
+                        break;
+                    }
 
                     // Get assigned subjects for the faculty
                     List<Subject> assignedSubjectsToRemove = loadController.getSubjectsByFacultyId(facultyIdToRemove);
@@ -195,6 +209,12 @@ public class MainController {
 
                     subjectManagementView.viewAllSubjects(assignedSubjectsToRemove);
                     int subjectIdToRemove = assignSubjectView.promptSubjectIdToRemove();
+
+                    if (!HelperMethods.subjectInTheList(subjectIdToRemove, assignedSubjectsToRemove)) {
+                        System.out.println("Subject with ID " + subjectIdToRemove
+                                + " does not exist in the subject load.");
+                        break;
+                    }
 
                     boolean removeSuccess = loadController.removeSubjectFromFaculty(facultyIdToRemove,
                             subjectIdToRemove);
@@ -208,6 +228,11 @@ public class MainController {
 
                     int viewFacultyId = assignSubjectView.promptFacultyId();
                     Faculty faculty = facultyController.getFaculty(viewFacultyId);
+
+                    if (!HelperMethods.facultyInTheList(viewFacultyId, faculties)) {
+                        System.out.println("Faculty with ID " + viewFacultyId + " does not exist.");
+                        break;
+                    }
 
                     if (faculty != null) {
                         List<Subject> assignedSubjects = loadController.getSubjectsByFacultyId(viewFacultyId);
