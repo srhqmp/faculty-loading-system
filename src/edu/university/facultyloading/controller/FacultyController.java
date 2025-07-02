@@ -42,6 +42,11 @@ public class FacultyController {
     }
 
     public Faculty getFaculty(int facultyId) {
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return null;
+        }
+
         return facultyRepo.getById(facultyId);
     }
 
@@ -55,6 +60,10 @@ public class FacultyController {
         if (!isValid(username, password, firstName, lastName, major, yearsOfExperience, studentFeedbackScore)) {
             return false;
         }
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
 
         Faculty faculty = new Faculty(facultyId, userId, username.trim(), password.trim(),
                 firstName.trim(), lastName.trim(), major.trim(),
@@ -63,19 +72,30 @@ public class FacultyController {
     }
 
     public boolean updateAvailability(int facultyId, boolean isAvailable) {
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
+
         return facultyRepo.updateAvailability(facultyId, isAvailable);
     }
 
-    public boolean archiveFaculty(int facultyId) {
-        return facultyRepo.archive(facultyId);
-    }
-
     public boolean restoreFaculty(int facultyId) {
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
+
         return facultyRepo.restore(facultyId);
     }
 
     public boolean deleteFaculty(int facultyId) {
-        return facultyRepo.delete(facultyId);
+        if (facultyId <= 0) {
+            System.out.println("Invalid faculty ID.");
+            return false;
+        }
+
+        return facultyRepo.archive(facultyId);
     }
 
     private boolean isValid(String username, String password, String firstName, String lastName,

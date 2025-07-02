@@ -21,6 +21,11 @@ public class SubjectController {
     }
 
     public Subject getSubject(int subjectId) {
+        if (subjectId <= 0) {
+            System.out.println("Invalid Subject ID.");
+            return null;
+        }
+
         return subjectRepo.getById(subjectId);
     }
 
@@ -30,6 +35,11 @@ public class SubjectController {
 
     public boolean updateSubject(int subjectId, String name, String description, String recommendedMajor,
             int complexityLevel) {
+        if (subjectId <= 0) {
+            System.out.println("Invalid Subject ID.");
+            return false;
+        }
+
         if (isValid(name, description, recommendedMajor, complexityLevel)) {
             Subject subject = new Subject(subjectId, name.trim(), description.trim(), recommendedMajor.trim(),
                     complexityLevel);
@@ -39,15 +49,19 @@ public class SubjectController {
     }
 
     public boolean deleteSubject(int subjectId) {
+        if (subjectId <= 0) {
+            System.out.println("Invalid Subject ID.");
+            return false;
+        }
         return subjectRepo.archive(subjectId);
     }
 
     public boolean restoreSubject(int subjectId) {
+        if (subjectId <= 0) {
+            System.out.println("Invalid Subject ID.");
+            return false;
+        }
         return subjectRepo.restore(subjectId);
-    }
-
-    public boolean hardDeleteSubject(int subjectId) {
-        return subjectRepo.delete(subjectId);
     }
 
     private boolean isValid(String name, String description, String recommendedMajor, int complexityLevel) {

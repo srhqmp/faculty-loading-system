@@ -36,6 +36,11 @@ public class AdminController {
     }
 
     public Admin getAdmin(int adminId) {
+        if (adminId <= 0) {
+            System.out.println("Invalid admin ID.");
+            return null;
+        }
+
         return adminRepo.getById(adminId);
     }
 
@@ -48,21 +53,31 @@ public class AdminController {
         if (!isValid(username, password, firstName, lastName)) {
             return false;
         }
+        if (adminId <= 0) {
+            System.out.println("Invalid admin ID.");
+            return false;
+        }
 
         Admin admin = new Admin(adminId, userId, username.trim(), password.trim(), firstName.trim(), lastName.trim());
         return adminRepo.update(admin);
     }
 
-    public boolean archiveAdmin(int adminId) {
-        return adminRepo.archive(adminId);
-    }
-
     public boolean restoreAdmin(int adminId) {
+        if (adminId <= 0) {
+            System.out.println("Invalid admin ID.");
+            return false;
+        }
+
         return adminRepo.restore(adminId);
     }
 
     public boolean deleteAdmin(int adminId) {
-        return adminRepo.delete(adminId);
+        if (adminId <= 0) {
+            System.out.println("Invalid admin ID.");
+            return false;
+        }
+
+        return adminRepo.archive(adminId);
     }
 
     private boolean isValid(String username, String password, String firstName, String lastName) {

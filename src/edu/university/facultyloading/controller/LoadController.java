@@ -55,15 +55,6 @@ public class LoadController {
         return loadRepo.update(load);
     }
 
-    public boolean archiveLoad(int loadId) {
-        if (loadId <= 0) {
-            System.out.println("Invalid load ID.");
-            return false;
-        }
-
-        return loadRepo.archive(loadId);
-    }
-
     public boolean restoreLoad(int loadId) {
         if (loadId <= 0) {
             System.out.println("Invalid load ID.");
@@ -79,7 +70,7 @@ public class LoadController {
             return false;
         }
 
-        return loadRepo.delete(loadId);
+        return loadRepo.archive(loadId);
     }
 
     public boolean assignSubjectToFaculty(int facultyId, int subjectId) {
