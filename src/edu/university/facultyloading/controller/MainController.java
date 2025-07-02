@@ -14,6 +14,7 @@ import edu.university.facultyloading.view.DashboardView;
 import edu.university.facultyloading.view.FacultyListView;
 import edu.university.facultyloading.view.FacultyLoadView;
 import edu.university.facultyloading.view.LoginView;
+import edu.university.facultyloading.view.PrompMessageView;
 import edu.university.facultyloading.view.RegisterView;
 import edu.university.facultyloading.view.SubjectManagementView;
 
@@ -114,8 +115,11 @@ public class MainController {
         System.out.println();
 
         if (loggedInAdmin != null) {
-            System.out.println(OutputFormatter.centerString("Welcome " +
-                    loggedInAdmin.getFullname() + "!"));
+            // System.out.println(OutputFormatter.centerString("Welcome " +
+            //         loggedInAdmin.getFullname() + "!"));
+
+            PrompMessageView.successMessage("Welcome " +
+                     loggedInAdmin.getFullname() + "!");
             displayAdminDashboard();
             return;
         }
