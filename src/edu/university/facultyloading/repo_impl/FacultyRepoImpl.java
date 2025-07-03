@@ -23,7 +23,7 @@ public class FacultyRepoImpl implements FacultyRepo {
 
     @Override
     public Faculty create(Faculty faculty) {
-        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 0)";
+        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 1)";
         String facultyQuery = "INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_score, is_available) VALUES (?, ?, ?, ?, 1)";
 
         try (Connection connection = dbConnection.connect();
@@ -119,7 +119,7 @@ public class FacultyRepoImpl implements FacultyRepo {
         String query = "SELECT faculty_id, tblfaculties.user_id AS user_id, username, password, first_name, last_name, major, years_of_experience, student_feedback_score, is_available, is_archived "
                 +
                 "FROM tblfaculties INNER JOIN tblusers ON tblfaculties.user_id = tblusers.user_id " +
-                "WHERE is_archived = 0";
+                "WHERE tblusers.role = 1 AND is_archived = 0";
 
         try (Connection connection = dbConnection.connect();
                 PreparedStatement stmt = connection.prepareStatement(query);

@@ -242,12 +242,10 @@ public class LoadRepoImpl implements LoadRepo {
     public List<Faculty> getAvailableFacultiesBySubjectId(int subjectId) {
         List<Faculty> faculties = new ArrayList<>();
 
-        String query = "SELECT tblfaculties.faculty_id, tblusers.user_id, tblusers.username, " +
-                "tblusers.first_name, tblusers.last_name, " +
-                "tblfaculties.is_available " +
+        String query = "SELECT tblfaculties.faculty_id, tblusers.user_id, tblusers.username, tblusers.first_name, tblusers.last_name, tblfaculties.is_available " +
                 "FROM tblloads " +
                 "INNER JOIN tblfaculties ON tblloads.faculty_id = tblfaculties.faculty_id " +
-                "INNER JOIN tblusers ON tblfaculties.faculty_id = tblusers.user_id " +
+                "INNER JOIN tblusers ON tblfaculties.user_id = tblusers.user_id " +
                 "INNER JOIN tblsubjects ON tblloads.subject_id = tblsubjects.subject_id " +
                 "WHERE tblloads.subject_id = ? " +
                 "AND tblfaculties.is_available = 1 " +
