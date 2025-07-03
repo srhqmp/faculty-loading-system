@@ -23,7 +23,7 @@ public class FacultyRepoImpl implements FacultyRepo {
 
     @Override
     public Faculty create(Faculty faculty) {
-        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 0)";
+        String userQuery = "INSERT INTO tblusers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 1)";
         String facultyQuery = "INSERT INTO tblfaculties (user_id, major, years_of_experience, student_feedback_score, is_available) VALUES (?, ?, ?, ?, 1)";
 
         try (Connection connection = dbConnection.connect();
