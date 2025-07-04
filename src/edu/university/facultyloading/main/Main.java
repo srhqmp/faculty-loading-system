@@ -25,5 +25,7 @@ public class Main {
         MainController mainController = new MainController(adminRepo, facultyRepo, subjectRepo, loadRepo);
 
         mainController.start();
+
+        System.out.println("hello");
     }
 }
